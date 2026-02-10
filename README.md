@@ -7,7 +7,7 @@ This README would normally document whatever steps are necessary to get your app
 * Search for recepies that don't require you to buy new ingredients.
 
 ## Table of Contents
-* [How do I get set up?] (#How do I get set up?)
+* [How do I get set up?] (#how-do-I-get-set-up?)
 * [General Info](#general-information)
 * [Contribution Guidelines] (#Contribution guidelines)
 * [Technologies Used](#technologies-used)
@@ -22,7 +22,6 @@ This README would normally document whatever steps are necessary to get your app
 <!-- * [License](#license) -->
 
 ## How do I get set up?
-
 * Summary of set up
 * Configuration
 * Dependencies
