@@ -5,6 +5,9 @@ This README would normally document whatever steps are necessary to get your app
 ### What is this repository for? ###
 
 * Search for recepies that don't require you to buy new ingredients.
+What you’re creating?
+Who you’re doing it for, your audience (may be same as the previous question)?
+Why you’re doing this, the impact or change you hope to make?
 
 ## Table of Contents
 * [How do I get set up?](#how-do-I-get-set-up)
@@ -33,7 +36,6 @@ This README would normally document whatever steps are necessary to get your app
 - What problem does it (intend to) solve?
 - What is the purpose of your project?
 - Why did you undertake it?
-<!-- You don't have to answer all the questions - just the ones relevant to your project. -->
 
 ## Contribution guidelines
 
@@ -42,9 +44,14 @@ This README would normally document whatever steps are necessary to get your app
 * Other guidelines
 
 ## Technologies Used
-- Tech 1 - version 1.0
-- Tech 2 - version 2.0
-- Tech 3 - version 3.0
+- API EveryCook (https://github.com/everycook/EveryCook)
+- Mongodb
+    * the avaiability of this potential resource for open source work is currently being discussed
+- Mealdb (https://www.themealdb.com/api.php)
+- JavaScript ver. TBD, Flask (maybe), 
+- Webapp library: React ver. 19.2*
+    * or other version TBD. 19.2.4 is the most recent stable update of React per [React Reference Overview](https://react.dev/reference/react)
+- UML visualisation (maybe XXXX)
 
 
 ## Features
@@ -67,7 +74,7 @@ Potential future features/improvements:
 
 
 ## Images
-Find recipe with ☑ chicken | ☑ parmesan | ☑ cream
+Find recipe with: ☑ chicken | ☑ parmesan | ☑ cream
 ![Example query](./media/chicken_alfredo.jpg)
 
 
@@ -79,7 +86,7 @@ Provide various use cases and code examples here.
 
 
 ## Project Status
-Project is: _in progress_ / _complete_ / _no longer being worked on_. If you are no longer working on it, provide reasons why.
+Project is: _in progress_ as of 13/02/2026 (Feb.)
 
 
 ## Room for Improvement
@@ -90,8 +97,10 @@ Room for improvement:
 - Improvement to be done 2
 
 To do:
-- Feature to be added 1
-- Feature to be added 2
+- MVP
+- improved search style
+- improved search method
+- databse
 
 
 ## Acknowledgements
