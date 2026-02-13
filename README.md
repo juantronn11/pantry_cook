@@ -44,14 +44,16 @@ cook on budget.
 * Other guidelines
 
 ## Technologies Used
-- API EveryCook (https://github.com/everycook/EveryCook)
-- Mongodb
+- API EveryCook Recipe Database (open source from GitHub) (https://github.com/everycook/EveryCook)
+- Mongodb (potential)
     * the avaiability of this potential resource for open source work is currently being discussed
-- Mealdb (https://www.themealdb.com/api.php)
-- JavaScript ver. TBD, Flask (maybe), 
+- Mealdb (https://www.themealdb.com/api.php) (www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata)
+- JavaScript ver. TBD, Flask (maybe), Express ver. TBD
 - Webapp library: React ver. 19.2*
     * or other version TBD. 19.2.4 is the most recent stable update of React per [React Reference Overview](https://react.dev/reference/react)
-- UML visualisation (maybe XXXX)
+- UML visualisation (maybe figma)
+- OTHER:
+    * react router, query
 
 
 ## Features
