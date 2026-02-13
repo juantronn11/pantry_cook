@@ -12,7 +12,7 @@ This README would normally document whatever steps are necessary to get your app
 * [Contribution Guidelines](#contribution-guidelines)
 * [Technologies Used](#technologies-used)
 * [Features](#features)
-* [Screenshots](#screenshots)
+* [Images](#images)
 * [Setup](#setup)
 * [Usage](#usage)
 * [Project Status](#project-status)
@@ -49,14 +49,26 @@ This README would normally document whatever steps are necessary to get your app
 
 ## Features
 List the ready features here:
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
+- MVP: webpage with radial buttons of searchable ingredients (API is queried for recipies matching each button chosen, overlaping recipes returned), returns (visible to user) list of recepies (format TBD*)
+    * list of images of recepies (with name?) that are clickable links, just list of recipe names that are clickable links; API returns as json
+- initially, the only retention is user is returned a downloadable recipe
+
+Potential future features/improvements:
+- Operation Make it Better:
+    text entry of ingredients; recepies are returned based on compliance with 'only use ingredients listed by user'
+- Operation Make it Better-er:
+    search for recepies based on compliance with 'ingredients not listed by user are...' CHEAP to find, EASY to find, etc
+- Dificult Side Quest:
+    user input images of ingredients, rather than text entry of ingredients. Ingredients are accurately catagorized in such a way that MVP (and potential future) search functions work as normal with image ingredient entry.
+- (Hopefully) Easy Side Quest:
+    filter recepies by TYPE of food (i.e. cusine)
+- Operation Independance Day:
+     host our own database, so as API is used to query recepies, database is built, so in future API becomes less relevant for accessing recipes from existing database of recipies
 
 
-## Screenshots
-![Example screenshot](./img/screenshot.png)
-<!-- If you have screenshots you'd like to share, include them here. -->
+## Images
+Find recipe with ☑ chicken | ☑ parmesan | ☑ cream
+![Example query](./media/chicken_alfredo.jpg)
 
 
 ## Usage
