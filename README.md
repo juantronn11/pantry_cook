@@ -1,13 +1,13 @@
 # README #
-
-This README would normally document whatever steps are necessary to get your application up and running.
+# Recipe App
 
 ### What is this repository for? ###
 
-* Search for recepies that don't require you to buy new ingredients.
-What you’re creating?
-Who you’re doing it for, your audience (may be same as the previous question)?
-Why you’re doing this, the impact or change you hope to make?
+This is the README document for CS 3398.253 Spring 2026 Hutt's semester project: Recipe App.
+The purpose of this project is to provide a UI where you can input ingredients (i.e. what you have at home)
+and be provided recipes that use those ingredients and only those ingredients. This is for people who want 
+to cook with what they already have. This app has the potential to reduce home food waste and povide a way to 
+cook on budget.
 
 ## Table of Contents
 * [How do I get set up?](#how-do-I-get-set-up)
