@@ -76,6 +76,7 @@ Potential future features/improvements:
 
 
 ## Images
+  #### Example Query: ####
 Find recipe with: ☑ chicken | ☑ parmesan | ☑ cream
 ![Example query](./media/chicken_alfredo.jpg)
 
@@ -101,6 +102,7 @@ Room for improvement:
 To do:
 - MVP
 - improved search style
+    * image user entry
 - improved search method
 - databse
 
