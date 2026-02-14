@@ -68,6 +68,12 @@ cook on budget.
     * recipes are returned with NAME of recipe, PICTURE(?) (less important) and LINK to full recipe/recipe discription
     * recipes are returned in RELAVANCY order (i.e. most matching ingredients comes before fewer matching ingredients)
 * Make Recipes Downloadable: All recipes can be downloaded as PDFs by user from DOWNLOAD button... on each recipe display (i.e. with name of recipe/image/link)
+    - specific task suggested by Claude, per Spring Assignment 4: (for full discriptions of each task, see Jira: User Story 4, subtasks)
+        * Task 1 – Design the Print/Download UI Component
+        * Task 2 – Implement the Print Functionality (React + Browser API)
+        * Task 3 – Implement the PDF Download Functionality (Client-Side Generation)
+        * Task 4 – Build the Express API Endpoint for Server-Side Recipe Retrieval
+        * Task 5 – Unit Testing for Print/Download Features
 
 **Potential future features/improvements:**
 - Operation Make it Better:
