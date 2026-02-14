@@ -62,7 +62,7 @@ cook on budget.
 - initially, the only retention is: user is returned a downloadable recipe
 
 **Specific features for MVP:**
-* Choose your ingredient: Radial Buttons search form for ingredients 
+* Choose your ingredient: Multi-select Buttons search form for ingredients 
 * Search for recipe: Search button (i.e. click all buttons. do not search until search button AKA do not search after each updated button selections)
 * Recipes are searched for: Recipes are returned that are relevant (i.e. do contain ingredients from form)
     * recipes are returned with NAME of recipe, PICTURE(?) (less important) and LINK to full recipe/recipe discription
