@@ -57,12 +57,19 @@ cook on budget.
 
 
 ## Features
-List the ready features here:
 - MVP: webpage with radial buttons of searchable ingredients (API is queried for recipies matching each button chosen, overlaping recipes returned), returns (visible to user) list of recepies (format TBD*)
-    * list of images of recepies (with name?) that are clickable links, just list of recipe names that are clickable links; API returns as json
-- initially, the only retention is user is returned a downloadable recipe
+    * list of images of recepies (with name?) that are clickable links, just list of recipe names that are clickable links; API returns as json
+- initially, the only retention is: user is returned a downloadable recipe
 
-Potential future features/improvements:
+**Specific features for MVP:**
+* Choose your ingredient: Radial Buttons search form for ingredients 
+* Search for recipe: Search button (i.e. click all buttons. do not search until search button AKA do not search after each updated button selections)
+* Recipes are searched for: Recipes are returned that are relevant (i.e. do contain ingredients from form)
+    * recipes are returned with NAME of recipe, PICTURE(?) (less important) and LINK to full recipe/recipe discription
+    * recipes are returned in RELAVANCY order (i.e. most matching ingredients comes before fewer matching ingredients)
+* Make Recipes Downloadable: All recipes can be downloaded as PDFs by user from DOWNLOAD button... on each recipe display (i.e. with name of recipe/image/link)
+
+**Potential future features/improvements:**
 - Operation Make it Better:
     text entry of ingredients; recepies are returned based on compliance with 'only use ingredients listed by user'
 - Operation Make it Better-er:
