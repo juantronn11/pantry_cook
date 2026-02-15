@@ -87,6 +87,50 @@ cook on budget.
 - Operation Independance Day:
      host our own database, so as API is used to query recepies, database is built, so in future API becomes less relevant for accessing recipes from existing database of recipies
 
+**User Stories for Features**
+- Details for each user story and acceptance criteria can be found in Jira.
+
+>User Story 1: Individual UI Tiles for Recipes Returned (frontend)
+>
+>   As a user, I would like to see recipes displayed as individual tiles after entering my available ingredients so that I can quickly browse what I'm able to cook with what I have on hand.
+
+>User Story 2: Form Display for User Input (frontend)
+>
+>   As a user, I would like a form where I can enter the ingredients I currently have in my kitchen so that the app can find recipes I can actually make right now.
+
+>User Story 3: Full Recipe Listing (frontend)
+>
+>   As a user, I would like to view the full details of a recipe I selected from my search results so that I can see all the ingredients and step-by-step instructions needed to make the dish.
+
+>User Story 4: Download/Print Recipe (frontend)
+>
+>   As a user, I would like to download or print a recipe so that I can follow the instructions in my kitchen without needing to keep the app open on my device.
+
+>User Story 5:Navigation Toolbar (frontend)
+>
+>   As a user, I would like a navigation toolbar so that I can easily switch between searching for recipes with my ingredients, viewing my cooking history, and accessing my saved recipe collection.
+
+>User Story 6: User Form Data (Requests) (backend)
+>
+>   As a back end developer, I would like the app to accept and process the list of ingredients I submit so that it can search for recipes that match what I have available.
+
+
+>User Story 7: Make Multiple API Requests for Recipe Listing (backend)
+>
+>   As a back end developer, I would like the app to search across multiple sources or queries based on my ingredient list so that I get a comprehensive set of recipes I can make with what I have.
+
+>User Story 8: Filter Recipes for Multiple Ingredients from Multiple Calls (backend)
+>
+>   As a back end developer, I would like the app to intelligently combine and filter results from multiple searches so that I see recipes ranked by how well they match the ingredients I have on hand.
+
+>User Story 9: Storing User Recipe History Locally (backend)
+>
+>   As a back end developer, I would like the app to keep track of recipes I've viewed so that I can easily find and revisit dishes I was interested in without searching for them again.
+
+>User Story 10: Non-Temporary Library Storage (backend)
+>
+>   As a back end developer, I would like to save favorite recipes to a permanent personal library so that I can build a go-to collection of meals I know I can make and access them anytime.
+
 
 ## Images
   #### Example Query: ####
