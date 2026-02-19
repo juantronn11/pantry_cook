@@ -1,22 +1,20 @@
-# README #
 # Recipe App
 
 ### What is this repository for? ###
 
 This is the README document for CS 3398.253 Spring 2026 Hutt's semester project: Recipe App.
 The purpose of this project is to provide a UI where you can input ingredients (i.e. what you have at home)
-and be provided recipes that use those ingredients and only those ingredients. This is for people who want 
-to cook with what they already have. This app has the potential to reduce home food waste and povide a way to 
+and be provided recipes that use those ingredients and only those ingredients. This is for people who want
+to cook with what they already have. This app has the potential to reduce home food waste and povide a way to
 cook on budget.
 
 ## Table of Contents
-* [How do I get set up?](#how-do-I-get-set-up)
+* [How do I get set up?](#how-do-i-get-set-up)
 * [General Info](#general-information)
 * [Contribution Guidelines](#contribution-guidelines)
 * [Technologies Used](#technologies-used)
 * [Features](#features)
 * [Images](#images)
-* [Setup](#setup)
 * [Usage](#usage)
 * [Project Status](#project-status)
 * [Room for Improvement](#room-for-improvement)
@@ -24,18 +22,39 @@ cook on budget.
 * [Contact](#contact)
 
 ## How do I get set up?
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- npm (comes with Node.js)
+
+### Installation
+1. Clone the repository
+2. Navigate to the project directory
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Running the Development Server
+Start the local dev server:
+```bash
+npm run dev
+```
+This will open the app at `http://localhost:5173/`. The server hot-reloads automatically — any file changes you save will instantly update in the browser.
+
+Stop the server with `Ctrl + C`.
+
+### Building for Production
+To deploy or present the app, run:
+```bash
+npm run build
+```
+This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a `dist/` folder containing plain HTML, CSS, and JS that any browser can run — no Node.js or dev server needed. You can upload the `dist/` folder to any web host to make the app publicly accessible.
 
 ## General Information
-- Provide general information about your project here.
-- What problem does it (intend to) solve?
-- What is the purpose of your project?
-- Why did you undertake it?
+- This app solves the common problem of not knowing what to cook with the ingredients you already have at home.
+- Users select ingredients from a form, and the app returns matching recipes using the Spoonacular API.
+- The goal is to reduce food waste and help users cook on a budget without needing to buy extra ingredients.
 
 ## Contribution guidelines
 
@@ -44,17 +63,13 @@ cook on budget.
 * Other guidelines
 
 ## Technologies Used
-- API EveryCook Recipe Database (open source from GitHub) (https://github.com/everycook/EveryCook)
-- Mongodb (potential)
-    * the avaiability of this potential resource for open source work is currently being discussed
-- Mealdb (https://www.themealdb.com/api.php) (www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata)
-- JavaScript ver. TBD, Flask (maybe), Express ver. TBD
-- Webapp library: React ver. 19.2*
-    * or other version TBD. 19.2.4 is the most recent stable update of React per [React Reference Overview](https://react.dev/reference/react)
-- UML visualisation (maybe figma)
-- OTHER:
-    * react router, query
-
+- **Vite** — Build tool and development server
+- **React 19** — Frontend UI library
+- **React Router DOM** — Client-side page routing
+- **CSS Modules** — Scoped component styling
+- **Spoonacular API** — Recipe search by ingredient
+- **Express** — Backend server (for API calls)
+- **JavaScript (ES6+)** — Programming language
 
 ## Features
 - MVP: webpage with radial buttons of searchable ingredients (API is queried for recipies matching each button chosen, overlaping recipes returned), returns (visible to user) list of recepies (format TBD*)
@@ -62,7 +77,7 @@ cook on budget.
 - initially, the only retention is: user is returned a downloadable recipe
 
 **Specific features for MVP:**
-* Choose your ingredient: Multi-select Buttons search form for ingredients 
+* Choose your ingredient: Multi-select Buttons search form for ingredients
 * Search for recipe: Search button (i.e. click all buttons. do not search until search button AKA do not search after each updated button selections)
 * Recipes are searched for: Recipes are returned that are relevant (i.e. do contain ingredients from form)
     * recipes are returned with NAME of recipe, PICTURE(?) (less important) and LINK to full recipe/recipe discription
@@ -77,15 +92,15 @@ cook on budget.
 
 **Potential future features/improvements:**
 - Operation Make it Better:
-    text entry of ingredients; recepies are returned based on compliance with 'only use ingredients listed by user'
+    text entry of ingredients; recepies are returned based on compliance with 'only use ingredients listed by user'
 - Operation Make it Better-er:
-    search for recepies based on compliance with 'ingredients not listed by user are...' CHEAP to find, EASY to find, etc
+    search for recepies based on compliance with 'ingredients not listed by user are...' CHEAP to find, EASY to find, etc
 - Dificult Side Quest:
-    user input images of ingredients, rather than text entry of ingredients. Ingredients are accurately catagorized in such a way that MVP (and potential future) search functions work as normal with image ingredient entry.
+    user input images of ingredients, rather than text entry of ingredients. Ingredients are accurately catagorized in such a way that MVP (and potential future) search functions work as normal with image ingredient entry.
 - (Hopefully) Easy Side Quest:
-    filter recepies by TYPE of food (i.e. cusine)
+    filter recepies by TYPE of food (i.e. cusine)
 - Operation Independance Day:
-     host our own database, so as API is used to query recepies, database is built, so in future API becomes less relevant for accessing recipes from existing database of recipies
+     host our own database, so as API is used to query recepies, database is built, so in future API becomes less relevant for accessing recipes from existing database of recipies
 
 **User Stories for Features**
 - Details for each user story and acceptance criteria can be found in Jira.
@@ -139,10 +154,12 @@ Find recipe with: ☑ chicken | ☑ parmesan | ☑ cream
 
 
 ## Usage
-How does one go about using it?
-Provide various use cases and code examples here.
-
-`write-your-code-here`
+1. Start the dev server: `npm run dev`
+2. Open `http://localhost:5173/` in your browser
+3. Use the ingredient search form to select ingredients you have at home
+4. Click Search to find matching recipes
+5. Browse recipe tiles with names, images, and links
+6. Download or print any recipe as a PDF
 
 
 ## Project Status
