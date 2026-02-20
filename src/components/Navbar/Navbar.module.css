@@ -1,7 +1,64 @@
 /* Navbar styles — Owner: Patrick Rucker */
 
+/* Main navbar container — dark bar fixed at the top of the page */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2c3e50;
+  padding: 0.75rem 1.5rem;
+}
+
+/* App name / logo — left side of the navbar */
+.logo {
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* Navigation links container — removes bullet points, displays links in a row */
+.navLinks {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+}
+
+/* Individual nav links — white text, padding for click area */
+.navLinks a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+}
+
+/* Hover effect on nav links */
+.navLinks a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 /* Active page indicator — background highlight on the current page's link */
 .activeLink {
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
+}
+
+/* New Search button — styled to match nav links */
+.newSearchBtn {
+  color: #ffffff;
+  background: none;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Hover effect on New Search button */
+.newSearchBtn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
