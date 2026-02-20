@@ -38,17 +38,19 @@ function Navbar() {
 
       <ul className={styles.navLinks}>
         <li>
-          <NavLink to="/" end>
+          {/* className receives { isActive } from NavLink — applies background
+              highlight when this link matches the current URL */}
+          <NavLink to="/" end className={({ isActive }) => isActive ? styles.activeLink : ''}>
             Home
           </NavLink>
         </li>
         <li>
-          <NavLink to="/history">
+          <NavLink to="/history" className={({ isActive }) => isActive ? styles.activeLink : ''}>
             History
           </NavLink>
         </li>
         <li>
-          <NavLink to="/saved">
+          <NavLink to="/saved" className={({ isActive }) => isActive ? styles.activeLink : ''}>
             Saved Recipes
           </NavLink>
         </li>
