@@ -12,12 +12,15 @@ function SearchForm() {
       <div className={styles.searchForm}>
         <p> Press Search for recipes with your ingredients</p>
         <SearchButton />
-        <p>{SearchButton.result}</p>
       </div>
 
 function SearchButton() {
+  var results;
   function handleClick() {
-    result = fetch('/themealdb.com/api/json/v1/1/filter.php?i=' + 'chicken')
+    fetch('https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken')
+      .then(res => res.json())
+      .then(data => results = data.meals)
+      console.log(results)
   }
   return (
     <button onClick={handleClick}>Search</button>
