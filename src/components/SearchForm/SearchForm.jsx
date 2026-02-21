@@ -3,9 +3,23 @@
 // Validates at least one ingredient is selected before submission
 
 import styles from './SearchForm.module.css'
+import { useState } from 'react';
 
 function SearchForm() {
-  var results;  
+  const [results, setResults] = useState(null);
+
+  function SearchButton() {
+    function handleClick() {
+      fetch('https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken')
+        .then(res => res.json())
+        .then(data => setResults(data.meals));
+    }
+    return (
+      <button onClick={handleClick}>Search</button>
+    )
+  }
+
+  
   return (
     <>
       <div className={styles.searchForm}>
@@ -19,15 +33,6 @@ function SearchForm() {
   )
 }
 
-function SearchButton() {
-  function handleClick() {
-    fetch('https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken')
-      .then(res => res.json())
-      .then(data => SearchForm.results = data.meals);
-  }
-  return (
-    <button onClick={handleClick}>Search</button>
-  )
-}
+
 
 export default SearchForm
