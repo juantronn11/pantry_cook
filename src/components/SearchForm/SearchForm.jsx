@@ -3,7 +3,8 @@
 // Validates at least one ingredient is selected before submission
 
 import styles from './SearchForm.module.css'
-import { useState } from 'react';
+import { useState } from 'react'
+import { useEffect } from 'react';
 
 function SearchForm() {
   const [results, setResults] = useState(null);
@@ -18,18 +19,37 @@ function SearchForm() {
       <button onClick={handleClick}>Search</button>
     )
   }
-
   
   return (
     <>
-      <div className={styles.searchForm}>
-        <p>SearchForm placeholder</p>
-      </div>
       <div className={styles.searchForm}>
         <p> Press Search for recipes with your ingredients</p>
         <SearchButton />
       </div>  
     </>
+  )
+}
+
+function setIngredientButtons() {
+  const [ingredientList, setIngredientList] = useState(null);
+  var ingredientButtons = [];
+  useEffect(() => {
+    fetch('https://www.themealdb.com/api/json/v1/1/list.php?i=list')
+            .then(response => response.json())
+            .then(data => setIngredientList(data.meals));
+  }, []);
+
+  if (!ingredientList) {
+    return (<p>Loading...</p>)
+  }
+  else {
+    for (var n = 0; n < ingredientList.length; n++) {
+      ingredientButtons[n] = {name: ingredientList[n].strIngredient, id: n + 1, button: <Button text={ingredientList[n].strIngredient} key={n}/>}
+    }
+  }
+
+  return ingredientButtons.map(button =>
+    <div key={button.id}>{button.button}</div>
   )
 }
 
