@@ -70,8 +70,6 @@ function Button({ text }) {
     } else {
       selectedIngredients = selectedIngredients.filter(i => i !== text);
     }
-
-    console.log(selectedIngredients);
   }
  
   return (
