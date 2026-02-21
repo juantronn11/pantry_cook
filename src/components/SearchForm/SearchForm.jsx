@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useEffect } from 'react';
 
 var selectedIngredients = [];
+const MAX_INGREDIENTS = 5;
 
 function SearchForm() {
   var ingredients = setIngredientButtons();
@@ -64,12 +65,20 @@ function Button({ text }) {
 
   function handleClick() {
     setClicked(!clicked)
-
+    
     if (!clicked) {
       selectedIngredients = [...selectedIngredients, text];
     } else {
       selectedIngredients = selectedIngredients.filter(i => i !== text);
     }
+
+    if (selectedIngredients.length > MAX_INGREDIENTS){
+      alert("Please refrain from selecting more than " + MAX_INGREDIENTS + " ingredients at a time.");
+      selectedIngredients = selectedIngredients.filter(i => i !== text);
+      setClicked(false);
+    }
+
+    console.log(selectedIngredients);
   }
  
   return (
