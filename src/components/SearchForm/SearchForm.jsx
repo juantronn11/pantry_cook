@@ -3,10 +3,11 @@
 // Validates at least one ingredient is selected before submission
 
 import styles from './SearchForm.module.css'
+import { useRecipeContext } from '../../context/RecipeContext';
 import { useState } from 'react'
 import { useEffect } from 'react';
 
-var selectedIngredients = [];
+var selectedIngredients = useRecipeContext().ingredients;
 const MAX_INGREDIENTS = 5;
 const API_URL = 'https://www.themealdb.com/api/json/v1/1/';
 
@@ -80,7 +81,7 @@ function Button({ text }) {
       setClicked(false);
     }
 
-    console.log(selectedIngredients);
+    useRecipeContext().setIngredients(selectedIngredients);
   }
  
   return (
