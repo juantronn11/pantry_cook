@@ -189,4 +189,4 @@ Give credit here.
 
 
 ## Contact
-Created by Miguel Alvarez, Tina Carter, Juan Estrada, Christina Johnson, Patrick Rucker
+Created by Miguel Alvarez, Tina Carter, Juan Estrada, Christian Johnson, Patrick Rucker

@@ -23,5 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# Personal logs
+# Personal files
 patrick_logs.md
+conflict_analysis.md
