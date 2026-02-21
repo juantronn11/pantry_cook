@@ -5,6 +5,7 @@
 import styles from './SearchForm.module.css'
 
 function SearchForm() {
+  var results;  
   return (
     <div className={styles.searchForm}>
       <p>SearchForm placeholder</p>
@@ -16,11 +17,11 @@ function SearchForm() {
 
 function SearchButton() {
   var results;
+  
   function handleClick() {
     fetch('https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken')
       .then(res => res.json())
-      .then(data => results = data.meals)
-      console.log(results)
+      .then(data => SearchForm.results = data.meals);
   }
   return (
     <button onClick={handleClick}>Search</button>
