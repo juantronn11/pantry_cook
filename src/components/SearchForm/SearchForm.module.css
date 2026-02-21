@@ -5,3 +5,10 @@
     align-items: center;
     justify-content: center;
 }
+
+.ingredientButton {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template: repeat(50, 1fr) / repeat(8, 95px);
+    font-size: small;
+}
