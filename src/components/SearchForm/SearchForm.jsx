@@ -7,13 +7,17 @@ import styles from './SearchForm.module.css'
 function SearchForm() {
   var results;  
   return (
-    <div className={styles.searchForm}>
-      <p>SearchForm placeholder</p>
-    </div>
+    <>
+      <div className={styles.searchForm}>
+        <p>SearchForm placeholder</p>
+      </div>
       <div className={styles.searchForm}>
         <p> Press Search for recipes with your ingredients</p>
         <SearchButton />
-      </div>
+      </div>  
+    </>
+  )
+}
 
 function SearchButton() {
   var results;
