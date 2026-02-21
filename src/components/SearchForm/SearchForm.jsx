@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useEffect } from 'react';
 
 function SearchForm() {
+  var ingredients = setIngredientButtons();
   const [results, setResults] = useState(null);
 
   function SearchButton() {
@@ -22,6 +23,9 @@ function SearchForm() {
   
   return (
     <>
+      <div className={styles.ingredientButton}>
+        {ingredients}
+      </div>
       <div className={styles.searchForm}>
         <p> Press Search for recipes with your ingredients</p>
         <SearchButton />
