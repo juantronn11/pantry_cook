@@ -6,6 +6,8 @@ import styles from './SearchForm.module.css'
 import { useState } from 'react'
 import { useEffect } from 'react';
 
+var selectedIngredients = [];
+
 function SearchForm() {
   var ingredients = setIngredientButtons();
   const [results, setResults] = useState(null);
@@ -60,9 +62,17 @@ function setIngredientButtons() {
 function Button({ text }) {
  const [clicked, setClicked] = useState(false)
 
- function handleClick() {
-  setClicked(!clicked)
- }
+  function handleClick() {
+    setClicked(!clicked)
+
+    if (!clicked) {
+      selectedIngredients = [...selectedIngredients, text];
+    } else {
+      selectedIngredients = selectedIngredients.filter(i => i !== text);
+    }
+
+    console.log(selectedIngredients);
+  }
  
   return (
     <button onClick={handleClick} style={{color: !clicked ? 'white' : 'green'}}>{text}</button>
