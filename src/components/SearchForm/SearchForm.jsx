@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 
 var selectedIngredients = [];
 const MAX_INGREDIENTS = 5;
+const API_URL = 'https://www.themealdb.com/api/json/v1/1/';
 
 function SearchForm() {
   var ingredients = setIngredientButtons();
@@ -41,7 +42,7 @@ function setIngredientButtons() {
   const [ingredientList, setIngredientList] = useState(null);
   var ingredientButtons = [];
   useEffect(() => {
-    fetch('https://www.themealdb.com/api/json/v1/1/list.php?i=list')
+    fetch(API_URL + 'list.php?i=list')
             .then(response => response.json())
             .then(data => setIngredientList(data.meals));
   }, []);
