@@ -62,3 +62,71 @@
 .newSearchBtn:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
+
+/* Hamburger button — hidden by default, shown on small screens (768px or narrower) */
+.hamburger {
+  display: none;
+  color: #ffffff;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+}
+
+/* ========================================
+   SMALL SCREEN STYLES — 768px or narrower
+   Everything above this point is for wide screens.
+   The styles below ONLY apply when the screen (or browser window)
+   is 768px wide or smaller.
+   ======================================== */
+@media (max-width: 768px) {
+
+  /* Show the hamburger button on small screens */
+  .hamburger {
+    display: block;
+  }
+
+  /* Allow the navbar to wrap so the links can drop below the logo row */
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  /* Hide nav links by default on small screens — they take full width
+     and stack vertically when visible */
+  .navLinks {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    padding: 0.5rem 0;
+    gap: 0;
+  }
+
+  /* When menuOpen is true in Navbar.jsx, this class is added to the <ul>,
+     making the links visible as a vertical list */
+  .navLinksOpen {
+    display: flex;
+  }
+
+  /* Each list item stretches full width on small screens */
+  .navLinks li {
+    width: 100%;
+  }
+
+  /* Nav links fill the full width and get more vertical padding
+     for easier tapping on touchscreens */
+  .navLinks a {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0;
+  }
+
+  /* New Search button also fills full width on small screens */
+  .newSearchBtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0;
+  }
+}
