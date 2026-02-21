@@ -33,6 +33,16 @@ function SearchForm() {
   )
 }
 
+function Button({ text }) {
+ const [clicked, setClicked] = useState(false)
 
+ function handleClick() {
+  setClicked(!clicked)
+ }
+ 
+  return (
+    <button onClick={handleClick} style={{color: !clicked ? 'white' : 'green'}}>{text}</button>
+  )
+}
 
 export default SearchForm
