@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Personal notes (local only, never push)
+juan-personal-notes.md
+
 # Environment variables
 .env
 .env.*
