@@ -51,6 +51,7 @@ function setIngredientButtons() {
     return (<p>Loading...</p>)
   }
   else {
+    ingredientList.sort((a, b) => a.strIngredient.localeCompare(b.strIngredient));
     for (var n = 0; n < ingredientList.length; n++) {
       ingredientButtons[n] = {name: ingredientList[n].strIngredient, id: n + 1, button: <Button text={ingredientList[n].strIngredient} key={n}/>}
     }
