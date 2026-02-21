@@ -1,14 +1,6 @@
 // SearchPage — Main page
 // Composes SearchForm + RecipeGrid components
 
-import { fetchMealDBRecipes } from '../api/mealdb'
-import { fetchSpoonacularRecipes } from '../api/spoonacular'
-
-// TEMP TEST — remove before commit
-fetchMealDBRecipes(['chicken', 'garlic']).then(console.log).catch(console.error)
-fetchSpoonacularRecipes(['chicken', 'garlic']).then(console.log).catch(console.error)
-
-
 function SearchPage() {
   return (
     <div>
