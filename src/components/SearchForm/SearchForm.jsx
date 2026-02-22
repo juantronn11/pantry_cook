@@ -14,24 +14,17 @@ const API_URL = 'https://www.themealdb.com/api/json/v1/1/';
 function SearchForm() {
   var ingredientsList = setIngredientButtons();
   selectedIngredients = useRecipeContext().ingredients;
-  const [results, setResults] = useState(null);
 
-  function SearchButton() {
-    function handleClick() {
-      fetch('https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken')
-        .then(res => res.json())
-        .then(data => setResults(data.meals));
-    }
-    return (
-      <button onClick={handleClick}>Search</button>
-    )
-  }
-  
   return (
     <>
+      <div className={styles.searchForm}>
+        <p>Select up to {MAX_INGREDIENTS} ingredients</p>
+      </div>
+
       <div className={styles.ingredientButton}>
         {ingredientsList}
       </div>
+      
       <div className={styles.searchForm}>
         <p> Press Search for recipes with your ingredients</p>
         <SearchButton />
@@ -90,5 +83,30 @@ function Button({ text }) {
     <button onClick={handleClick} style={{color: !clicked ? 'white' : 'lime', backgroundColor: 'grey'}}>{text}</button>
   )
 }
+
+
+  function SearchButton() {
+    var recipeReturn = [];
+    const {recipes, setRecipes} = useRecipeContext();
+    
+    function handleClick() {
+      recipeReturn = [];
+
+      const getRecipes = async() => {
+        for (var i = 0; i < selectedIngredients.length; i++) {
+          fetch(API_URL + 'filter.php?i=' + selectedIngredients[i])
+            .then(res => res.json())
+            .then(data => recipeReturn.push(data.meals))
+        }
+
+        await setRecipes(recipeReturn)
+      }
+
+      getRecipes();
+    }
+    return (
+      <button onClick={handleClick}>Search</button>      
+    )
+  }
 
 export default SearchForm
