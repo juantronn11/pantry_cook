@@ -1,6 +1,5 @@
 // SearchPage — Main page
 // Composes SearchForm + RecipeGrid components
-
 import SearchForm from '../components/SearchForm/SearchForm'
 
 function SearchPage() {
