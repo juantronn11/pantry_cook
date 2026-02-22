@@ -7,12 +7,13 @@ import { useRecipeContext } from '../../context/RecipeContext';
 import { useState } from 'react'
 import { useEffect } from 'react';
 
-var selectedIngredients = useRecipeContext().ingredients;
+var selectedIngredients;
 const MAX_INGREDIENTS = 5;
 const API_URL = 'https://www.themealdb.com/api/json/v1/1/';
 
 function SearchForm() {
-  var ingredients = setIngredientButtons();
+  var ingredientsList = setIngredientButtons();
+  selectedIngredients = useRecipeContext().ingredients;
   const [results, setResults] = useState(null);
 
   function SearchButton() {
@@ -29,7 +30,7 @@ function SearchForm() {
   return (
     <>
       <div className={styles.ingredientButton}>
-        {ingredients}
+        {ingredientsList}
       </div>
       <div className={styles.searchForm}>
         <p> Press Search for recipes with your ingredients</p>
@@ -64,7 +65,8 @@ function setIngredientButtons() {
 }
 
 function Button({ text }) {
- const [clicked, setClicked] = useState(false)
+ const [clicked, setClicked] = useState(false);
+ const { ingredients, setIngredients } = useRecipeContext();
 
   function handleClick() {
     setClicked(!clicked)
@@ -81,7 +83,7 @@ function Button({ text }) {
       setClicked(false);
     }
 
-    useRecipeContext().setIngredients(selectedIngredients);
+    setIngredients(selectedIngredients);
   }
  
   return (
