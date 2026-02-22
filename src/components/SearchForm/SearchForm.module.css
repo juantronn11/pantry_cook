@@ -1,3 +1,7 @@
 /* SearchForm styles — Owner: Christina Johnson */
 .searchForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

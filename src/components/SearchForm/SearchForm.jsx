@@ -3,13 +3,36 @@
 // Validates at least one ingredient is selected before submission
 
 import styles from './SearchForm.module.css'
+import { useState } from 'react';
 
 function SearchForm() {
+  const [results, setResults] = useState(null);
+
+  function SearchButton() {
+    function handleClick() {
+      fetch('https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken')
+        .then(res => res.json())
+        .then(data => setResults(data.meals));
+    }
+    return (
+      <button onClick={handleClick}>Search</button>
+    )
+  }
+
+  
   return (
-    <div className={styles.searchForm}>
-      <p>SearchForm placeholder</p>
-    </div>
+    <>
+      <div className={styles.searchForm}>
+        <p>SearchForm placeholder</p>
+      </div>
+      <div className={styles.searchForm}>
+        <p> Press Search for recipes with your ingredients</p>
+        <SearchButton />
+      </div>  
+    </>
   )
 }
+
+
 
 export default SearchForm
