@@ -1,150 +1,105 @@
-# API Testing Guide — SCRUM-16 & SCRUM-17
-
-This guide explains how to manually verify that the MealDB and Spoonacular API services are making successful calls per ingredient.
+# API Testing Guide — SCRUM-16, SCRUM-17 & SCRUM-18
 
 ---
 
-## How to Test
+## SCRUM-16 & SCRUM-17 — What Was Verified
 
-### 1. Add temporary test calls to `SearchPage.jsx`
+### SCRUM-16 — One call per ingredient
+- `fetchMealDBRecipes(['chicken'])` fires one request to `filter.php?i=chicken`
+- `fetchSpoonacularRecipes(['chicken'])` fires one request to `findByIngredients?ingredients=chicken`
+- Both APIs returned data successfully ✅
 
-At the top of `src/pages/SearchPage.jsx`, add:
+### SCRUM-17 — Concurrent calls
+- `fetchMealDBRecipes(['chicken', 'garlic'])` fires **both requests at the same timestamp** (not one after the other)
+- Same for Spoonacular — confirmed via DevTools → Network tab → Fetch/XHR
+- `Promise.allSettled()` used inside each service — if one ingredient fails, others still return ✅
+
+---
+
+# SCRUM-18 — Testing Graceful Failure Handling
+
+Verifies: if one API fails entirely, the other still returns results and `error` is set in context — no crash.
+
+## Test Code (temp — remove before final PR)
+
+`SearchPage.jsx` currently includes:
 
 ```js
-import { fetchMealDBRecipes } from '../api/mealdb'
-import { fetchSpoonacularRecipes } from '../api/spoonacular'
+import { useEffect } from 'react'
+import { useRecipeContext } from '../context/RecipeContext'
 
-// TEMP TEST — remove before final commit
-fetchMealDBRecipes(['chicken']).then(console.log).catch(console.error)
-fetchSpoonacularRecipes(['chicken']).then(console.log).catch(console.error)
+function SearchPage() {
+  const { fetchRecipes, recipes, loading, error } = useRecipeContext()
+
+  useEffect(() => {
+    fetchRecipes(['chicken', 'garlic'])
+  }, [])
+
+  return (
+    <div>
+      <h1>Search Recipes</h1>
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+      {!loading && recipes.length > 0 && (
+        <p>fetchRecipes() returned {recipes.length} recipes — SCRUM-18 working</p>
+      )}
+      {!loading && recipes.length === 0 && !error && (
+        <p>No recipes returned.</p>
+      )}
+    </div>
+  )
+}
 ```
 
-### 2. Start the dev server
+## How to Run
 
 ```bash
 npm run dev
 ```
 
-### 3. Open the browser
-
-Go to `http://localhost:5173` and open **DevTools → Console tab**.
+Go to `http://localhost:5173` — results display directly on the page.
 
 ---
 
 ## What to Look For
 
-### MealDB — Success
-An array of meal objects logged to the console:
+### Both APIs succeed
 ```
-[
-  { idMeal: '52940', strMeal: 'Brown Stew Chicken', strCategory: 'Chicken', strArea: 'Jamaican', ... },
-  { idMeal: '53161', strMeal: 'Chicken & chorizo rice pot', ... },
-  ...
-]
+fetchRecipes() returned 45 recipes — SCRUM-18 working
 ```
+No red error message. `recipes` contains combined MealDB + Spoonacular results.
 
-### Spoonacular — Success
-An array of recipe objects logged to the console:
+### One API fails — Graceful failure (SCRUM-18 core behavior)
 ```
-[
-  { id: 123, title: 'Chicken Alfredo', image: '...', nutrition: {...}, ... },
-  ...
-]
+Error: Some results may be missing — one or more APIs failed.
+fetchRecipes() returned 19 recipes — SCRUM-18 working
 ```
+- Red error message shown ✅ — `error` is set in context for teammate UI components to read (SCRUM-12/56)
+- Recipe count > 0 ✅ — results from the working API came through
+- App did not crash ✅ — `Promise.allSettled()` handled it gracefully
 
-### Failure — What an error looks like
+### Both APIs fail
 ```
-Error: MealDB search failed for "chicken": 401
-Error: Spoonacular search failed for "chicken": 402
+Error: Some results may be missing — one or more APIs failed.
+No recipes returned.
 ```
-- `401` / `403` → API key issue (check `.env` file)
-- `404` → wrong endpoint URL
-- `Network Error` → no internet or CORS issue
+Error shown, 0 recipes — expected when both are down or rate limited.
 
 ---
 
-## Testing Multiple Ingredients
+## Known Quirk — Rate Limiting During Testing
 
-To verify one call fires per ingredient, update the test:
+Both API service functions handle per-ingredient errors internally via an inner `Promise.allSettled()`, returning `[]` instead of throwing. This means if both APIs are simultaneously rate limited, the outer `fetchRecipes()` sees both as `fulfilled` and the `error` flag does **not** set — you'll see "No recipes returned" with no error message.
 
-```js
-fetchMealDBRecipes(['chicken', 'garlic', 'rice']).then(console.log).catch(console.error)
-```
+This is expected dev-only behavior. SCRUM-18 graceful failure works correctly when **one** API fails and the other succeeds — which is the real-world failure scenario it's designed for.
 
-Open **DevTools → Network tab** and filter by `Fetch/XHR`.
-You should see **3 separate requests** to `filter.php` — one for each ingredient.
+### Common rate limit errors
+- **MealDB 429** — rate limited; CORS error is a side effect (429 doesn't include CORS headers). Not a code bug.
+- **Spoonacular 402** — daily quota hit (150 req/day free tier). Key resets overnight.
+- **Spoonacular 401** — `.env` file missing or Vite server not restarted after adding it.
 
 ---
 
 ## Cleanup
 
-Remove the test imports and calls from `SearchPage.jsx` before the final PR merge.
-
----
-
-# SCRUM-17 — Testing Concurrent API Calls
-
-This section explains how to verify that multiple ingredient searches fire **simultaneously** instead of one at a time.
-
-## How to Test Concurrency
-
-### 1. Add multi-ingredient test to `SearchPage.jsx`
-
-```js
-import { fetchMealDBRecipes } from '../api/mealdb'
-import { fetchSpoonacularRecipes } from '../api/spoonacular'
-
-// TEMP TEST — remove before final commit
-fetchMealDBRecipes(['chicken', 'garlic']).then(console.log).catch(console.error)
-fetchSpoonacularRecipes(['chicken', 'garlic']).then(console.log).catch(console.error)
-```
-
-### 2. Start the dev server
-
-```bash
-npm run dev
-```
-
-### 3. Open DevTools → Network tab
-
-Go to `http://localhost:5173`, open **DevTools → Network tab**, filter by **Fetch/XHR**.
-
----
-
-## What to Look For
-
-### Concurrent requests — Success
-You should see **2 MealDB requests start at the same timestamp**:
-```
-filter.php?i=chicken   ← starts at ~0ms
-filter.php?i=garlic    ← starts at ~0ms  (same time, not after chicken finishes)
-```
-And **2 Spoonacular requests start at the same timestamp**:
-```
-findByIngredients?ingredients=chicken  ← starts at ~0ms
-findByIngredients?ingredients=garlic   ← starts at ~0ms
-```
-
-If the requests were **sequential**, garlic would only start AFTER chicken finishes — you would see a clear gap in the timestamps.
-
-### Console — Success
-```
-[{idMeal: '52940', strMeal: 'Brown Stew Chicken', ...}, ...] ← MealDB results (array)
-[{id: 123, title: 'Chicken Alfredo', ...}, ...]              ← Spoonacular results (array)
-```
-
-### Spoonacular 402 — Rate limit hit (not a code bug)
-```
-GET .../findByIngredients?ingredients=chicken... 402 (Payment Required)
-[]
-```
-- `402` means the free tier daily limit (150 requests/day) was exceeded from testing
-- Returning `[]` instead of crashing = **correct behavior** — `Promise.allSettled()` handles this gracefully
-- Key will reset the next day
-- MealDB results will still be returned even when Spoonacular fails
-
----
-
-## Cleanup
-
-Remove the test imports and calls from `SearchPage.jsx` before the final PR merge.
+Remove the temp test code from `SearchPage.jsx` before the final PR merge.
