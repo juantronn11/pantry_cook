@@ -87,7 +87,7 @@ function Button({ text }) {
   }
  
   return (
-    <button onClick={handleClick} style={{color: !clicked ? 'white' : 'green'}}>{text}</button>
+    <button onClick={handleClick} style={{color: !clicked ? 'white' : 'lime', backgroundColor: 'grey'}}>{text}</button>
   )
 }
 
