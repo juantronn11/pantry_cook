@@ -1,4 +1,4 @@
-# API Testing Guide — SCRUM-16, SCRUM-17 & SCRUM-18
+# API Testing Guide — SCRUM-16, SCRUM-17, SCRUM-18 & SCRUM-19
 
 ---
 
@@ -99,6 +99,47 @@ This is expected dev-only behavior. SCRUM-18 graceful failure works correctly wh
 - **Spoonacular 401** — `.env` file missing or Vite server not restarted after adding it.
 
 ---
+
+## Cleanup
+
+Remove the temp test code from `SearchPage.jsx` before the final PR merge.
+
+---
+
+# SCRUM-19 — Testing Deduplication + Unified Response
+
+Verifies: both API results are normalized to a common shape and deduplicated by recipe name before being set in context.
+
+## What to Look For
+
+### Both APIs succeed
+```
+fetchRecipes() returned 38 deduplicated recipes — SCRUM-19 working
+Sources: mealdb, spoonacular
+First result: chicken tikka masala (from mealdb)
+```
+- Count is lower than SCRUM-18 raw total — deduplication removed overlapping names ✅
+- Both sources listed — both APIs contributed results ✅
+- `name` is lowercase/trimmed, `source` identifies the API ✅
+
+### One API fails — Graceful failure still works
+```
+Error: Some results may be missing — one or more APIs failed.
+fetchRecipes() returned 19 deduplicated recipes — SCRUM-19 working
+Sources: mealdb
+```
+- Error shown ✅, results from the working API still returned ✅
+
+### Check recipe shape in DevTools console
+Each recipe in `recipes` array should look like:
+```js
+{
+  id: "mealdb-52772",        // prefixed ID, no collisions between APIs
+  name: "chicken tikka masala", // lowercase, trimmed — used for dedup
+  source: "mealdb",          // or "spoonacular"
+  raw: { /* original API response */ }
+}
+```
 
 ## Cleanup
 
