@@ -106,8 +106,22 @@ function Button({ text }) {
 
         await setRecipes(recipeReturn)
       }
+      try {
+        if (recipeReturn.length == 0){
+          throw new Error("Error: No value returned to recipes")
+        }
+        else {
+          for (i=0; i < recipeReturn.length; i++) {
+            if (recipeReturn[i] == null) {
+              throw new Error("Error: Null value returned to recipes")
+            }
+          }
+        }
 
-      getRecipes();
+        getRecipes()
+      } catch (e) {
+        console.error(e.message)
+      }
     }
     return (
       <button onClick={handleClick}>Search</button>      
