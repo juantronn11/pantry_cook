@@ -23,6 +23,15 @@
 
 Verifies: both API results are normalized to a common shape and deduplicated by name before being set in context.
 
+## What the Test Code Does
+
+`SearchPage.jsx` has temp test code that runs `fetchRecipes(['chicken', 'garlic'])` automatically on page load and displays the results directly on screen. It includes a `useRef` guard so the fetch only fires once even though React StrictMode triggers `useEffect` twice in dev — without it every page load would burn double the Spoonacular quota.
+
+**What it shows on screen:**
+- `loading` state while both APIs are in flight
+- `error` message in red if one API failed
+- Total deduplicated recipe count, which sources contributed, and the first result's name
+
 ## How to Run
 
 ```bash
