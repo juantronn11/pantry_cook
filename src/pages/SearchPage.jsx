@@ -2,41 +2,31 @@
 // Composes SearchForm + RecipeGrid components
 
 // TEMP TEST CODE — SCRUM-19 — remove before final PR
+// API call still fires on load so you can inspect results in DevTools:
+//   Network tab → Fetch/XHR — confirm both MealDB and Spoonacular calls fired
+//   Console tab — recipes array logged below shows normalized shape (id, name, source, raw)
 import { useEffect, useRef } from 'react'
 import { useRecipeContext } from '../context/RecipeContext'
 
 function SearchPage() {
-  const { fetchRecipes, recipes, loading, error } = useRecipeContext()
+  const { fetchRecipes, recipes } = useRecipeContext()
 
-  // useRef guard prevents React StrictMode from firing fetchRecipes twice.
-  // StrictMode intentionally mounts → unmounts → remounts in dev, which causes
-  // useEffect to run twice and doubles every API call, burning Spoonacular quota fast.
-  // The ref persists across the simulated remount so the second call is blocked.
-  // Remove this ref along with the rest of the temp test code.
+  // useRef guard prevents StrictMode from firing fetchRecipes twice in dev.
+  // Remove this ref along with the useEffect below when cleaning up.
   const hasFetched = useRef(false)
 
   useEffect(() => {
     if (hasFetched.current) return
     hasFetched.current = true
-    fetchRecipes(['chicken', 'garlic'])
+    fetchRecipes(['chicken', 'garlic']).then(() => {
+      console.log('SCRUM-19 test — recipes in context:', recipes)
+    })
   }, [])
 
   return (
     <div>
       <h1>Search Recipes</h1>
       <p>SearchPage placeholder — will contain SearchForm and RecipeGrid</p>
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-      {!loading && recipes.length > 0 && (
-        <div>
-          <p>fetchRecipes() returned {recipes.length} deduplicated recipes — SCRUM-19 working</p>
-          <p>Sources: {[...new Set(recipes.map(r => r.source))].join(', ')}</p>
-          <p>First result: {recipes[0]?.name} (from {recipes[0]?.source})</p>
-        </div>
-      )}
-      {!loading && recipes.length === 0 && !error && (
-        <p>No recipes returned.</p>
-      )}
     </div>
   )
 }
