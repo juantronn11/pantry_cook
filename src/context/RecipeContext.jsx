@@ -28,7 +28,7 @@ export function RecipeProvider({ children }) {
 
   // SCRUM-18: fetchRecipes fires both API calls concurrently via Promise.allSettled().
   // If one API fails, the error flag is set but results from the other still come through.
-  // SCRUM-19: combined array is set into recipes — deduplication will be added there.
+  // SCRUM-19: results from both APIs are normalized to a common shape and deduplicated by name.
   async function fetchRecipes(ingredients) {
     setLoading(true)
     setError(null)
@@ -45,7 +45,30 @@ export function RecipeProvider({ children }) {
     const mealDBRecipes = mealDBResult.status === 'fulfilled' ? mealDBResult.value : []
     const spoonacularRecipes = spoonacularResult.status === 'fulfilled' ? spoonacularResult.value : []
 
-    setRecipes([...mealDBRecipes, ...spoonacularRecipes])
+    // SCRUM-19: normalize both API response shapes to a common format
+    const normalizedMealDB = mealDBRecipes.map(meal => ({
+      id: `mealdb-${meal.idMeal}`,
+      name: meal.strMeal.toLowerCase().trim(),
+      source: 'mealdb',
+      raw: meal,
+    }))
+
+    const normalizedSpoonacular = spoonacularRecipes.map(recipe => ({
+      id: `spoonacular-${recipe.id}`,
+      name: recipe.title.toLowerCase().trim(),
+      source: 'spoonacular',
+      raw: recipe,
+    }))
+
+    // Deduplicate by name — MealDB entries are listed first so they take priority
+    const seen = new Set()
+    const deduplicated = [...normalizedMealDB, ...normalizedSpoonacular].filter(recipe => {
+      if (seen.has(recipe.name)) return false
+      seen.add(recipe.name)
+      return true
+    })
+
+    setRecipes(deduplicated)
     setLoading(false)
   }
 
