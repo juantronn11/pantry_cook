@@ -91,6 +91,7 @@ function Button({ text }) {
     
     function handleClick() {
       recipeReturn = [];
+      var problemIngredient;
 
       const getRecipes = async() => {
         if (selectedIngredients.length > 0) {
@@ -116,12 +117,14 @@ function Button({ text }) {
         else {
           for (var i=0; i < recipes.length; i++) {
             if (recipes[i] == null) {
+              problemIngredient = selectedIngredients[i]
               throw new Error("Error: Null value returned to recipes")
             }
           }
         }
       } catch (e) {
         console.error(e.message)
+        alert("One of your selections has no recipes in our database. We recommend removing or changing" + problemIngredient)
       }
     }
     
