@@ -106,6 +106,7 @@ function Button({ text }) {
 
         await setRecipes(recipeReturn)
       }
+
       try {
         if (recipeReturn.length == 0){
           throw new Error("Error: No value returned to recipes")
@@ -123,6 +124,7 @@ function Button({ text }) {
         console.error(e.message)
       }
     }
+    
     return (
       <button onClick={handleClick}>Search</button>      
     )
