@@ -93,10 +93,15 @@ function Button({ text }) {
       recipeReturn = [];
 
       const getRecipes = async() => {
-        for (var i = 0; i < selectedIngredients.length; i++) {
-          fetch(API_URL + 'filter.php?i=' + selectedIngredients[i])
-            .then(res => res.json())
-            .then(data => recipeReturn.push(data.meals))
+        if (selectedIngredients.length > 0) {
+          for (var i = 0; i < selectedIngredients.length; i++) {
+            fetch(API_URL + 'filter.php?i=' + selectedIngredients[i])
+              .then(res => res.json())
+              .then(data => data.meals != null && recipeReturn.push(data.meals))
+          }
+        }
+        else {
+          alert("Please select at least one ingredient")
         }
 
         await setRecipes(recipeReturn)
