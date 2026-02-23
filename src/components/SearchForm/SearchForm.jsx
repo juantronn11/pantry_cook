@@ -108,18 +108,18 @@ function Button({ text }) {
       }
 
       try {
-        if (recipeReturn.length == 0){
+        getRecipes()
+
+        if (recipes.length == 0){
           throw new Error("Error: No value returned to recipes")
         }
         else {
-          for (i=0; i < recipeReturn.length; i++) {
-            if (recipeReturn[i] == null) {
+          for (var i=0; i < recipes.length; i++) {
+            if (recipes[i] == null) {
               throw new Error("Error: Null value returned to recipes")
             }
           }
         }
-
-        getRecipes()
       } catch (e) {
         console.error(e.message)
       }
