@@ -87,12 +87,16 @@ Check this in DevTools → Console: `window.__recipes = recipes` or log it in Se
 
 ## Testing by Commit — How to Step Through
 
-The branch has two cleanup commits after the main test commit. You can checkout any point to test at that stage.
+The branch has two cleanup commits after the main test commit. Use the commit title to find the right one with `git log --oneline`, then checkout just `SearchPage.jsx` at that point.
 
-### Stage 1 — Full on-screen output (most visible)
-Checkout commit `4a6ffe5` to get the original test code with on-screen display:
 ```bash
-git checkout 4a6ffe5 -- src/pages/SearchPage.jsx
+git log --oneline
+```
+
+### Stage 1 — "SCRUM-19 - Add temp test code to SearchPage and update API_TESTING.md"
+Full on-screen output — most visible, easiest to verify quickly:
+```bash
+git checkout <hash> -- src/pages/SearchPage.jsx
 npm run dev
 ```
 Go to `http://localhost:5173` — results show directly on the page:
@@ -100,10 +104,10 @@ Go to `http://localhost:5173` — results show directly on the page:
 - Red error message if an API failed
 - Good for: quickly seeing whether both APIs responded and dedup is working
 
-### Stage 2 — API fires, results in DevTools only (quieter)
-Checkout commit `a14d30f` to get the version with no on-screen output but API still fires:
+### Stage 2 — "SCRUM-19 - Cleanup 1: remove on-screen test output from SearchPage"
+No on-screen output — API still fires, results visible in DevTools only:
 ```bash
-git checkout a14d30f -- src/pages/SearchPage.jsx
+git checkout <hash> -- src/pages/SearchPage.jsx
 npm run dev
 ```
 Open DevTools:
@@ -111,12 +115,12 @@ Open DevTools:
 - **Console** — recipes array logged with full normalized shape `{ id, name, source, raw }`
 - Good for: inspecting the raw recipe objects and verifying the normalized shape
 
-### Stage 3 — Clean final state
-Checkout `279f893` (or just use the branch HEAD) — SearchPage is a clean placeholder with no test code:
+### Stage 3 — "SCRUM-19 - Cleanup 2: remove useRef guard and useEffect from SearchPage"
+Clean final state — no test code at all, this is what merges to `dev`:
 ```bash
-git checkout 279f893 -- src/pages/SearchPage.jsx
+git checkout <hash> -- src/pages/SearchPage.jsx
 ```
-This is the version that goes to `dev`. All SCRUM-19 work lives in `RecipeContext.jsx`.
+All SCRUM-19 logic lives in `src/context/RecipeContext.jsx`. SearchPage is a plain placeholder.
 
 ---
 
