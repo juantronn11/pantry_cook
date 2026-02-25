@@ -1,11 +1,9 @@
-import RecipeTile from '../components/RecipeGrid'
+import RecipeGrid from '../components/RecipeGrid/RecipeGrid'
 
 function ResultsPage() {
   return (
     <div>
-
-      <RecipeTile />
-
+      <RecipeGrid />
     </div>
   )
 }

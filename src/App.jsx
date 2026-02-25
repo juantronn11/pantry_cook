@@ -23,7 +23,7 @@ function App() {
         <Route path="/" element={<SearchPage />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/saved" element={<SavedPage />} />
-        <Route path="/results" element={ResultsPage}/>
+        <Route path="/results" element={<ResultsPage/>}/>
       </Routes>
     </>
   )
