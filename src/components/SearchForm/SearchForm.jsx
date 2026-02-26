@@ -4,6 +4,7 @@
 
 import styles from './SearchForm.module.css'
 import { useRecipeContext } from '../../context/RecipeContext';
+import { fetchMealDBRecipes } from '../../api/mealdb';
 import { useState } from 'react'
 import { useEffect } from 'react';
 
@@ -86,51 +87,37 @@ function Button({ text }) {
 
 
 function SearchButton() {
-  var recipeReturn = [];
-  const {recipes, setRecipes} = useRecipeContext();
-  
-  function handleClick() {
-    recipeReturn = [];
-    var problemIngredient;
+  const { recipes, setRecipes, setLoading, setError } = useRecipeContext();
 
-    const getRecipes = async() => {
-      if (selectedIngredients.length > 0) {
-        for (var i = 0; i < selectedIngredients.length; i++) {
-          fetch(API_URL + 'filter.php?i=' + selectedIngredients[i])
-            .then(res => res.json())
-            .then(data => data.meals != null && recipeReturn.push(data.meals))
-        }
-      }
-      else {
-        alert("Please select at least one ingredient")
-      }
-
-      await setRecipes(recipeReturn)
+  async function handleClick() {
+    if (selectedIngredients.length === 0) {
+      alert("Please select at least one ingredient");
+      return;
     }
+
+    setLoading(true);
+    setError(null);
 
     try {
-      getRecipes()
+      const results = await fetchMealDBRecipes(selectedIngredients);
 
-      if (recipes.length == 0){
-        throw new Error("Error: No value returned to recipes")
+      if (results.length === 0) {
+        setError("No recipes found with the selected ingredients");
+        alert("No recipes found with the selected ingredients");
+        return;
       }
-      else {
-        for (var i=0; i < recipes.length; i++) {
-          if (recipes[i] == null) {
-            problemIngredient = selectedIngredients[i]
-            throw new Error("Error: Null value returned to recipes")
-          }
-        }
-      }
+
+      setRecipes(results);
     } catch (e) {
-      console.error(e.message)
-      alert("One of your selections has no recipes in our database. We recommend removing or changing" + problemIngredient)
+      setError(e.message);
+    } finally {
+      setLoading(false);
     }
   }
-  
+
   return (
-    <button onClick={handleClick}>Search</button>      
-  )
+    <button onClick={handleClick}>Search</button>
+  );
 }
 
 export default SearchForm
