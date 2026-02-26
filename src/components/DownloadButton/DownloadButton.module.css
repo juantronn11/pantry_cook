@@ -1,3 +1,29 @@
 /* DownloadButton styles — Owner: Tina Carter */
 .downloadButton {
+  background-color: lightblue;
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font: Times New Roman, serif;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.downloadButton:hover {
+  background-color: darkblue;
+  color: white;
+}
+
+@media print {
+    .noprint {
+        display: none !important;
+    }
+  @page {
+    size: letter;
+    margin: 1in;
+  }
 }

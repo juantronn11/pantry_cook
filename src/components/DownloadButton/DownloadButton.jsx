@@ -6,7 +6,7 @@ import styles from './DownloadButton.module.css'
 
 function DownloadButton() {
   return (
-    <button className={styles.downloadButton}>
+    <button className={styles.downloadButton} onClick={() => print()}>
       Download / Print
     </button>
   )
