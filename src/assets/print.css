@@ -40,6 +40,50 @@ import the print.css file in the .jsx file like this:
         visibility: hidden !important;
     }
 }
+/*use these formatting tags/labels when formatting recipes (to consistency)*/
+.recipeTitle {
+    display: visible;
+}
+@media print {
+    .recipeTitle {
+        font-size: 24pt;
+        font-weight: bold;
+        font-family: "Times New Roman", serif;
+        align-content: right;
+        break-after: .25in;
+    }
+}
+.recipeAuthor {
+    display: visible;
+}
+@media print {
+    .recipeAuthor {
+        font-size: 18pt;
+        align-content: right;
+        break-after: .5in;
+    }
+}
+.ingredientsList {
+    display: visible;
+}
+@media print {
+    .ingredientsList {
+        font-size: 14pt;
+        break-after: .25in;
+        list-style-type: disc;
+        list-style-position: outside;
+        padding-inline-start: 40px; /*I think this indents lists correctly?*/
+    }
+}
+.recipeInstructions {
+    display: visible;
+}
+@media print {
+    .recipeInstructions {
+        font-size: 14pt;
+        break-after: .25in;
+    }
+}
 
 /*
 .h1 {
