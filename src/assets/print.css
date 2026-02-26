@@ -1,4 +1,28 @@
 /* print styles — Owner: Tina Carter */
+
+/*****************************************************************************
+To ADD global print styles to a page (with .css file), import the 
+print.css file in the page's .css file like this:
+
+@import '../../assets/print.css';
+
+> Then use the formatting tags/labels defined in print.css to format 
+  the recipe for printing.
+> All local formatting will override global formatting, so please DO NOT 
+  have local @media print styles
+> Specific path statement may vary, if your file is not in src/components/ 
+  or src/context/ or src/pages/ folders, adjust the path accordingly.
+
+To ADD global print to a page (.jsx file) that DOES NOT have a .css file,
+import the print.css file in the .jsx file like this:
+ 
+<header>
+    <link rel="stylesheet" href="../assets/print.css"></link>
+</header>
+
+> BEFORE the return() statement, and then use the formatting tags/labels 
+  defined in print.css to format the recipe for printing.
+*****************************************************************************/
 .downloadButton{
     display: visible;
 }
