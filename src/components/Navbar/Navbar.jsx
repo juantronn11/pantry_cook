@@ -14,7 +14,7 @@ import styles from './Navbar.module.css'
 
 // Navbar renders the top navigation bar on every page.
 // It contains:
-//   - App name/logo (placeholder — waiting on team for final name and logo)
+//   - App name/logo ("Pantry Cook")
 //   - Hamburger button — visible only on mobile, toggles the nav links open/closed
 //   - Home link — navigates to the ingredient search page
 //   - History link — navigates to previous searches page (placeholder for now)
@@ -40,8 +40,8 @@ function Navbar() {
 
   return (
     <nav className={styles.navbar}>
-      <NavLink to="/" className={styles.logo}>
-        Recipe App
+      <NavLink to="/" className={styles.logo} title="Go to home page">
+        Pantry Cook
       </NavLink>
 
       {/* Hamburger button — hidden on desktop, shown on mobile.
@@ -49,6 +49,7 @@ function Navbar() {
       <button
         className={styles.hamburger}
         onClick={() => setMenuOpen(!menuOpen)}
+        title="Open navigation menu"
       >
         ☰
       </button>
@@ -64,6 +65,7 @@ function Navbar() {
             end
             className={({ isActive }) => isActive ? styles.activeLink : ''}
             onClick={() => setMenuOpen(false)}
+            title="Search for recipes by ingredient"
           >
             Home
           </NavLink>
@@ -73,6 +75,7 @@ function Navbar() {
             to="/history"
             className={({ isActive }) => isActive ? styles.activeLink : ''}
             onClick={() => setMenuOpen(false)}
+            title="View your previous searches"
           >
             History
           </NavLink>
@@ -82,12 +85,13 @@ function Navbar() {
             to="/saved"
             className={({ isActive }) => isActive ? styles.activeLink : ''}
             onClick={() => setMenuOpen(false)}
+            title="View your saved recipes"
           >
             Saved Recipes
           </NavLink>
         </li>
         <li>
-          <button onClick={handleNewSearch} className={styles.newSearchBtn}>
+          <button onClick={handleNewSearch} className={styles.newSearchBtn} title="Clear current search and start over">
             New Search
           </button>
         </li>

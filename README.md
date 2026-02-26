@@ -1,4 +1,4 @@
-# Recipe App
+# Pantry Cook
 
 ### What is this repository for? ###
 
@@ -41,6 +41,12 @@ Start the local dev server:
 npm run dev
 ```
 This will open the app at `http://localhost:5173/`. The server hot-reloads automatically — any file changes you save will instantly update in the browser.
+
+To also access the app from a phone or another device on the same Wi-Fi network:
+```bash
+npm run dev -- --host
+```
+This exposes a **Network URL** (e.g. `http://192.168.x.x:5173/`) that you can open on any device connected to the same network.
 
 Stop the server with `Ctrl + C`.
 
