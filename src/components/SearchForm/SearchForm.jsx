@@ -38,8 +38,8 @@ function setIngredientButtons() {
   var ingredientButtons = [];
   useEffect(() => {
     fetch(API_URL + 'list.php?i=list')
-            .then(response => response.json())
-            .then(data => setIngredientList(data.meals));
+      .then(response => response.json())
+      .then(data => setIngredientList(data.meals));
   }, []);
 
   if (!ingredientList) {
@@ -85,52 +85,52 @@ function Button({ text }) {
 }
 
 
-  function SearchButton() {
-    var recipeReturn = [];
-    const {recipes, setRecipes} = useRecipeContext();
-    
-    function handleClick() {
-      recipeReturn = [];
-      var problemIngredient;
+function SearchButton() {
+  var recipeReturn = [];
+  const {recipes, setRecipes} = useRecipeContext();
+  
+  function handleClick() {
+    recipeReturn = [];
+    var problemIngredient;
 
-      const getRecipes = async() => {
-        if (selectedIngredients.length > 0) {
-          for (var i = 0; i < selectedIngredients.length; i++) {
-            fetch(API_URL + 'filter.php?i=' + selectedIngredients[i])
-              .then(res => res.json())
-              .then(data => data.meals != null && recipeReturn.push(data.meals))
-          }
+    const getRecipes = async() => {
+      if (selectedIngredients.length > 0) {
+        for (var i = 0; i < selectedIngredients.length; i++) {
+          fetch(API_URL + 'filter.php?i=' + selectedIngredients[i])
+            .then(res => res.json())
+            .then(data => data.meals != null && recipeReturn.push(data.meals))
         }
-        else {
-          alert("Please select at least one ingredient")
-        }
-
-        await setRecipes(recipeReturn)
+      }
+      else {
+        alert("Please select at least one ingredient")
       }
 
-      try {
-        getRecipes()
-
-        if (recipes.length == 0){
-          throw new Error("Error: No value returned to recipes")
-        }
-        else {
-          for (var i=0; i < recipes.length; i++) {
-            if (recipes[i] == null) {
-              problemIngredient = selectedIngredients[i]
-              throw new Error("Error: Null value returned to recipes")
-            }
-          }
-        }
-      } catch (e) {
-        console.error(e.message)
-        alert("One of your selections has no recipes in our database. We recommend removing or changing" + problemIngredient)
-      }
+      await setRecipes(recipeReturn)
     }
-    
-    return (
-      <button onClick={handleClick}>Search</button>      
-    )
+
+    try {
+      getRecipes()
+
+      if (recipes.length == 0){
+        throw new Error("Error: No value returned to recipes")
+      }
+      else {
+        for (var i=0; i < recipes.length; i++) {
+          if (recipes[i] == null) {
+            problemIngredient = selectedIngredients[i]
+            throw new Error("Error: Null value returned to recipes")
+          }
+        }
+      }
+    } catch (e) {
+      console.error(e.message)
+      alert("One of your selections has no recipes in our database. We recommend removing or changing" + problemIngredient)
+    }
   }
+  
+  return (
+    <button onClick={handleClick}>Search</button>      
+  )
+}
 
 export default SearchForm
