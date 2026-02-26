@@ -1,6 +1,7 @@
 // SearchPage — Main page
 // Composes SearchForm + RecipeGrid components
 import SearchForm from '../components/SearchForm/SearchForm'
+import RecipeGrid from '../components/RecipeGrid/RecipeGrid'
 
 function SearchPage() {
   return (
@@ -9,6 +10,7 @@ function SearchPage() {
       <p>SearchPage placeholder — will contain SearchForm and RecipeGrid</p>
 
       <SearchForm />
+      <RecipeGrid/>
 
     </div>
   )
