@@ -1,0 +1,59 @@
+/* print styles — Owner: Tina Carter */
+.downloadButton{
+    display: visible;
+}
+@media print {
+    .downloadButton{
+        visibility: hidden !important;
+    }
+}
+
+/*
+.h1 {
+    font-size: 24pt;
+    font-weight: bold;
+    font-family: "Times New Roman", serif;
+    align-content: right;
+    break-after: .25in;
+}
+@media print {
+  /* All your print styles go here 
+  @page {
+    margin: 1in;
+    orientation: landscape;
+  }
+  #header {
+    display: none !important;
+  }
+  #h1 { /*Recipe TITLE should be given <h1> tag
+    font-size: 24pt;
+    font-weight: bold;
+    align-content: right;
+    break-after: .25in;
+  }
+  #h2 { /*Recipe AUTHOR should be given <h2> tag
+    font-size: 18pt;
+    align-content: right;
+    break-after: .5in;
+  }
+  #ingredients {
+    font-size: 14pt;
+    break-after: .25in;
+    list-style-type: none;
+  }
+  #footer,
+  #nav {
+    display: none !important;
+  }
+  #button {
+    display: none !important;
+  }
+}
+
+
+/*
+.noprint{
+
+}
+*/
+
