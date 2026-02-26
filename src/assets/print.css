@@ -8,6 +8,15 @@
     }
 }
 
+.navbar {
+    display: visible;
+}
+@media print {
+    .navbar{
+        visibility: hidden !important;
+    }
+}
+
 /*
 .h1 {
     font-size: 24pt;
