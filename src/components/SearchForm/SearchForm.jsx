@@ -80,7 +80,7 @@ function Button({ text }) {
   }
  
   return (
-    <button onClick={handleClick} style={{color: !clicked ? 'white' : 'lime', backgroundColor: 'grey', fontSize: 'large'}}>{text}</button>
+    <button onClick={handleClick} style={{color: !ingredients.includes(text) ? 'white' : 'lime', backgroundColor: 'grey', fontSize: 'large'}}>{text}</button>
   )
 }
 
