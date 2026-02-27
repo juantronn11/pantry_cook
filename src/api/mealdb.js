@@ -21,24 +21,28 @@ async function searchByIngredient(ingredient) {
   return data.meals || []
 }
 
-// Fires all ingredient searches concurrently and returns deduplicated results (SCRUM-17)
+// Fires all ingredient searches concurrently and returns only meals that contain
+// ALL selected ingredients (intersection, not union) (SCRUM-17)
 export async function fetchMealDBRecipes(ingredients) {
   // All ingredient searches fire at the same time
   const searchResults = await Promise.allSettled(
     ingredients.map((ingredient) => searchByIngredient(ingredient))
   )
 
-  // Keep only successful searches
-  const allMeals = []
-  for (const result of searchResults) {
-    if (result.status === 'fulfilled') allMeals.push(...result.value)
-  }
+  // Keep only successful result sets
+  const resultSets = searchResults
+    .filter(result => result.status === 'fulfilled' && result.value.length > 0)
+    .map(result => result.value)
 
-  // Deduplicate by meal ID and return
-  const seen = new Set()
-  return allMeals.filter((meal) => {
-    if (seen.has(meal.idMeal)) return false
-    seen.add(meal.idMeal)
-    return true
-  })
+  if (resultSets.length === 0) return []
+
+  // Find meal IDs that appear in ALL ingredient result sets (intersection)
+  const firstIdSet = new Set(resultSets[0].map(meal => meal.idMeal))
+  const intersectingIds = resultSets.slice(1).reduce((ids, meals) => {
+    const currentIds = new Set(meals.map(meal => meal.idMeal))
+    return new Set([...ids].filter(id => currentIds.has(id)))
+  }, firstIdSet)
+
+  // Return full meal objects for intersecting IDs
+  return resultSets[0].filter(meal => intersectingIds.has(meal.idMeal))
 }
