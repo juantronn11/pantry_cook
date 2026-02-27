@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+# Environment variables — never commit API keys
+.env
+.env.*
+
+# Personal / local-only files
+juan-personal-notes.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
