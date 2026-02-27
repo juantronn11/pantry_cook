@@ -6,9 +6,9 @@
 //
 // Shared state:
 //   - ingredients (array)  — selected ingredients from SearchForm
-//   - recipes (array)      — recipe results from both APIs, merged
-//   - loading (boolean)    — true while API calls are in progress
-//   - error (string|null)  — set if one or more API calls fail
+//   - recipes (array)      — recipe results from MealDB API
+//   - loading (boolean)    — true while API call is in progress
+//   - error (string|null)  — set if the API call fails
 //
 // Usage in any component:
 //   import { useRecipeContext } from '../context/RecipeContext'
@@ -16,7 +16,6 @@
 
 import { createContext, useContext, useState } from 'react'
 import { fetchMealDBRecipes } from '../api/mealdb'
-import { fetchSpoonacularRecipes } from '../api/spoonacular'
 
 const RecipeContext = createContext(null)
 
@@ -26,26 +25,20 @@ export function RecipeProvider({ children }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  // SCRUM-18: fetchRecipes fires both API calls concurrently via Promise.allSettled().
-  // If one API fails, the error flag is set but results from the other still come through.
-  // SCRUM-19: combined array is set into recipes — deduplication will be added there.
+  // Calls MealDB for all selected ingredients and stores results in context.
+  // Sets loading while the call is in progress and error if it fails.
   async function fetchRecipes(ingredients) {
     setLoading(true)
     setError(null)
 
-    const [mealDBResult, spoonacularResult] = await Promise.allSettled([
-      fetchMealDBRecipes(ingredients),
-      fetchSpoonacularRecipes(ingredients),
-    ])
-
-    if (mealDBResult.status === 'rejected' || spoonacularResult.status === 'rejected') {
-      setError('Some results may be missing — one or more APIs failed.')
+    try {
+      const results = await fetchMealDBRecipes(ingredients)
+      setRecipes(results)
+    } catch (err) {
+      setError('Failed to fetch recipes. Please try again.')
+      setRecipes([])
     }
 
-    const mealDBRecipes = mealDBResult.status === 'fulfilled' ? mealDBResult.value : []
-    const spoonacularRecipes = spoonacularResult.status === 'fulfilled' ? spoonacularResult.value : []
-
-    setRecipes([...mealDBRecipes, ...spoonacularRecipes])
     setLoading(false)
   }
 
