@@ -41,7 +41,17 @@ import the print.css file in the .jsx file like this:
     .closeBtn{
         display: none !important;
     }
-    
+    @page {
+        margin: 0;
+        orientation: portrait;
+    }
+    header, footer {
+        display: none !important;
+    }
+    html, body {
+    height:100%; 
+    overflow: visible;
+    }
 }
 
 /*use these formatting tags/labels when formatting recipes (to consistency)*/
@@ -55,6 +65,9 @@ import the print.css file in the .jsx file like this:
         font-family: "Times New Roman", serif;
         align-content: right;
         break-after: .25in;
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
     }
 }
 .recipeAuthor {
@@ -91,7 +104,7 @@ import the print.css file in the .jsx file like this:
         break-after: .25in;
         white-space: pre-line;
         line-height: 1.6;
-        break-inside: avoid;
+        break-inside: avoid-page;
     }
 }
 
