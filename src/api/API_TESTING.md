@@ -1,105 +1,108 @@
-# API Testing Guide — SCRUM-16, SCRUM-17 & SCRUM-18
+# API Testing Guide — testing-integration branch
+
+Last updated: 2026-02-27
 
 ---
 
-## SCRUM-16 & SCRUM-17 — What Was Verified
+## What This Branch Does
 
-### SCRUM-16 — One call per ingredient
-- `fetchMealDBRecipes(['chicken'])` fires one request to `filter.php?i=chicken`
-- `fetchSpoonacularRecipes(['chicken'])` fires one request to `findByIngredients?ingredients=chicken`
-- Both APIs returned data successfully ✅
+When a user selects ingredients and clicks Search:
 
-### SCRUM-17 — Concurrent calls
-- `fetchMealDBRecipes(['chicken', 'garlic'])` fires **both requests at the same timestamp** (not one after the other)
-- Same for Spoonacular — confirmed via DevTools → Network tab → Fetch/XHR
-- `Promise.allSettled()` used inside each service — if one ingredient fails, others still return ✅
+1. **Both APIs fire concurrently** — MealDB and Spoonacular run at the same time via `Promise.allSettled()`
+2. **Results are normalized** — both APIs return the same shape `{ id, name, source, ingredients[], raw }`
+3. **Filter runs** — only recipes where **every ingredient** is in the user's selection are kept
+4. **Deduplicate** — if both APIs return the same recipe name, MealDB version is kept
 
 ---
 
-# SCRUM-18 — Testing Graceful Failure Handling
-
-Verifies: if one API fails entirely, the other still returns results and `error` is set in context — no crash.
-
-## Test Code (temp — remove before final PR)
-
-`SearchPage.jsx` currently includes:
-
-```js
-import { useEffect } from 'react'
-import { useRecipeContext } from '../context/RecipeContext'
-
-function SearchPage() {
-  const { fetchRecipes, recipes, loading, error } = useRecipeContext()
-
-  useEffect(() => {
-    fetchRecipes(['chicken', 'garlic'])
-  }, [])
-
-  return (
-    <div>
-      <h1>Search Recipes</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-      {!loading && recipes.length > 0 && (
-        <p>fetchRecipes() returned {recipes.length} recipes — SCRUM-18 working</p>
-      )}
-      {!loading && recipes.length === 0 && !error && (
-        <p>No recipes returned.</p>
-      )}
-    </div>
-  )
-}
-```
-
-## How to Run
+## How to Test
 
 ```bash
 npm run dev
 ```
 
-Go to `http://localhost:5173` — results display directly on the page.
+Go to `http://localhost:5173/search`, select ingredients, click Search.
 
 ---
 
 ## What to Look For
 
-### Both APIs succeed
-```
-fetchRecipes() returned 45 recipes — SCRUM-18 working
-```
-No red error message. `recipes` contains combined MealDB + Spoonacular results.
+### Recipes returned — filter is working
+Select **chicken** only → results should only be recipes that need nothing but chicken.
 
-### One API fails — Graceful failure (SCRUM-18 core behavior)
-```
-Error: Some results may be missing — one or more APIs failed.
-fetchRecipes() returned 19 recipes — SCRUM-18 working
-```
-- Red error message shown ✅ — `error` is set in context for teammate UI components to read (SCRUM-12/56)
-- Recipe count > 0 ✅ — results from the working API came through
-- App did not crash ✅ — `Promise.allSettled()` handled it gracefully
+Select **chicken + garlic** → results should only be recipes that need only chicken and garlic — no recipes that also require onions, tomatoes, or anything else you didn't select.
 
-### Both APIs fail
-```
-Error: Some results may be missing — one or more APIs failed.
-No recipes returned.
-```
-Error shown, 0 recipes — expected when both are down or rate limited.
+If a recipe appears that needs an ingredient you didn't select → filter bug.
+
+### No recipes returned — may be expected
+Selecting very specific or uncommon combinations may legitimately return 0 results — there may be no recipes in either database that only use those exact ingredients. This is correct behavior, not a bug.
+
+### Partial results with error banner
+If one API fails (rate limit, network issue), you'll see an error message and results from the other API only. App should not crash.
+
+### No results + no error
+Both APIs failed silently (rate limited). See rate limit section below.
 
 ---
 
-## Known Quirk — Rate Limiting During Testing
+## Checking the Network Tab
 
-Both API service functions handle per-ingredient errors internally via an inner `Promise.allSettled()`, returning `[]` instead of throwing. This means if both APIs are simultaneously rate limited, the outer `fetchRecipes()` sees both as `fulfilled` and the `error` flag does **not** set — you'll see "No recipes returned" with no error message.
+Open DevTools → Network → Fetch/XHR while clicking Search.
 
-This is expected dev-only behavior. SCRUM-18 graceful failure works correctly when **one** API fails and the other succeeds — which is the real-world failure scenario it's designed for.
+**Spoonacular** — one request:
+```
+findByIngredients?ingredients=chicken%2Cgarlic&number=20&ranking=2&ignorePantry=false&apiKey=...
+```
+Single call with all ingredients comma-separated. If you see multiple Spoonacular calls something is wrong.
 
-### Common rate limit errors
-- **MealDB 429** — rate limited; CORS error is a side effect (429 doesn't include CORS headers). Not a code bug.
-- **Spoonacular 402** — daily quota hit (150 req/day free tier). Key resets overnight.
-- **Spoonacular 401** — `.env` file missing or Vite server not restarted after adding it.
+**MealDB** — one request per ingredient:
+```
+filter.php?i=chicken
+filter.php?i=garlic
+```
+All fire at the same time (same timestamp). Then `lookup.php?i={idMeal}` calls fire for each matched meal.
+
+> **Free tier note:** `lookup.php` is CORS blocked on MealDB free tier. You will see CORS errors in the console for those calls — this is expected. MealDB returns no results on free tier. Spoonacular handles the filter on free tier. Both APIs contribute results on premium.
 
 ---
 
-## Cleanup
+## Recipe Object Shape
 
-Remove the temp test code from `SearchPage.jsx` before the final PR merge.
+Each item in `recipes` context now looks like:
+
+```js
+{
+  id: "spoonacular-715538",       // "mealdb-{id}" or "spoonacular-{id}"
+  name: "Garlic Chicken",         // recipe name
+  source: "spoonacular",          // which API it came from
+  ingredients: ["chicken", "garlic"],  // full ingredient list used for filter
+  raw: { ...originalAPIResponse } // full original API object
+}
+```
+
+**For RecipeTile (Miguel):**
+- MealDB: `recipe.raw.strMeal`, `recipe.raw.strMealThumb`, `recipe.raw.idMeal`
+- Spoonacular: `recipe.raw.title`, `recipe.raw.image`, `recipe.raw.id`
+
+---
+
+## Rate Limit Errors
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| MealDB CORS error in console | `lookup.php` blocked on free tier — expected | Upgrade to premium |
+| Spoonacular 402 | Daily quota hit (150 req/day) | Key resets overnight |
+| Spoonacular 401 | `.env` missing or Vite not restarted | Add key, restart `npm run dev` |
+| MealDB 429 | Rate limited — CORS error is a side effect | Wait and retry |
+
+> React StrictMode double-invokes effects in dev — burns through Spoonacular quota twice as fast. Normal behavior, not a bug.
+
+---
+
+## Free Tier vs Premium
+
+| | Free tier | Premium |
+|--|-----------|---------|
+| Spoonacular filter | ✅ works | ✅ works |
+| MealDB filter | ❌ CORS on lookup.php → no MealDB results | ✅ works |
+| Results shown | Spoonacular only | Both APIs |
