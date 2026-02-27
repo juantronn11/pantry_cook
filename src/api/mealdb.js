@@ -3,9 +3,13 @@
 // Promise.allSettled() so multiple ingredient searches run at the
 // same time instead of waiting for each one to finish sequentially.
 //
-// Endpoints used:
+// Endpoint used:
 //   GET /filter.php?i={ingredient} — returns meals that use that ingredient
-//   GET /lookup.php?i={id}         — returns full details for one meal
+//   Returns: idMeal, strMeal, strMealThumb — sufficient for RecipeTile display
+//
+// Note: lookup.php (full detail fetch) removed — CORS blocked on free tier
+// and fires too many concurrent requests. filter.php data is sufficient.
+// Full recipe link: https://www.themealdb.com/meal/{idMeal}
 
 const BASE_URL = import.meta.env.VITE_MEALDB_BASE_URL
 
@@ -17,15 +21,7 @@ async function searchByIngredient(ingredient) {
   return data.meals || []
 }
 
-// Fetches full details for a single meal by ID
-async function getMealDetails(id) {
-  const res = await fetch(`${BASE_URL}/lookup.php?i=${id}`)
-  if (!res.ok) throw new Error(`MealDB detail fetch failed for id ${id}: ${res.status}`)
-  const data = await res.json()
-  return data.meals?.[0] || null
-}
-
-// Fires all ingredient searches concurrently then fetches all details concurrently (SCRUM-17)
+// Fires all ingredient searches concurrently and returns deduplicated results (SCRUM-17)
 export async function fetchMealDBRecipes(ingredients) {
   // All ingredient searches fire at the same time
   const searchResults = await Promise.allSettled(
@@ -38,20 +34,11 @@ export async function fetchMealDBRecipes(ingredients) {
     if (result.status === 'fulfilled') allMeals.push(...result.value)
   }
 
-  // Deduplicate by meal ID
+  // Deduplicate by meal ID and return
   const seen = new Set()
-  const uniqueMeals = allMeals.filter((meal) => {
+  return allMeals.filter((meal) => {
     if (seen.has(meal.idMeal)) return false
     seen.add(meal.idMeal)
     return true
   })
-
-  // All detail lookups fire at the same time
-  const detailResults = await Promise.allSettled(
-    uniqueMeals.map((meal) => getMealDetails(meal.idMeal))
-  )
-
-  return detailResults
-    .filter((r) => r.status === 'fulfilled' && r.value)
-    .map((r) => r.value)
 }
