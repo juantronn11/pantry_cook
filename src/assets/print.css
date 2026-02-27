@@ -91,6 +91,7 @@ import the print.css file in the .jsx file like this:
         break-after: .25in;
         white-space: pre-line;
         line-height: 1.6;
+        break-inside: avoid;
     }
 }
 
