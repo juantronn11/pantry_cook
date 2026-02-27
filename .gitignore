@@ -12,13 +12,12 @@ dist
 dist-ssr
 *.local
 
-# Personal notes (local only, never push)
-juan-personal-notes.md
-
-# Environment variables
+# Environment variables — never commit API keys
 .env
 .env.*
-!.env.example
+
+# Personal / local-only files
+juan-personal-notes.md
 
 # Editor directories and files
 .vscode/*
