@@ -23,23 +23,27 @@ import the print.css file in the .jsx file like this:
 > BEFORE the return() statement, and then use the formatting tags/labels 
   defined in print.css to format the recipe for printing.
 *****************************************************************************/
-.downloadButton{
-    display: visible;
+.other{
 }
 @media print {
     .downloadButton{
         visibility: hidden !important;
     }
-}
-
-.navbar {
-    display: visible;
-}
-@media print {
     .navbar{
         visibility: hidden !important;
     }
+    .modalImg {
+        display: none;
+    }
+    .other{
+        display: none !important;
+    }
+    .closeBtn{
+        display: none !important;
+    }
+    
 }
+
 /*use these formatting tags/labels when formatting recipes (to consistency)*/
 .recipeTitle {
     display: visible;
@@ -90,21 +94,4 @@ import the print.css file in the .jsx file like this:
     }
 }
 
-.modalImg {
-}
-@media print {
-    .modalImg {
-        display: none;
-    }
-}
-.other{
-}
-@media print {
-    .other{
-        display: none !important;
-    }
-    .closeBtn{
-        display: none !important;
-    }
-}
 
