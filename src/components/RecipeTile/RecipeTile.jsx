@@ -68,13 +68,17 @@ function RecipeTile({recipe}) {
               <>
                   <DownloadButton></DownloadButton>
                   <img src={modalData.strMealThumb} alt={modalData.strMeal} className={styles.modalImg} />
-                  <h2>{modalData.strMeal}</h2>
-                  <p><strong>Category:</strong> {modalData.strCategory}</p>
-                  <p><strong>Area:</strong> {modalData.strArea}</p>
+                  <h2 className={styles.recipeTitle}>{modalData.strMeal}</h2>
+                  <p className={styles.other}><strong>Category:</strong> {modalData.strCategory}</p>
+                  <p className={styles.other}><strong>Area:</strong> {modalData.strArea}</p>
+                  <p><strong>Ingredients:</strong></p>
+                  <ul className={styles.ingredientsList}> {modalData.strInstructions && Object.keys(modalData).filter(key => key.startsWith('strIngredient') && modalData[key]).map((key, index) => (
+                    <li key={index}>{modalData[key]} - {modalData[`strMeasure${key.slice(13)}`]}</li>
+                  ))} </ul>
                   <p><strong>Instructions:</strong></p>
-                  <p className={styles.instructions}>{modalData.strInstructions}</p>
+                  <p className={styles.recipeInstructions}>{modalData.strInstructions}</p>
                   {modalData.strYoutube && (
-                    <a href={modalData.strYoutube} target="_blank" rel="noreferrer">▶ Watch on YouTube</a>
+                    <a className={styles.other} href={modalData.strYoutube} target="_blank" rel="noreferrer">▶ Watch on YouTube</a>
                   )}
               </>
             )}
