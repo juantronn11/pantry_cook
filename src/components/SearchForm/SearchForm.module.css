@@ -1,3 +1,15 @@
 /* SearchForm styles — Owner: Christina Johnson */
 .searchForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ingredientButton {
+    display: flex;
+    flex-flow: row wrap;
+    padding-inline: 5%;
+    justify-content: center;
+    gap: 10px 1%;
 }
