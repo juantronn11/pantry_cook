@@ -4,7 +4,7 @@
 
 import styles from './SearchForm.module.css'
 import { useRecipeContext } from '../../context/RecipeContext';
-import { fetchMealDBRecipes } from '../../api/mealdb';
+
 import { useState } from 'react'
 import { useEffect } from 'react';
 
@@ -86,8 +86,12 @@ function Button({ text }) {
 }
 
 
+// SearchButton — validates selection, then calls fetchRecipes() from context.
+// fetchRecipes() (defined in RecipeContext) fires both MealDB and Spoonacular
+// concurrently, normalizes responses, deduplicates by name, and sets
+// recipes/loading/error state automatically.
 function SearchButton() {
-  const { recipes, setRecipes, setLoading, setError } = useRecipeContext();
+  const { fetchRecipes } = useRecipeContext();
 
   async function handleClick() {
     if (selectedIngredients.length === 0) {
@@ -95,24 +99,7 @@ function SearchButton() {
       return;
     }
 
-    setLoading(true);
-    setError(null);
-
-    try {
-      const results = await fetchMealDBRecipes(selectedIngredients);
-
-      if (results.length === 0) {
-        setError("No recipes found with the selected ingredients");
-        alert("No recipes found with the selected ingredients");
-        return;
-      }
-
-      setRecipes(results);
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
+    await fetchRecipes(selectedIngredients);
   }
 
   return (
