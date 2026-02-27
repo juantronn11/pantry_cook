@@ -86,50 +86,18 @@ function Button({ text }) {
 
 
   function SearchButton() {
-    var recipeReturn = [];
-    const {recipes, setRecipes} = useRecipeContext();
-    
+    const { fetchRecipes } = useRecipeContext()
+
     function handleClick() {
-      recipeReturn = [];
-      var problemIngredient;
-
-      const getRecipes = async() => {
-        if (selectedIngredients.length > 0) {
-          for (var i = 0; i < selectedIngredients.length; i++) {
-            fetch(API_URL + 'filter.php?i=' + selectedIngredients[i])
-              .then(res => res.json())
-              .then(data => data.meals != null && recipeReturn.push(data.meals))
-          }
-        }
-        else {
-          alert("Please select at least one ingredient")
-        }
-
-        await setRecipes(recipeReturn)
+      if (!selectedIngredients || selectedIngredients.length === 0) {
+        alert("Please select at least one ingredient")
+        return
       }
-
-      try {
-        getRecipes()
-
-        if (recipes.length == 0){
-          throw new Error("Error: No value returned to recipes")
-        }
-        else {
-          for (var i=0; i < recipes.length; i++) {
-            if (recipes[i] == null) {
-              problemIngredient = selectedIngredients[i]
-              throw new Error("Error: Null value returned to recipes")
-            }
-          }
-        }
-      } catch (e) {
-        console.error(e.message)
-        alert("One of your selections has no recipes in our database. We recommend removing or changing" + problemIngredient)
-      }
+      fetchRecipes(selectedIngredients)
     }
-    
+
     return (
-      <button onClick={handleClick}>Search</button>      
+      <button onClick={handleClick}>Search</button>
     )
   }
 
