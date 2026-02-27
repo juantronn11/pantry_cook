@@ -20,7 +20,7 @@ function RecipeGrid() {
 
       <div className={styles.recipeGrid}>
         {recipes.map((recipe) => (
-          <RecipeTile key={recipe.idMeal} recipe={recipe} />
+          <RecipeTile key={recipe.id} recipe={recipe} />
         ))}
       </div>  
 

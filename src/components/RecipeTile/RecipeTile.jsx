@@ -47,12 +47,12 @@ function RecipeTile({recipe}) {
 
     <>
       <div className={styles.recipeTile}>
-        <p>{recipe.strMeal}</p>
+        <p>{recipe.raw.strMeal || recipe.raw.title}</p>
         <img
-          src={recipe.strMealThumb}
-          onClick={() => clickHandler(recipe.idMeal)}
+          src={recipe.raw.strMealThumb || recipe.raw.image}
+          onClick={() => clickHandler(recipe.raw.idMeal || recipe.raw.id)}
           style={{ cursor: 'pointer' }}
-          alt={recipe.strMeal}
+          alt={recipe.raw.strMeal || recipe.raw.title}
         />
         {loading && <p> Loading... </p>}
       </div>
