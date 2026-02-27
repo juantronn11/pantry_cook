@@ -8,14 +8,23 @@ import RecipeTile from '../RecipeTile/RecipeTile';
 
 function RecipeGrid() {
 
-  const { recipes } = useRecipeContext();
+  const { recipes, loading } = useRecipeContext();
+
 
   return (
-    <div className={styles.recipeGrid}>
-      {recipes.map((recipe) => (
-        <RecipeTile key={recipe.idMeal} recipe={recipe} />
-      ))}
-    </div>  
+    <>
+
+      <>
+        {(loading) && <p>...loading</p>}
+      </>
+
+      <div className={styles.recipeGrid}>
+        {recipes.map((recipe) => (
+          <RecipeTile key={recipe.idMeal} recipe={recipe} />
+        ))}
+      </div>  
+
+    </>
   )
 }
 

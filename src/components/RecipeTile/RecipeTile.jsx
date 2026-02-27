@@ -21,8 +21,9 @@ function RecipeTile({recipe}) {
       
       const res = await fetch(API_URL + id);
       const data = await res.json();
-      console.log(data.meals);
+
       if(data.meals == "Invalid ID") throw new Error();
+
       setModalData(data.meals[0]);
       setLoading(false);
 
@@ -53,7 +54,7 @@ function RecipeTile({recipe}) {
           style={{ cursor: 'pointer' }}
           alt={recipe.strMeal}
         />
-        {loading && <p>Loading...</p>}
+        {loading && <p> Loading... </p>}
       </div>
 
       {(modalData || error) && (
