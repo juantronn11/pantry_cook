@@ -15,7 +15,7 @@ function RecipeGrid() {
       {recipes.map((recipe) => (
         <RecipeTile key={recipe.idMeal} recipe={recipe} />
       ))}
-    </div>
+    </div>  
   )
 }
 
