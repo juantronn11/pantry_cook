@@ -1,8 +1,11 @@
 /* Navbar styles — Owner: Patrick Rucker */
 @import '../../assets/print.css';
 
-/* Main navbar container — dark bar fixed at the top of the page */
+/* Main navbar container — dark bar sticky at the top of the page */
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -129,5 +132,14 @@
     text-align: left;
     padding: 0.75rem 1.5rem;
     border-radius: 0;
+  }
+}
+
+/* ========================================
+   PRINT STYLES — hide the navbar when printing a recipe
+   ======================================== */
+@media print {
+  .navbar {
+    display: none !important;
   }
 }
