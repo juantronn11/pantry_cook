@@ -1,4 +1,5 @@
 /* DownloadButton styles — Owner: Tina Carter */
+@import '../../assets/print.css';
 .downloadButton {
   background-color: lightblue;
   border: none;
