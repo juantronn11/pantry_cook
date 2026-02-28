@@ -5,27 +5,45 @@
 import styles from './RecipeGrid.module.css'
 import { useRecipeContext } from '../../context/RecipeContext';
 import RecipeTile from '../RecipeTile/RecipeTile';
+import LoadingSpinner from "../RecipeGrid/loading.svg";
+import { useEffect, useRef } from 'react';
 
 function RecipeGrid() {
-
   const { recipes, loading } = useRecipeContext();
+  const gridRef = useRef(null);
 
+  useEffect(() => {
+    if (!loading && gridRef.current) {
+      gridRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [loading]);
+
+  if (recipes.length === 0 && !loading) {
+    return (
+      <div className={styles.emptyState}>
+        <p>No recipes found. Try adding some ingredients to search!</p>
+      </div>
+    );
+  }
 
   return (
     <>
+      {loading && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
+            <img src={LoadingSpinner} alt="Loading..." width="150" height="150" />
+          </div>
+        </div>
+      )}
 
-      <>
-        {(loading) && <p>...loading</p>}
-      </>
-
-      <div className={styles.recipeGrid}>
+      <div ref={gridRef} className={styles.recipeGrid}>
         {recipes.map((recipe) => (
           <RecipeTile key={recipe.id} recipe={recipe} />
         ))}
-      </div>  
-
+      </div>
     </>
-  )
+  );
 }
 
-export default RecipeGrid
+export default RecipeGrid;
+

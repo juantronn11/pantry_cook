@@ -8,6 +8,34 @@
   margin: 0 auto;
 }
 
+.emptyState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  font-size: 1.2rem;
+  color: #888;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Switch from grid to block layout for print — the recipe tiles are hidden
    by RecipeTile's print styles, so only the modal content remains */
 @media print {
