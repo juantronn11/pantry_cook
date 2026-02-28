@@ -1,4 +1,4 @@
-# Recipe App
+# Pantry Cook
 
 ### What is this repository for? ###
 
@@ -42,7 +42,32 @@ npm run dev
 ```
 This will open the app at `http://localhost:5173/`. The server hot-reloads automatically — any file changes you save will instantly update in the browser.
 
+To also access the app from a phone or another device on the same Wi-Fi network:
+```bash
+npm run dev -- --host
+```
+This exposes a **Network URL** (e.g. `http://192.168.x.x:5173/`) that you can open on any device connected to the same network.
+
 Stop the server with `Ctrl + C`.
+
+### Running Unit Tests
+Run the full test suite:
+```bash
+npm test
+```
+This runs all 38 unit tests using [Vitest](https://vitest.dev/). Tests cover the API services, RecipeContext, and all React components. All fetch calls are mocked — no API keys or internet connection needed.
+
+To run tests for a specific file or folder:
+```bash
+npx vitest run src/api/__tests__/         # API service tests only
+npx vitest run src/context/__tests__/     # RecipeContext tests only
+npx vitest run src/components/            # All component tests
+```
+
+To run tests in watch mode (re-runs on file changes):
+```bash
+npm test -- --watch
+```
 
 ### Building for Production
 To deploy or present the app, run:
@@ -189,4 +214,4 @@ Give credit here.
 
 
 ## Contact
-Created by Miguel Alvarez, Tina Carter, Juan Estrada, Christina Johnson, Patrick Rucker
+Created by Miguel Alvarez, Tina Carter, Juan Estrada, Christian Johnson, Patrick Rucker

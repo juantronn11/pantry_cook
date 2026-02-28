@@ -1,3 +1,19 @@
 /* RecipeGrid styles — Owner: Miguel Alvarez */
 .recipeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Switch from grid to block layout for print — the recipe tiles are hidden
+   by RecipeTile's print styles, so only the modal content remains */
+@media print {
+  .recipeGrid {
+    display: block !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
 }

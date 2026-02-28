@@ -6,7 +6,11 @@ import styles from './DownloadButton.module.css'
 
 function DownloadButton() {
   return (
-    <button className={styles.downloadButton}>
+    <button className={styles.downloadButton} onClick={() => {
+      // This button only renders inside the modal when recipe data loaded
+      // successfully, so we can safely open the print dialog directly.
+      window.print();
+    }}>
       Download / Print
     </button>
   )
