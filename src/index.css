@@ -20,3 +20,11 @@ h1 {
   font-size: 2em;
   line-height: 1.1;
 }
+
+/* Hide the page heading ("Search Recipes") when printing a recipe.
+   The recipe title in the modal uses <h2>, so this only hides the page heading. */
+@media print {
+  h1 {
+    display: none !important;
+  }
+}

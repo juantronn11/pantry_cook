@@ -13,3 +13,13 @@
     justify-content: center;
     gap: 10px 1%;
 }
+
+/* Hide the entire search form (text + ingredient buttons + search button) when printing */
+@media print {
+  .searchForm {
+    display: none !important;
+  }
+  .ingredientButton {
+    display: none !important;
+  }
+}
