@@ -9,7 +9,7 @@ import LoadingSpinner from "../RecipeGrid/loading.svg";
 import { useEffect, useRef } from 'react';
 
 function RecipeGrid() {
-  const { recipes, loading } = useRecipeContext();
+  const { recipes, loading, ingredients } = useRecipeContext();
   const gridRef = useRef(null);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ function RecipeGrid() {
     }
   }, [loading]);
 
-  if (recipes.length === 0 && !loading) {
+  if (recipes.length === 0 && !loading && ingredients.length > 0) {
     return (
       <div className={styles.emptyState}>
         <p>No recipes found. Try adding some ingredients to search!</p>
