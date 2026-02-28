@@ -4,6 +4,7 @@
 
 import styles from './SearchForm.module.css'
 import { useRecipeContext } from '../../context/RecipeContext';
+
 import { useState } from 'react'
 import { useEffect } from 'react';
 
@@ -38,8 +39,8 @@ function setIngredientButtons() {
   var ingredientButtons = [];
   useEffect(() => {
     fetch(API_URL + 'list.php?i=list')
-            .then(response => response.json())
-            .then(data => setIngredientList(data.meals));
+      .then(response => response.json())
+      .then(data => setIngredientList(data.meals));
   }, []);
 
   if (!ingredientList) {
@@ -80,25 +81,30 @@ function Button({ text }) {
   }
  
   return (
-    <button onClick={handleClick} style={{color: !clicked ? 'white' : 'lime', backgroundColor: 'grey'}}>{text}</button>
+    <button onClick={handleClick} style={{color: !ingredients.includes(text) ? 'white' : 'lime', backgroundColor: 'grey', fontSize: 'large'}}>{text}</button>
   )
 }
 
 
-  function SearchButton() {
-    const { fetchRecipes } = useRecipeContext()
+// SearchButton — validates selection, then calls fetchRecipes() from context.
+// fetchRecipes() (defined in RecipeContext) fires both MealDB and Spoonacular
+// concurrently, normalizes responses, deduplicates by name, and sets
+// recipes/loading/error state automatically.
+function SearchButton() {
+  const { fetchRecipes } = useRecipeContext();
 
-    function handleClick() {
-      if (!selectedIngredients || selectedIngredients.length === 0) {
-        alert("Please select at least one ingredient")
-        return
-      }
-      fetchRecipes(selectedIngredients)
+  async function handleClick() {
+    if (selectedIngredients.length === 0) {
+      alert("Please select at least one ingredient");
+      return;
     }
 
-    return (
-      <button onClick={handleClick}>Search</button>
-    )
+    await fetchRecipes(selectedIngredients);
   }
+
+  return (
+    <button onClick={handleClick}>Search</button>
+  );
+}
 
 export default SearchForm
