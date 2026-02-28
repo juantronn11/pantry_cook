@@ -3,7 +3,7 @@
 // RecipeGrid reads recipes and loading from RecipeContext, so we mock
 // useRecipeContext to control what data the component receives.
 
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import RecipeGrid from '../RecipeGrid'
 
@@ -14,18 +14,25 @@ vi.mock('../../../context/RecipeContext', () => ({
 
 import { useRecipeContext } from '../../../context/RecipeContext'
 
+// jsdom doesn't implement scrollIntoView — provide a no-op stub
+// so the useEffect in RecipeGrid doesn't throw
+beforeEach(() => {
+  Element.prototype.scrollIntoView = vi.fn()
+})
+
 describe('RecipeGrid', () => {
 
-  it('shows loading text when loading is true', () => {
-    useRecipeContext.mockReturnValue({ recipes: [], loading: true })
+  it('shows loading spinner when loading is true', () => {
+    useRecipeContext.mockReturnValue({ recipes: [], loading: true, ingredients: [] })
     render(<RecipeGrid />)
-    expect(screen.getByText('...loading')).toBeInTheDocument()
+    // Miguel replaced the text with an SVG spinner that has alt="Loading..."
+    expect(screen.getByAltText('Loading...')).toBeInTheDocument()
   })
 
-  it('does not show loading text when loading is false', () => {
-    useRecipeContext.mockReturnValue({ recipes: [], loading: false })
+  it('does not show loading spinner when loading is false', () => {
+    useRecipeContext.mockReturnValue({ recipes: [], loading: false, ingredients: [] })
     render(<RecipeGrid />)
-    expect(screen.queryByText('...loading')).not.toBeInTheDocument()
+    expect(screen.queryByAltText('Loading...')).not.toBeInTheDocument()
   })
 
   it('renders a recipe tile for each recipe', () => {
@@ -33,7 +40,7 @@ describe('RecipeGrid', () => {
       { id: 'mealdb-1', name: 'chicken curry', source: 'mealdb', raw: { strMeal: 'Chicken Curry', strMealThumb: 'img1.jpg' } },
       { id: 'spoonacular-2', name: 'tomato soup', source: 'spoonacular', raw: { title: 'Tomato Soup', image: 'img2.jpg' } },
     ]
-    useRecipeContext.mockReturnValue({ recipes: mockRecipes, loading: false })
+    useRecipeContext.mockReturnValue({ recipes: mockRecipes, loading: false, ingredients: ['chicken'] })
     render(<RecipeGrid />)
 
     // Each RecipeTile renders the recipe name as text
@@ -41,13 +48,12 @@ describe('RecipeGrid', () => {
     expect(screen.getByText('Tomato Soup')).toBeInTheDocument()
   })
 
-  it('renders empty grid when there are no recipes', () => {
-    useRecipeContext.mockReturnValue({ recipes: [], loading: false })
-    const { container } = render(<RecipeGrid />)
+  it('shows empty state message when there are no recipes but ingredients were selected', () => {
+    // ingredients has items = user searched, but no recipes came back
+    useRecipeContext.mockReturnValue({ recipes: [], loading: false, ingredients: ['chicken'] })
+    render(<RecipeGrid />)
 
-    // The grid div exists but has no children
-    const grid = container.querySelector('.recipeGrid')
-    expect(grid).toBeInTheDocument()
-    expect(grid.children).toHaveLength(0)
+    // Miguel added an early return with this message when recipes is empty
+    expect(screen.getByText('No recipes found. Try adding some ingredients to search!')).toBeInTheDocument()
   })
 })
