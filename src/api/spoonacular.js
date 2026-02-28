@@ -28,7 +28,30 @@ async function getRecipeDetails(id) {
   return res.json()
 }
 
-// Fires all ingredient searches concurrently then fetches all details concurrently (SCRUM-17)
+// SCRUM-71: Fetches recipe details in small batches with a delay between each batch
+// to avoid triggering Spoonacular's per-second rate limit (HTTP 429).
+// batchSize = how many calls fire at once, delayMs = pause between batches.
+async function batchGetDetails(recipes, batchSize = 3, delayMs = 500) {
+  const results = []
+
+  for (let i = 0; i < recipes.length; i += batchSize) {
+    const batch = recipes.slice(i, i + batchSize)
+    const batchResults = await Promise.allSettled(
+      batch.map((recipe) => getRecipeDetails(recipe.id))
+    )
+    results.push(...batchResults)
+
+    // Pause before the next batch (skip delay after the last batch)
+    if (i + batchSize < recipes.length) {
+      await new Promise((resolve) => setTimeout(resolve, delayMs))
+    }
+  }
+
+  return results
+}
+
+// Fires all ingredient searches concurrently then fetches details in throttled
+// batches to stay within Spoonacular's rate limits (SCRUM-17, SCRUM-71)
 export async function fetchSpoonacularRecipes(ingredients) {
   // All ingredient searches fire at the same time
   const searchResults = await Promise.allSettled(
@@ -49,10 +72,8 @@ export async function fetchSpoonacularRecipes(ingredients) {
     return true
   })
 
-  // All detail lookups fire at the same time
-  const detailResults = await Promise.allSettled(
-    uniqueRecipes.map((recipe) => getRecipeDetails(recipe.id))
-  )
+  // SCRUM-71: Fetch details in batches of 3 with 500ms delay to avoid 429 rate limits
+  const detailResults = await batchGetDetails(uniqueRecipes)
 
   return detailResults
     .filter((r) => r.status === 'fulfilled' && r.value)
