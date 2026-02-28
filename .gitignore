@@ -15,7 +15,9 @@ dist-ssr
 # Environment variables — never commit API keys
 .env
 .env.*
-!.env.example
+
+# Personal / local-only files
+juan-personal-notes.md
 
 # Personal / local-only files
 juan-personal-notes.md

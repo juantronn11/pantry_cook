@@ -12,6 +12,11 @@
   font: Times New Roman, serif;
   border-radius: 2px;
   cursor: pointer;
+  position: fixed; /* Stays in place while scrolling */
+  bottom: 20px;    /* Distance from bottom */
+  right: 20px;     /* Distance from right */
+  z-index: 1000;   /* Ensures it sits on top of other elements */
+  padding: 10px 20px;
 }
 
 .downloadButton:hover {
