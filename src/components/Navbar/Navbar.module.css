@@ -1,4 +1,5 @@
 /* Navbar styles — Owner: Patrick Rucker */
+@import '../../assets/print.css';
 
 /* Main navbar container — dark bar fixed at the top of the page */
 .navbar {
