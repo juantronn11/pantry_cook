@@ -20,9 +20,11 @@
 }
 
 @media print {
-    .noprint {
-        display: none !important;
-    }
+  /* Hide the download/print button itself in the printed output */
+  .downloadButton {
+    display: none !important;
+  }
+
   @page {
     size: letter;
     margin: 1in;
