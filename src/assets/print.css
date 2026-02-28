@@ -32,25 +32,11 @@ import the print.css file in the .jsx file like this:
     .navbar{
         visibility: hidden !important;
     }
-    .modalImg {
-        display: none;
-    }
-    .other{
-        display: none !important;
-    }
     .closeBtn{
         display: none !important;
     }
-    @page {
-        margin: 0;
-        orientation: portrait;
-    }
     header, footer {
         display: none !important;
-    }
-    html, body, p {
-    height:50%;
-    overflow: clip;
     }
 }
 
