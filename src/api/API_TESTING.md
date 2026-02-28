@@ -42,7 +42,7 @@ Go to `http://localhost:5173` — results display directly on the page.
 
 ---
 
-## What to Look For
+# SCRUM-18 — Testing Graceful Failure Handling
 
 ### Both APIs succeed
 ```
