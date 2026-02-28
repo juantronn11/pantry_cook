@@ -1,45 +1,59 @@
 /* print styles — Owner: Tina Carter */
 
 /*****************************************************************************
-To ADD global print styles to a page (with .css file), import the 
+To ADD global print styles to a page (with .css file), import the
 print.css file in the page's .css file like this:
 
 @import '../../assets/print.css';
 
-> Then use the formatting tags/labels defined in print.css to format 
+> Then use the formatting tags/labels defined in print.css to format
   the recipe for printing.
-> All local formatting will override global formatting, so please DO NOT 
+> All local formatting will override global formatting, so please DO NOT
   have local @media print styles
-> Specific path statement may vary, if your file is not in src/components/ 
+> Specific path statement may vary, if your file is not in src/components/
   or src/context/ or src/pages/ folders, adjust the path accordingly.
 
 To ADD global print to a page (.jsx file) that DOES NOT have a .css file,
 import the print.css file in the .jsx file like this:
- 
+
 <header>
     <link rel="stylesheet" href="../assets/print.css"></link>
 </header>
 
-> BEFORE the return() statement, and then use the formatting tags/labels 
+> BEFORE the return() statement, and then use the formatting tags/labels
   defined in print.css to format the recipe for printing.
 *****************************************************************************/
-.downloadButton{
-    display: visible;
+.other{
 }
 @media print {
     .downloadButton{
         visibility: hidden !important;
     }
-}
-
-.navbar {
-    display: visible;
-}
-@media print {
     .navbar{
         visibility: hidden !important;
     }
+    .modalImg {
+        display: none;
+    }
+    .other{
+        display: none !important;
+    }
+    .closeBtn{
+        display: none !important;
+    }
+    @page {
+        margin: 0;
+        orientation: portrait;
+    }
+    header, footer {
+        display: none !important;
+    }
+    html, body, p {
+    height:50%;
+    overflow: clip;
+    }
 }
+
 /*use these formatting tags/labels when formatting recipes (to consistency)*/
 .recipeTitle {
     display: visible;
@@ -51,6 +65,9 @@ import the print.css file in the .jsx file like this:
         font-family: "Times New Roman", serif;
         align-content: right;
         break-after: .25in;
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
     }
 }
 .recipeAuthor {
@@ -77,60 +94,22 @@ import the print.css file in the .jsx file like this:
 }
 .recipeInstructions {
     display: visible;
+    white-space: pre-line;
+    line-height: 1.6;
+    color: #444;
 }
 @media print {
     .recipeInstructions {
         font-size: 14pt;
         break-after: .25in;
+        white-space: pre-line;
+        line-height: 1.6;
+        break-inside: avoid;
+        height: auto;
+        overflow: visible;
+        display:block;
+        list-style-type: none;
+        list-style-position: inside;
     }
 }
-
-/*
-.h1 {
-    font-size: 24pt;
-    font-weight: bold;
-    font-family: "Times New Roman", serif;
-    align-content: right;
-    break-after: .25in;
-}
-@media print {
-  /* All your print styles go here 
-  @page {
-    margin: 1in;
-    orientation: landscape;
-  }
-  #header {
-    display: none !important;
-  }
-  #h1 { /*Recipe TITLE should be given <h1> tag
-    font-size: 24pt;
-    font-weight: bold;
-    align-content: right;
-    break-after: .25in;
-  }
-  #h2 { /*Recipe AUTHOR should be given <h2> tag
-    font-size: 18pt;
-    align-content: right;
-    break-after: .5in;
-  }
-  #ingredients {
-    font-size: 14pt;
-    break-after: .25in;
-    list-style-type: none;
-  }
-  #footer,
-  #nav {
-    display: none !important;
-  }
-  #button {
-    display: none !important;
-  }
-}
-
-
-/*
-.noprint{
-
-}
-*/
 

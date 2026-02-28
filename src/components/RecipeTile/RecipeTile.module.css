@@ -1,5 +1,5 @@
 /* RecipeTile styles — Owner: Miguel Alvarez */
-/*import '../../assets/print.css'; */ /*UNCOMMENT this line when merged with a branch that contains print.css*/
+@import '../../assets/print.css'; 
 .recipeTile {
   display: flex;
   flex-direction: column;
