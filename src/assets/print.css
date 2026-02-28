@@ -26,6 +26,9 @@ import the print.css file in the .jsx file like this:
 .other{
 }
 @media print {
+    .other {
+        display: none !important;
+    }
     .downloadButton{
         visibility: hidden !important;
     }
