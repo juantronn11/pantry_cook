@@ -188,8 +188,96 @@ Find recipe with: ☑ chicken | ☑ parmesan | ☑ cream
 
 
 ## Project Status
-Project is: _in progress_ as of 13/02/2026 (Feb.)
+MVP deployed: _functional_ on 02/27/2026 (Feb.)
+<br/>Project is: _in progress_ as of 03/03/2026 (Mar.)
 
+### Sprint 1 Contributions
+
+#### Patrick Rucker
+
+| Jira Task | Title | Bitbucket PR |
+|:---------:|-------|-------------------|
+| [SCRUM-35](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-35) | Project Scaffolding — Vite + React + React Router Setup | [PR #2](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/2) |
+| [SCRUM-36](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-36) | The toolbar contains links/buttons for at least: Ingredient Search, Recipe History, and My Saved Recipes | [PR #4](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/4) |
+| [SCRUM-37](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-37) | The currently active page is visually indicated on the toolbar (e.g., highlighted or underlined) | Included in [PR #4](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/4) |
+| [SCRUM-38](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-38) | The toolbar is responsive and remains accessible and functional on mobile screen sizes | [PR #9](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/9) |
+| [SCRUM-58](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-58) | New search button (same as ingredient search, but clears search...) | Included in [PR #4](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/4) |
+| [SCRUM-67](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-67) | Implement tool tips when hovering over each button on the main tool bar | [PR #19](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/19) |
+| [SCRUM-68](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-68) | Merge teams code on dev branch: merges SCRUM-19 to dev, testing and fixing bugs | [Commit fd58154](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/fd58154), [Commit cccfe67](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/cccfe67) |
+| [SCRUM-69](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-69) | Merge teams code on dev branch: merges SCRUM-9 to dev, testing and fixing bugs | [Commit e317572](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/e317572) |
+| [SCRUM-70](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-70) | Merge teams code on dev branch: merges SCRUM-55 to dev, testing and fixing bugs | [Commit 8258098](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/8258098), [Commit f1962dc](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/f1962dc), [Commit 112dcec](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/112dcec), [Commit 7a1d6c0](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/7a1d6c0), [Commit 8d964f5](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/8d964f5) |
+| [SCRUM-71](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-71) | Fix Spoonacular API rate limiting and recipe tile click handler | [Commit c26926e](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c26926e) |
+| [SCRUM-72](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-72) | Set up Vitest and write unit tests for core components and API services | [PR #27](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/27) |
+
+#### Christian Johnson
+
+| Jira Task | Title | Bitbucket Artifact |
+|-----------|-------|-------------------|
+| [SCRUM-12](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-12) | Error MESSAGES for users | [PR #14](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/14) |
+| [SCRUM-13](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-13) | The form validates that at least one ingredient has been entered before allowing submission | [PR #11](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/11) |
+| [SCRUM-14](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-14) | Upon submission, the app searches for matching recipes and transitions to display the results | [PR #5](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/5) |
+| [SCRUM-56](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-56) | Backend error handling for no recipes found → error message for user | [PR #13](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/13) |
+| [SCRUM-11](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-11) | There are multi-select buttons for ingredients (nice to have: sorted by ingredient type) and a SEARCH or ENTER button | [PR #8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/8) (Merged), [PR #15](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/15) (Open — In Progress) |
+
+#### Juan Estrada
+
+| Jira Task | Title | Bitbucket Artifact |
+|-----------|-------|-------------------|
+| [SCRUM-16](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-16) | The backend makes at least one API call per submitted ingredient to the external recipe API | [PR #6](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/6) |
+| [SCRUM-17](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-17) | API calls are handled asynchronously so that multiple requests can be processed concurrently without long wait times | [PR #7](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/7) |
+| [SCRUM-18](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-18) | If an individual API call fails, the system handles the error gracefully and still returns results from successful calls | [PR #10](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/10), [PR #30](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/30) |
+| [SCRUM-19](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-19) | All API responses are collected and aggregated before sending a unified response to the frontend | [PR #20](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/20) |
+
+#### Miguel Alvarez
+
+| Jira Task | Title | Bitbucket Artifact |
+|-----------|-------|-------------------|
+|[SCRUM-6](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-6)| Create recipe tile object with RECIPE NAME, THUMBNAIL, SUMMARY and LINK fields|[PR #28](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/28), [Commit 53df8fd](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/53df8fd5d2bc451b56957fe22ed3acfc3ce33a56) |
+|[SCRUM-7](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-7)|Tiles are rendered in a responsive grid layout that adjusts to different screen sizes (desktop, tablet, mobile)|Included in SCRUM-9 branch — [Commit c90b4d8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c90b4d8), [Commit 2a24fb6](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/2a24fb6df83cfd0102f1a44e6524316b6c67e548) |
+|[SCRUM-8](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-8)|Error Handling for if there are no recipes that match with ingredients provided|[PR #28](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/28), [Commit 6073d36](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/6073d36dc703c8aa8d73ccb7f71e291707860745) |
+|[SCRUM-9](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-9)|Link functionality for each tile AND error handling for broken links|[Commit 51b3ada](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/51b3ada), [Commit c90b4d8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c90b4d8) |
+
+#### Tina Carter
+
+| Jira Task | Title | Bitbucket Artifact |
+|-----------|-------|-------------------|
+| [SCRUM-2](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-2) | README | [PR #1](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/1) |
+| [SCRUM-31](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-31) | Design the Print/Download UI Component | [PR #26](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/26) |
+| [SCRUM-32](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-32) | Implement the Print Functionality (React + Browser API) | [PR #24](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/24) |
+| [SCRUM-33](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-33) | Implement the PDF Download Functionality (Client-Side Generation) | [PR #23](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/23) |
+| [SCRUM-34](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-34) | Normalize recipe calls into unified format with print formatting | Included in [PR #24](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/24) |
+| [SCRUM-55](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-55) | Unit Testing/error handling for Print/Download Features | [PR #25](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/25) |
+
+
+
+
+### Next Steps (Sprint 2)
+
+#### Patrick Rucker
+
+- New Feature | Seperate Users: implement search history functoinality tied to a user's login
+- New Feature | Seperate Users: implement save page of recipes tied to a user's login
+- New Feature | Seperate Users: User Story 10 --> save recipe (not print/download) features
+
+#### Christian Johnson
+
+- New Feature | Searching: ingredient entry by type in with auto-fill rather than field of buttons
+- Error correction: check for recipe loading correctly and do not load incorrect recipes
+
+#### Juan Estrada
+
+- New Feature | Searching: 'filter out' ingredient
+- New Feature | Searching: exclusively search by ingredient (i.e. recipe contains no ingredients not selected)
+
+#### Miguel Alvarez
+
+- New Feature | Seperate Users: create login functionality
+- New Feature | Seperate Users: implement user profiles and tie to log-in
+
+#### Tina Carter
+
+- Error correction: check for image loading correctly
+- New Feature | Backend: host webapp on server rather than local
 
 ## Room for Improvement
 Include areas you believe need improvement / could be improved. Also add TODOs for future development.
