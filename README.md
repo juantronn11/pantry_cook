@@ -130,11 +130,11 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 **User Stories for Features**
 - Details for each user story and acceptance criteria can be found in Jira.
 
->User Story 1: Individual UI Tiles for Recipes Returned (frontend)
+>`COMPLETE` User Story 1: Individual UI Tiles for Recipes Returned (frontend)
 >
 >   As a user, I would like to see recipes displayed as individual tiles after entering my available ingredients so that I can quickly browse what I'm able to cook with what I have on hand.
 
->User Story 2: Form Display for User Input (frontend)
+>`IN PROGRESS` User Story 2: Form Display for User Input (frontend)
 >
 >   As a user, I would like a form where I can enter the ingredients I currently have in my kitchen so that the app can find recipes I can actually make right now.
 
@@ -142,11 +142,11 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 >
 >   As a user, I would like to view the full details of a recipe I selected from my search results so that I can see all the ingredients and step-by-step instructions needed to make the dish.
 
->User Story 4: Download/Print Recipe (frontend)
+>`COMPLETE` User Story 4: Download/Print Recipe (frontend)
 >
 >   As a user, I would like to download or print a recipe so that I can follow the instructions in my kitchen without needing to keep the app open on my device.
 
->User Story 5:Navigation Toolbar (frontend)
+>`COMPLETE` User Story 5:Navigation Toolbar (frontend)
 >
 >   As a user, I would like a navigation toolbar so that I can easily switch between searching for recipes with my ingredients, viewing my cooking history, and accessing my saved recipe collection.
 
@@ -155,7 +155,7 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 >   As a back end developer, I would like the app to accept and process the list of ingredients I submit so that it can search for recipes that match what I have available.
 
 
->User Story 7: Make Multiple API Requests for Recipe Listing (backend)
+>`COMPLETE` User Story 7: Make Multiple API Requests for Recipe Listing (backend)
 >
 >   As a back end developer, I would like the app to search across multiple sources or queries based on my ingredient list so that I get a comprehensive set of recipes I can make with what I have.
 
