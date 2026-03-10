@@ -255,13 +255,12 @@ MVP deployed: _functional_ on 02/27/2026 (Feb.)
 
 #### Patrick Rucker
 
-- New Feature | Seperate Users: implement search history functoinality tied to a user's login
-- New Feature | Seperate Users: implement save page of recipes tied to a user's login
-- New Feature | Seperate Users: User Story 10 --> save recipe (not print/download) features
+- New Feature | Seperate Users: implement search history functoinality tied to a user's login `User Story 9`
+- New Feature | Seperate Users: implement save page of recipes tied to a user's login `User Story 10`
 
 #### Christian Johnson
 
-- New Feature | Searching: ingredient entry by type in with auto-fill rather than field of buttons
+- New Feature | Searching: ingredient entry by type in with auto-fill rather than field of buttons `User Story 2` `User Story 6`
 - Error correction: check for recipe loading correctly and do not load incorrect recipes
 
 #### Juan Estrada
