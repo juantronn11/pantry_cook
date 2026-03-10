@@ -19,8 +19,8 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
           <RecipeProvider>
             <Auth0Provider
-              domain="dev-zihj3ljk1jpuojfs.us.auth0.com"
-              clientId="1QiUZM67x6gb6xbMLnKNloldbvJBv8Cf"
+              domain={import.meta.env.VITE_DOMAIN}
+              clientId={import.meta.env.VITE_CLIENT_ID}
               authorizationParams={{ redirect_uri: window.location.origin }}
               >
 
