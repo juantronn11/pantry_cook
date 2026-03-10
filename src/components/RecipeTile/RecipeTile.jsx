@@ -2,6 +2,12 @@
 // Individual recipe card with name, thumbnail, summary, and link
 // Includes DownloadButton for PDF/print functionality
 
+// RecipeTile additional error handling — Owner: Tina Carter
+// Image error handling information:
+// https://medium.com/@hridoymahmud/solving-image-loading-and-error-handling-issues-in-react-with-a-custom-image-component-b6c5d0184f96
+// see line 106: 
+// 106 | | | | | |  <img src={modalData.strMealThumb} alt={modalData.strMeal} className={styles.modalImg} />
+
 import styles from './RecipeTile.module.css';
 import {useState} from 'react'
 import DownloadButton from '../DownloadButton/DownloadButton';
