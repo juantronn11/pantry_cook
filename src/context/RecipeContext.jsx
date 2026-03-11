@@ -36,7 +36,23 @@ export function RecipeProvider({ children }) {
   //   }
   // Entries are stored newest-first (prepended) so the array is already
   // in reverse chronological order for display on the History page.
-  const [historyRecipes, setHistoryRecipes] = useState([])
+  //
+  // SCRUM-49: Lazy initializer — reads saved history from localStorage on
+  // first render so data survives page refreshes and browser restarts.
+  // The function form of useState() runs only once (on mount), not on
+  // every re-render, so the JSON.parse cost is paid just once.
+  const [historyRecipes, setHistoryRecipes] = useState(() => {
+    const saved = localStorage.getItem('pantry-cook-history')
+    return saved ? JSON.parse(saved) : []
+  })
+
+  // SCRUM-49: Sync history to localStorage whenever it changes.
+  // useEffect watches the historyRecipes array via its dependency list.
+  // Every time a new search is added (SCRUM-47), this effect fires and
+  // writes the updated array to localStorage as a JSON string.
+  useEffect(() => {
+    localStorage.setItem('pantry-cook-history', JSON.stringify(historyRecipes))
+  }, [historyRecipes])
 
   // SCRUM-18: fetchRecipes fires both API calls concurrently via Promise.allSettled().
   // If one API fails, the error flag is set but results from the other still come through.
