@@ -67,13 +67,17 @@ export async function fetchSpoonacularRecipes(ingredients) {
     if (result.status === 'fulfilled') allRecipes.push(...result.value)
   }
 
-  // Deduplicate by recipe ID
-  const seen = new Set()
-  const uniqueRecipes = allRecipes.filter((recipe) => {
-    if (seen.has(recipe.id)) return false
-    seen.add(recipe.id)
-    return true
-  })
+  // SCRUM-44: Deduplicate by ID — when the same recipe appears across multiple
+  // ingredient searches, keep the entry with the highest usedIngredientCount
+  // so matchScore (used by SCRUM-43's sort) reflects the best match found.
+  const recipeMap = new Map()
+  for (const recipe of allRecipes) {
+    const existing = recipeMap.get(recipe.id)
+    if (!existing || (recipe.usedIngredientCount ?? 0) > (existing.usedIngredientCount ?? 0)) {
+      recipeMap.set(recipe.id, recipe)
+    }
+  }
+  const uniqueRecipes = Array.from(recipeMap.values())
 
   // SCRUM-43: Preserve match counts before detail fetch loses them
   const matchScoreById = new Map(
