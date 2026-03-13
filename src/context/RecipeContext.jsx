@@ -77,6 +77,13 @@ export function RecipeProvider({ children }) {
     // the MealDB API does not return ingredient match counts.
     deduplicated.sort((a, b) => b.matchScore - a.matchScore)
 
+    // SCRUM-43 TEST — open browser devtools console to verify ranking order.
+    // Remove this log before final merge into dev2.
+    console.log(
+      '[SCRUM-43] Sorted results by matchScore:',
+      deduplicated.map(r => ({ name: r.name, matchScore: r.matchScore, source: r.source }))
+    )
+
     setRecipes(deduplicated)
     setLoading(false)
   }
