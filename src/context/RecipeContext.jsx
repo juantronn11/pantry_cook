@@ -81,6 +81,19 @@ export function RecipeProvider({ children }) {
     })
 
     setRecipes(deduplicated)
+
+    // SCRUM-47: Auto-add this search to history. Build a history entry from the
+    // ingredients that were searched and the deduplicated results, then prepend it
+    // so historyRecipes stays in reverse chronological order. Cap at 50 entries
+    // to prevent unbounded localStorage growth (SCRUM-49 will persist this).
+    const historyEntry = {
+      id: crypto.randomUUID(),
+      ingredients: [...ingredients],
+      timestamp: new Date().toISOString(),
+      recipes: deduplicated,
+    }
+    setHistoryRecipes(prev => [historyEntry, ...prev].slice(0, 50))
+
     setLoading(false)
   }
 
