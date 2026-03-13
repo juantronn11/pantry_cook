@@ -14,7 +14,7 @@
 //   import { useRecipeContext } from '../context/RecipeContext'
 //   const { recipes, loading, fetchRecipes } = useRecipeContext()
 
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 import { fetchMealDBRecipes } from '../api/mealdb'
 import { fetchSpoonacularRecipes } from '../api/spoonacular'
 
@@ -25,6 +25,18 @@ export function RecipeProvider({ children }) {
   const [recipes, setRecipes] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+
+  // SCRUM-48: Search history state — stores past search sessions.
+  // Each entry is an object with shape:
+  //   {
+  //     id: string (crypto.randomUUID()),
+  //     ingredients: string[] (what was searched),
+  //     timestamp: string (ISO date of when the search happened),
+  //     recipes: array of normalized recipe objects ({ id, name, source, raw })
+  //   }
+  // Entries are stored newest-first (prepended) so the array is already
+  // in reverse chronological order for display on the History page.
+  const [historyRecipes, setHistoryRecipes] = useState([])
 
   // SCRUM-18: fetchRecipes fires both API calls concurrently via Promise.allSettled().
   // If one API fails, the error flag is set but results from the other still come through.
@@ -82,6 +94,8 @@ export function RecipeProvider({ children }) {
     error,
     setError,
     fetchRecipes,
+    historyRecipes,
+    setHistoryRecipes,
   }
 
   return (
