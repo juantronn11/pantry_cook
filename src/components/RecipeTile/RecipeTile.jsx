@@ -88,6 +88,9 @@ function RecipeTile({recipe}) {
   return (
 
     <>
+      {/* SCRUM-79: Don't display incomplete recipe tiles - Owner: Christian Johnson
+          if recipe.raw is missing any necessary aspects, do not display tile*/}
+      {((recipe.raw.title || recipe.raw.strMeal) && (recipe.raw.instructions || recipe.raw.strInstructions)) && (
       <div className={styles.recipeTile}>
         <p>{recipe.raw.strMeal || recipe.raw.title}</p>
         {/* SCRUM-71: Show which API the recipe came from */}
@@ -102,6 +105,7 @@ function RecipeTile({recipe}) {
         />
         {loading && <p> Loading... </p>}
       </div>
+      )}
 
       {(modalData || error) && (
 
