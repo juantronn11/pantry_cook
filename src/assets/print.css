@@ -25,6 +25,9 @@ import the print.css file in the .jsx file like this:
 *****************************************************************************/
 .other{
 }
+.error{
+    display: none;
+}
 @media print {
     .other {
         display: none !important;
@@ -39,6 +42,9 @@ import the print.css file in the .jsx file like this:
         display: none !important;
     }
     header, footer {
+        display: none !important;
+    }
+    .error {
         display: none !important;
     }
 }

@@ -2,6 +2,12 @@
 // Individual recipe card with name, thumbnail, summary, and link
 // Includes DownloadButton for PDF/print functionality
 
+// RecipeTile additional error handling — Owner: Tina Carter
+// Image error handling information:
+// https://medium.com/@hridoymahmud/solving-image-loading-and-error-handling-issues-in-react-with-a-custom-image-component-b6c5d0184f96
+// see line 106: 
+// 106 | | | | | |  <img src={modalData.strMealThumb} alt={modalData.strMeal} className={styles.modalImg} />
+
 import styles from './RecipeTile.module.css';
 import {useState} from 'react'
 import DownloadButton from '../DownloadButton/DownloadButton';
@@ -12,6 +18,7 @@ function RecipeTile({recipe}) {
   const [modalData, setModalData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   // SCRUM-71: Transform Spoonacular's recipe format into MealDB's format
   // so the modal rendering code works the same for both API sources.
@@ -69,6 +76,12 @@ function RecipeTile({recipe}) {
     setError(false);
   };
 
+  //SCRUM-74: Error handling for missing/invalid images. If the image fails to load, hide default broken image icon.
+  const handleImageError = () => {
+    setImageError(true);
+  };
+  
+
   return (
 
     <>
@@ -97,7 +110,7 @@ function RecipeTile({recipe}) {
             ) : (
               <>
                   <DownloadButton></DownloadButton>
-                  <img src={modalData.strMealThumb} alt={modalData.strMeal} className={styles.modalImg} />
+                  <img src={imageError ? '../../../media/chicken_alfredo.jpg' : modalData.strMealThumb} alt={imageError ? 'Error' : modalData.strMeal} className={imageError ? styles.error : styles.modalImg} onError={handleImageError} />
                   <h2 className={styles.recipeTitle}>{modalData.strMeal}</h2>
                   <p className={styles.other}><strong>Category:</strong> {modalData.strCategory}</p>
                   <p className={styles.other}><strong>Area:</strong> {modalData.strArea}</p>
