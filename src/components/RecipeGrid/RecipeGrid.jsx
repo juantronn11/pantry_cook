@@ -49,7 +49,7 @@ function RecipeGrid({ recipes: recipesProp }) {
         {recipes.map((recipe) => (
           <RecipeTile key={recipe.id} recipe={recipe} />
         ))}
-        {recipes.length == 0 && ingredients.length != 0 && emptyGridDialog()}
+        {recipes.length == 0 && ingredients.length != 0 && !loading && emptyGridDialog()}
       </div>
     </>
   );
