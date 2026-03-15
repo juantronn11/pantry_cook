@@ -31,10 +31,6 @@ function RecipeGrid({ recipes: recipesProp }) {
     );
   }
 
-  function emptyGridDialog() {
-    alert("Unfortunately, we were unable to find any complete recipes for your response. Please try a different combination of ingredients");
-  }
-
   return (
     <>
       {loading && (
@@ -49,7 +45,7 @@ function RecipeGrid({ recipes: recipesProp }) {
         {recipes.map((recipe) => (
           <RecipeTile key={recipe.id} recipe={recipe} />
         ))}
-        {recipes.length == 0 && ingredients.length != 0 && !loading && emptyGridDialog()}
+        {recipes.length == 0 && ingredients.length != 0 && !loading && alert("Unfortunately, we were unable to find any complete recipes for your response. Please try a different combination of ingredients")}
       </div>
     </>
   );
