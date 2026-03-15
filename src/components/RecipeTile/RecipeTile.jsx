@@ -25,6 +25,7 @@ function RecipeTile({recipe}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const {recipes, setRecipes} = useRecipeContext();
   var valid = true;
 
   // SCRUM-79: Do not display tile is information is missing
@@ -55,6 +56,7 @@ function RecipeTile({recipe}) {
   }catch (e) {
     console.error(e.message);
     valid = false;
+    setRecipes(recipes.filter(result => result != recipe))
   }
 
   // SCRUM-71: Transform Spoonacular's recipe format into MealDB's format
