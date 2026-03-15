@@ -25,6 +25,7 @@ function RecipeTile({recipe}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [valid, setValid] = useState(true);
 
   // SCRUM-71: Transform Spoonacular's recipe format into MealDB's format
   // so the modal rendering code works the same for both API sources.
@@ -72,7 +73,20 @@ function RecipeTile({recipe}) {
       }
     } catch {
       setError(true);
-    } finally {
+    } 
+    
+    
+    {/*SCRUM-79: Do not display tile is information is missing */}
+    {/*SCRUM-80: Do not display tile if information is malformed */}
+    {/*SCRUM-86: Console logs validation errors for debug purposes */}
+    try {
+      if (!modalData.strMeal) throw new Error("Recipe name doesn't exist for " + modalData.strMeal);
+      if (!modalData.strInstructions) throw new Error("Recipe Instructions not found for " + modalData.strMeal);
+      if (modalData.strInstructions[0] == '<') throw new Error("Recipe Instructions for " + modalData.strMeal + " returned in html");
+    }catch (e) {
+      console.error(e.message);
+      setValid(false);
+    }finally {
       setLoading(false);
     }
   }
@@ -91,7 +105,7 @@ function RecipeTile({recipe}) {
   return (
 
     <>
-      {/*SCRUM-79: Do not display tile is information is missing */}
+      {valid && (
       {/*SCRUM-80: Do not display tile if information is malformed */}
       {((recipe.raw.title || recipe.raw.strMeal) && (recipe.raw.instructions || recipe.raw.strInstructions)) && ((recipe.raw.instructions[0] != '<') && (recipe.raw.strInstructions != '<')) &&(
       <div className={styles.recipeTile}>
