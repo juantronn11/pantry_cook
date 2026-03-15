@@ -25,7 +25,7 @@ function RecipeTile({recipe}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const [valid, setValid] = useState(true);
+  var valid = true;
 
   // SCRUM-71: Transform Spoonacular's recipe format into MealDB's format
   // so the modal rendering code works the same for both API sources.
