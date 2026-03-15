@@ -83,6 +83,7 @@ function RecipeTile({recipe}) {
       if (!modalData.strMeal) throw new Error("Recipe name doesn't exist for " + modalData.strMeal);
       if (!modalData.strInstructions) throw new Error("Recipe Instructions not found for " + modalData.strMeal);
       if (modalData.strInstructions[0] == '<') throw new Error("Recipe Instructions for " + modalData.strMeal + " returned in html");
+      if (modalData.strInstructions.includes('https')) throw new Error("Recipe Instructions for " + modalData.strMeal + " returned a url");
     }catch (e) {
       console.error(e.message);
       setValid(false);
