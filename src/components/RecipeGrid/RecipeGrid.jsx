@@ -8,8 +8,9 @@ import RecipeTile from '../RecipeTile/RecipeTile';
 import LoadingSpinner from "../RecipeGrid/loading.svg";
 import { useEffect, useRef } from 'react';
 
-function RecipeGrid() {
-  const { recipes, loading, ingredients } = useRecipeContext();
+function RecipeGrid({ recipes: recipesProp }) {
+  const { recipes: contextRecipes, loading, ingredients } = useRecipeContext();
+  const recipes = recipesProp ?? contextRecipes;
   const gridRef = useRef(null);
 
   useEffect(() => {
