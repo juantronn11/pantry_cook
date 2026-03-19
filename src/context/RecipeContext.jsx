@@ -26,6 +26,12 @@ export function RecipeProvider({ children }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
+  // SCRUM-45: Controls how the results list is sorted.
+  // 'best-match'      — by matchScore descending (default, most ingredients matched first)
+  // 'a-z'             — alphabetical by recipe name
+  // 'fewest-missing'  — by missedIngredientCount ascending (fewest extra ingredients needed first)
+  const [sortOrder, setSortOrder] = useState('best-match')
+
   // SCRUM-51: Saved recipes library — stores recipes the user explicitly saves.
   // Each entry is a normalized recipe object ({ id, name, source, raw }).
   // Persisted to localStorage so saves survive page refreshes.
@@ -165,6 +171,8 @@ export function RecipeProvider({ children }) {
     saveRecipe,
     removeSavedRecipe,
     isRecipeSaved,
+    sortOrder,
+    setSortOrder,
   }
 
   return (
