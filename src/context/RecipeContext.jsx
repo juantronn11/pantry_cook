@@ -26,6 +26,33 @@ export function RecipeProvider({ children }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
+  // SCRUM-51: Saved recipes library — stores recipes the user explicitly saves.
+  // Each entry is a normalized recipe object ({ id, name, source, raw }).
+  // Persisted to localStorage so saves survive page refreshes.
+  const [savedRecipes, setSavedRecipes] = useState(() => {
+    const saved = localStorage.getItem('pantry-cook-saved')
+    return saved ? JSON.parse(saved) : []
+  })
+
+  useEffect(() => {
+    localStorage.setItem('pantry-cook-saved', JSON.stringify(savedRecipes))
+  }, [savedRecipes])
+
+  function saveRecipe(recipe) {
+    setSavedRecipes(prev => {
+      if (prev.some(r => r.id === recipe.id)) return prev
+      return [...prev, recipe]
+    })
+  }
+
+  function removeSavedRecipe(recipeId) {
+    setSavedRecipes(prev => prev.filter(r => r.id !== recipeId))
+  }
+
+  function isRecipeSaved(recipeId) {
+    return savedRecipes.some(r => r.id === recipeId)
+  }
+
   // SCRUM-48: Search history state — stores past search sessions.
   // Each entry is an object with shape:
   //   {
@@ -125,6 +152,10 @@ export function RecipeProvider({ children }) {
     fetchRecipes,
     historyRecipes,
     setHistoryRecipes,
+    savedRecipes,
+    saveRecipe,
+    removeSavedRecipe,
+    isRecipeSaved,
   }
 
   return (
