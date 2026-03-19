@@ -11,8 +11,11 @@
 import styles from './RecipeTile.module.css';
 import {useState} from 'react'
 import DownloadButton from '../DownloadButton/DownloadButton';
+import { useRecipeContext } from '../../context/RecipeContext';
 
 function RecipeTile({recipe}) {
+  const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeContext();
+  const saved = isRecipeSaved(recipe.id);
 
   const API_URL = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
   const [modalData, setModalData] = useState(null);
@@ -110,6 +113,12 @@ function RecipeTile({recipe}) {
             ) : (
               <>
                   <DownloadButton></DownloadButton>
+                  <button
+                    onClick={() => saved ? removeSavedRecipe(recipe.id) : saveRecipe(recipe)}
+                    className={styles.saveBtn}
+                  >
+                    {saved ? 'Remove from Library' : 'Save to Library'}
+                  </button>
                   <img src={imageError ? '../../../media/chicken_alfredo.jpg' : modalData.strMealThumb} alt={imageError ? 'Error' : modalData.strMeal} className={imageError ? styles.error : styles.modalImg} onError={handleImageError} />
                   <h2 className={styles.recipeTitle}>{modalData.strMeal}</h2>
                   <p className={styles.other}><strong>Category:</strong> {modalData.strCategory}</p>

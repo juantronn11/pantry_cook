@@ -74,6 +74,29 @@
   margin-bottom: 1rem;
 }
 
+.saveBtn {
+  background-color: lightblue;
+  border: none;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font: Times New Roman, serif;
+  border-radius: 2px;
+  cursor: pointer;
+  position: fixed;
+  bottom: 20px;
+  right: 170px;
+  z-index: 1000;
+  padding: 10px 20px;
+}
+
+.saveBtn:hover {
+  background-color: darkblue;
+  color: white;
+}
+
 .recipeInstructions {
   white-space: pre-line;
   line-height: 1.6;
@@ -110,8 +133,9 @@
     box-shadow: none !important;
   }
 
-  /* Hide the red X close button */
-  .closeBtn {
+  /* Hide the red X close button and save button */
+  .closeBtn,
+  .saveBtn {
     display: none !important;
   }
 
