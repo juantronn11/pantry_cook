@@ -101,10 +101,13 @@ export function RecipeProvider({ children }) {
     const spoonacularRecipes = spoonacularResult.status === 'fulfilled' ? spoonacularResult.value : []
 
     // SCRUM-19: normalize both API response shapes to a common format
+    // SCRUM-43: matchScore added to both shapes — MealDB gets 0 since that API
+    // does not return ingredient match counts
     const normalizedMealDB = mealDBRecipes.map(meal => ({
       id: `mealdb-${meal.idMeal}`,
       name: meal.strMeal.toLowerCase().trim(),
       source: 'mealdb',
+      matchScore: 0,
       raw: meal,
     }))
 
@@ -112,6 +115,7 @@ export function RecipeProvider({ children }) {
       id: `spoonacular-${recipe.id}`,
       name: recipe.title.toLowerCase().trim(),
       source: 'spoonacular',
+      matchScore: recipe.matchScore ?? 0,
       raw: recipe,
     }))
 
@@ -122,6 +126,11 @@ export function RecipeProvider({ children }) {
       seen.add(recipe.name)
       return true
     })
+
+    // SCRUM-43: Sort by matchScore descending so recipes matching more of the
+    // user's ingredients appear first. MealDB results have matchScore 0 since
+    // the MealDB API does not return ingredient match counts.
+    deduplicated.sort((a, b) => b.matchScore - a.matchScore)
 
     setRecipes(deduplicated)
 

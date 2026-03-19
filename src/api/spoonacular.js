@@ -52,6 +52,9 @@ async function batchGetDetails(recipes, batchSize = 3, delayMs = 500) {
 
 // Fires all ingredient searches concurrently then fetches details in throttled
 // batches to stay within Spoonacular's rate limits (SCRUM-17, SCRUM-71)
+// SCRUM-43: usedIngredientCount is saved before the detail fetch because the
+// /information endpoint does not return match counts. matchScore is attached
+// to each result so RecipeContext can sort by relevance.
 export async function fetchSpoonacularRecipes(ingredients) {
   // All ingredient searches fire at the same time
   const searchResults = await Promise.allSettled(
@@ -72,10 +75,19 @@ export async function fetchSpoonacularRecipes(ingredients) {
     return true
   })
 
+  // SCRUM-43: Preserve match counts before detail fetch loses them
+  const matchScoreById = new Map(
+    uniqueRecipes.map((r) => [r.id, r.usedIngredientCount ?? 0])
+  )
+
   // SCRUM-71: Fetch details in batches of 3 with 500ms delay to avoid 429 rate limits
   const detailResults = await batchGetDetails(uniqueRecipes)
 
+  // SCRUM-43: Attach matchScore to each result so RecipeContext can rank by relevance
   return detailResults
     .filter((r) => r.status === 'fulfilled' && r.value)
-    .map((r) => r.value)
+    .map((r) => ({
+      ...r.value,
+      matchScore: matchScoreById.get(r.value.id) ?? 0,
+    }))
 }
