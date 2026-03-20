@@ -87,6 +87,36 @@ export function RecipeProvider({ children }) {
     localStorage.setItem('pantry-cook-history', JSON.stringify(historyRecipes))
   }, [historyRecipes])
 
+  // SCRUM-45: Sorts a list of normalized recipe objects based on the active sortOrder.
+  // Called both after a fresh fetch and whenever the user changes the sort dropdown.
+  //   'best-match'     — highest matchScore first (most user ingredients used)
+  //   'a-z'            — alphabetical by recipe name
+  //   'fewest-missing' — fewest extra ingredients needed first (raw.missedIngredientCount)
+  //                      MealDB recipes don't have this field so they fall to the bottom.
+  function sortRecipes(list, order) {
+    const sorted = [...list]
+    if (order === 'a-z') {
+      sorted.sort((a, b) => a.name.localeCompare(b.name))
+    } else if (order === 'fewest-missing') {
+      sorted.sort((a, b) => {
+        const aMissed = a.raw?.missedIngredientCount ?? Infinity
+        const bMissed = b.raw?.missedIngredientCount ?? Infinity
+        return aMissed - bMissed
+      })
+    } else {
+      // default: 'best-match'
+      sorted.sort((a, b) => b.matchScore - a.matchScore)
+    }
+    return sorted
+  }
+
+  // SCRUM-45: Re-sort the existing results whenever the user changes sortOrder.
+  // This avoids a full re-fetch — the data is already there, we just reorder it.
+  useEffect(() => {
+    if (recipes.length === 0) return
+    setRecipes(prev => sortRecipes(prev, sortOrder))
+  }, [sortOrder])
+
   // SCRUM-18: fetchRecipes fires both API calls concurrently via Promise.allSettled().
   // If one API fails, the error flag is set but results from the other still come through.
   // SCRUM-19: results from both APIs are normalized to a common shape and deduplicated by name.
@@ -133,12 +163,10 @@ export function RecipeProvider({ children }) {
       return true
     })
 
-    // SCRUM-43: Sort by matchScore descending so recipes matching more of the
-    // user's ingredients appear first. MealDB results have matchScore 0 since
-    // the MealDB API does not return ingredient match counts.
-    deduplicated.sort((a, b) => b.matchScore - a.matchScore)
-
-    setRecipes(deduplicated)
+    // SCRUM-43 + SCRUM-45: Sort the deduplicated list using the active sortOrder.
+    // Default is 'best-match' (matchScore descending). User can change this via the
+    // sort dropdown on ResultsPage without triggering a re-fetch.
+    setRecipes(sortRecipes(deduplicated, sortOrder))
 
     // SCRUM-47: Auto-add this search to history. Build a history entry from the
     // ingredients that were searched and the deduplicated results, then prepend it
