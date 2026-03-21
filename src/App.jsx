@@ -13,17 +13,16 @@ import Navbar from './components/Navbar/Navbar'
 import SearchPage from './pages/SearchPage'
 import HistoryPage from './pages/HistoryPage'
 import SavedPage from './pages/SavedPage'
-import ResultsPage from './pages/ResultsPage'
 
 function App() {
+
   return (
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<SearchPage />} />
-        <Route path="/history" element={<HistoryPage />} />
-        <Route path="/saved" element={<SavedPage />} />
-        <Route path="/results" element={<ResultsPage/>}/>
+        <Route path="/" element={<SearchPage/>} />
+        <Route path="/history" element={<HistoryPage/>} />
+        <Route path="/saved" element={<SavedPage/>} />
       </Routes>
     </>
   )

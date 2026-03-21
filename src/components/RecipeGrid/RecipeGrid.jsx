@@ -29,8 +29,7 @@ function RecipeGrid({ recipes: recipesProp }) {
         <p>No recipes found. Try adding some ingredients to search!</p>
       </div>
     );
-  }
-
+  }  
   return (
     <>
       {loading && (
