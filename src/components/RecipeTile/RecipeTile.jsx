@@ -8,6 +8,9 @@
 // see line 106: 
 // 106 | | | | | |  <img src={modalData.strMealThumb} alt={modalData.strMeal} className={styles.modalImg} />
 
+// RecipeTile element validation - Owner: Christian Johnso
+// If any necessary values are not present or corrupted, recipe tile will not be displayed
+
 import styles from './RecipeTile.module.css';
 import {useState} from 'react'
 import DownloadButton from '../DownloadButton/DownloadButton';
@@ -88,9 +91,9 @@ function RecipeTile({recipe}) {
   return (
 
     <>
-      {/* SCRUM-79: Don't display incomplete recipe tiles - Owner: Christian Johnson
-          if recipe.raw is missing any necessary aspects, do not display tile*/}
-      {((recipe.raw.title || recipe.raw.strMeal) && (recipe.raw.instructions || recipe.raw.strInstructions)) && (
+      {/*SCRUM-79: Do not display tile is information is missing */}
+      {/*SCRUM-80: Do not display tile if information is malformed */}
+      {((recipe.raw.title || recipe.raw.strMeal) && (recipe.raw.instructions || recipe.raw.strInstructions)) && ((recipe.raw.instructions[0] != '<') && (recipe.raw.strInstructions != '<')) &&(
       <div className={styles.recipeTile}>
         <p>{recipe.raw.strMeal || recipe.raw.title}</p>
         {/* SCRUM-71: Show which API the recipe came from */}
