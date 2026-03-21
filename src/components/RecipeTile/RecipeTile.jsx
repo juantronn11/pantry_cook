@@ -25,36 +25,40 @@ function RecipeTile({recipe}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const {recipes, setRecipes} = useRecipeContext();
   var valid = true;
 
   // SCRUM-79: Do not display tile is information is missing
   // SCRUM-80: Do not display tile if information is malformed
   // SCRUM-86: Console logs validation errors for debug purposes
-  try {
-    if (!recipe.raw.strMeal && !recipe.raw.title) {
-      if (recipe.source === 'spoonacular') throw new Error("Recipe name doesn't exist for " + recipe.raw.title);
-      else throw new Error("Recipe name doesn't exist for " + recipe.raw.strMeal);
-    }
-    if (recipe.raw.strInstructions || recipe.raw.instructions) {
-      if (recipe.source === 'spoonacular') {
-        if (recipe.raw.instructions[0] == '<') throw new Error("Recipe Instructions for " + recipe.raw.title + " returned in html");
-        if (recipe.raw.instructions.includes('http')) throw new Error("Recipe Instructions for " + recipe.raw.title + " returned a url");
+  const ValidationCheck = () => {
+    try {
+      if (!recipe.raw.strMeal && !recipe.raw.title) {
+        if (recipe.source === 'spoonacular') throw new Error("Recipe name doesn't exist for " + recipe.raw.title);
+        else throw new Error("Recipe name doesn't exist for " + recipe.raw.strMeal);
       }
-      else {
-        if (recipe.raw.strInstructions[0] == '<') throw new Error("Recipe Instructions for " + recipe.raw.strMeal + " returned in html");
-        if (recipe.raw.instructions.includes('http')) throw new Error("Recipe Instructions for " + recipe.raw.strMeal + " returned a url");
+      if (recipe.raw.strInstructions || recipe.raw.instructions) {
+        if (recipe.source === 'spoonacular') {
+          if (recipe.raw.instructions[0] == '<') throw new Error("Recipe Instructions for " + recipe.raw.title + " returned in html");
+          if (recipe.raw.instructions.includes('http')) throw new Error("Recipe Instructions for " + recipe.raw.title + " returned a url");
+        }
+        else {
+          if (recipe.raw.strInstructions[0] == '<') throw new Error("Recipe Instructions for " + recipe.raw.strMeal + " returned in html");
+          if (recipe.raw.instructions.includes('http')) throw new Error("Recipe Instructions for " + recipe.raw.strMeal + " returned a url");
+        }
+      } else {
+        if (recipe.source === 'spoonacular') throw new Error("Recipe Instructions not found for " + recipe.raw.title);
+        else throw new Error("Recipe Instructions not found for " + recipe.raw.strMeal);
       }
-    } else {
-      if (recipe.source === 'spoonacular') throw new Error("Recipe Instructions not found for " + recipe.raw.title);
-      else throw new Error("Recipe Instructions not found for " + recipe.raw.strMeal);
+      if (!recipe.raw.strInstructions && !recipe.raw.instructions) {
+        if (recipe.source === 'spoonacular') throw new Error("Recipe Instructions not found for " + recipe.raw.title);
+        else throw new Error("Recipe Instructions not found for " + recipe.raw.strMeal);
+      }
+    }catch (e) {
+      console.error(e.message);
+      valid = false;
+      setRecipes(recipes.filter(result => result != recipe))
     }
-    if (!recipe.raw.strInstructions && !recipe.raw.instructions) {
-      if (recipe.source === 'spoonacular') throw new Error("Recipe Instructions not found for " + recipe.raw.title);
-      else throw new Error("Recipe Instructions not found for " + recipe.raw.strMeal);
-    }
-  }catch (e) {
-    console.error(e.message);
-    valid = false;
   }
 
   // SCRUM-71: Transform Spoonacular's recipe format into MealDB's format
@@ -115,6 +119,8 @@ function RecipeTile({recipe}) {
   const handleImageError = () => {
     setImageError(true);
   };
+
+  ValidationCheck();
   
 
   return (

@@ -2,6 +2,10 @@
 // Responsive grid layout that displays RecipeTile components
 // Handles the "no matching recipes" state
 
+// RecipeTile validation - Owner: Christian Johnson
+// Validate all values are present in each RecipeTile before displaying
+// If no valid RecipeTiles, let user know
+
 import styles from './RecipeGrid.module.css'
 import { useRecipeContext } from '../../context/RecipeContext';
 import RecipeTile from '../RecipeTile/RecipeTile';
@@ -41,6 +45,7 @@ function RecipeGrid({ recipes: recipesProp }) {
         {recipes.map((recipe) => (
           <RecipeTile key={recipe.id} recipe={recipe} />
         ))}
+        {recipes.length == 0 && ingredients.length != 0 && !loading && alert("Unfortunately, we were unable to find any complete recipes for your response. Please try a different combination of ingredients")}
       </div>
     </>
   );
