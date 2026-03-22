@@ -18,7 +18,7 @@ const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY
 // SCRUM-39: expose an endpoint for ingredient autocompletion with user input
 async function ingredientAutocomplete(query) {
   const res = await fetch (
-    `${BASE_URL}/food/ingredients/autocomplete?query=${encodeURIComponent(query)}&apiKey=${API_KEY}`
+    `${BASE_URL}/food/ingredients/autocomplete?query=${encodeURIComponent(query)}&number=10&meta_information=false&intolerances=&language=en&apiKey=${API_KEY}`
   )
   if (!res.ok) throw new Error(`Spoonacular autocomplete failed for "${query}"`)
 }
