@@ -10,6 +10,7 @@
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useRecipeContext } from '../../context/RecipeContext'
+import LoginButton from '../AccessButtons/LoginButton'
 import styles from './Navbar.module.css'
 
 // Navbar renders the top navigation bar on every page.
@@ -43,6 +44,7 @@ function Navbar() {
       <NavLink to="/" className={styles.logo} title="Go to home page">
         Pantry Cook
       </NavLink>
+      <LoginButton/>
 
       {/* Hamburger button — hidden on desktop, shown on mobile.
           Toggles menuOpen between true and false on each click */}
