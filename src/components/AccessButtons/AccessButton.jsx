@@ -1,12 +1,13 @@
 import { useAuth0 } from "@auth0/auth0-react";
 
-function LoginButton() {
+function AccessButton() {
   const {
     isLoading, // Loading state, the SDK needs to reach Auth0 on load
     isAuthenticated,
     error,
     loginWithRedirect: login, // Starts the login flow
     logout: auth0Logout, // Starts the logout flow
+    user
   } = useAuth0();
 
   const signup = () =>
@@ -20,6 +21,7 @@ function LoginButton() {
   return isAuthenticated ? (
     <>
       <button onClick={logout}>Logout</button>
+      {console.log(user)}
     </>
   ) : (
     <>
@@ -32,4 +34,4 @@ function LoginButton() {
   );
 }
 
-export default LoginButton;
+export default AccessButton;
