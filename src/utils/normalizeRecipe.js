@@ -3,6 +3,13 @@
 // throughout the app. All recipes from any API pass through these helpers
 // before being stored in context or displayed in the UI.
 
+/**
+ * Normalizes a MealDB recipe to the app's standard shape.
+ * matchScore is always 0 — MealDB does not return ingredient match counts.
+ *
+ * @param {object} meal - Raw MealDB recipe object
+ * @returns {{ id: string, name: string, source: 'mealdb', matchScore: number, raw: object }}
+ */
 export function normalizeMealDBRecipe(meal) {
   return {
     id: `mealdb-${meal.idMeal}`,
@@ -13,6 +20,13 @@ export function normalizeMealDBRecipe(meal) {
   }
 }
 
+/**
+ * Normalizes a Spoonacular recipe to the app's standard shape.
+ * matchScore comes from usedIngredientCount attached by fetchSpoonacularRecipes (SCRUM-43).
+ *
+ * @param {object} recipe - Spoonacular recipe with matchScore already attached
+ * @returns {{ id: string, name: string, source: 'spoonacular', matchScore: number, raw: object }}
+ */
 export function normalizeSpoonacularRecipe(recipe) {
   return {
     id: `spoonacular-${recipe.id}`,
