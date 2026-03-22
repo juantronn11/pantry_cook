@@ -17,6 +17,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { fetchMealDBRecipes } from '../api/mealdb'
 import { fetchSpoonacularRecipes } from '../api/spoonacular'
+import { normalizeMealDBRecipe, normalizeSpoonacularRecipe } from '../utils/normalizeRecipe'
 
 const RecipeContext = createContext(null)
 
