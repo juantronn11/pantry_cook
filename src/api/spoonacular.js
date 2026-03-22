@@ -8,9 +8,20 @@
 // Endpoints used:
 //   GET /recipes/findByIngredients — returns recipes matching an ingredient
 //   GET /recipes/{id}/information  — returns full details for one recipe
+// User text book autocomplete — SCRUM-27
+// Endpoints used:
+//   GET /food/ingredients/autocomplete — returns a list of ingredients given a string query
 
 const BASE_URL = 'https://api.spoonacular.com'
 const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY
+
+// SCRUM-39: expose an endpoint for ingredient autocompletion with user input
+async function ingredientAutocomplete(query) {
+  const res = await fetch (
+    `${BASE_URL}/food/ingredients/autocomplete?query=${encodeURIComponent(query)}&apiKey=${API_KEY}`
+  )
+  if (!res.ok) throw new Error(`Spoonacular autocomplete failed for "${query}"`)
+}
 
 // Makes one API call for a single ingredient
 async function searchByIngredient(ingredient) {
