@@ -25,41 +25,10 @@ function RecipeTile({recipe}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const {recipes, setRecipes} = useRecipeContext();
-  var valid = true;
-
-  // SCRUM-79: Do not display tile is information is missing
-  // SCRUM-80: Do not display tile if information is malformed
-  // SCRUM-86: Console logs validation errors for debug purposes
-  const ValidationCheck = () => {
-    try {
-      if (!recipe.raw.strMeal && !recipe.raw.title) {
-        if (recipe.source === 'spoonacular') throw new Error("Recipe name doesn't exist for " + recipe.raw.title);
-        else throw new Error("Recipe name doesn't exist for " + recipe.raw.strMeal);
-      }
-      if (recipe.raw.strInstructions || recipe.raw.instructions) {
-        if (recipe.source === 'spoonacular') {
-          if (recipe.raw.instructions[0] == '<') throw new Error("Recipe Instructions for " + recipe.raw.title + " returned in html");
-          if (recipe.raw.instructions.includes('http')) throw new Error("Recipe Instructions for " + recipe.raw.title + " returned a url");
-        }
-        else {
-          if (recipe.raw.strInstructions[0] == '<') throw new Error("Recipe Instructions for " + recipe.raw.strMeal + " returned in html");
-          if (recipe.raw.instructions.includes('http')) throw new Error("Recipe Instructions for " + recipe.raw.strMeal + " returned a url");
-        }
-      } else {
-        if (recipe.source === 'spoonacular') throw new Error("Recipe Instructions not found for " + recipe.raw.title);
-        else throw new Error("Recipe Instructions not found for " + recipe.raw.strMeal);
-      }
-      if (!recipe.raw.strInstructions && !recipe.raw.instructions) {
-        if (recipe.source === 'spoonacular') throw new Error("Recipe Instructions not found for " + recipe.raw.title);
-        else throw new Error("Recipe Instructions not found for " + recipe.raw.strMeal);
-      }
-    }catch (e) {
-      console.error(e.message);
-      valid = false;
-      setRecipes(recipes.filter(result => result != recipe))
-    }
-  }
+  // SCRUM-79/80/86: Validation previously lived here (ValidationCheck) but
+  // called setRecipes() during render, causing an infinite re-render loop.
+  // Validation is now handled in RecipeContext.fetchRecipes() before recipes
+  // reach the grid. See SCRUM-110.
 
   // SCRUM-71: Transform Spoonacular's recipe format into MealDB's format
   // so the modal rendering code works the same for both API sources.
@@ -120,13 +89,9 @@ function RecipeTile({recipe}) {
     setImageError(true);
   };
 
-  ValidationCheck();
-  
-
   return (
 
     <>
-      {valid && (
       <div className={styles.recipeTile}>
         <p>{recipe.raw.strMeal || recipe.raw.title}</p>
         {/* SCRUM-71: Show which API the recipe came from */}
@@ -141,7 +106,6 @@ function RecipeTile({recipe}) {
         />
         {loading && <p> Loading... </p>}
       </div>
-      )}
 
       {(modalData || error) && (
 
