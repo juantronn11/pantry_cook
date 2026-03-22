@@ -19,11 +19,13 @@ function SearchForm() {
   return (
     <>
       <div className={styles.searchForm}>
-        <p>Select up to {MAX_INGREDIENTS} ingredients</p>
-      </div>
+        <label for = "ingredients">Select up to {MAX_INGREDIENTS} ingredients</label>
 
-      <div className={styles.ingredientButton}>
-        {ingredientsList}
+        <input
+          type = 'text'
+          id = "ingredients"
+          name = 'name'
+        />
       </div>
       
       <div className={styles.searchForm}>
