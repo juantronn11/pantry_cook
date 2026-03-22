@@ -167,20 +167,45 @@ export function RecipeProvider({ children }) {
       return true
     })
 
+    // SCRUM-79/80/86: Filter out invalid recipes at the source so they never
+    // reach the grid. Previously this validation ran during RecipeTile render
+    // and called setRecipes(), causing an infinite re-render loop.
+    const validated = deduplicated.filter(recipe => {
+      try {
+        const raw = recipe.raw
+        if (!raw.strMeal && !raw.title) {
+          throw new Error("Recipe name doesn't exist for " + (raw.title || raw.strMeal))
+        }
+        if (raw.strInstructions || raw.instructions) {
+          const instructions = recipe.source === 'spoonacular' ? raw.instructions : raw.strInstructions
+          const name = recipe.source === 'spoonacular' ? raw.title : raw.strMeal
+          if (instructions[0] === '<') throw new Error("Recipe Instructions for " + name + " returned in html")
+          if (instructions.includes('http')) throw new Error("Recipe Instructions for " + name + " returned a url")
+        } else {
+          const name = recipe.source === 'spoonacular' ? raw.title : raw.strMeal
+          throw new Error("Recipe Instructions not found for " + name)
+        }
+        return true
+      } catch (e) {
+        console.error(e.message)
+        return false
+      }
+    })
+
     // SCRUM-43 + SCRUM-45: Sort the deduplicated list using the active sortOrder.
     // Default is 'best-match' (matchScore descending). User can change this via the
     // sort dropdown on ResultsPage without triggering a re-fetch.
-    setRecipes(sortRecipes(deduplicated, sortOrder))
+    setRecipes(sortRecipes(validated, sortOrder))
 
     // SCRUM-47: Auto-add this search to history. Build a history entry from the
-    // ingredients that were searched and the deduplicated results, then prepend it
-    // so historyRecipes stays in reverse chronological order. Cap at 50 entries
-    // to prevent unbounded localStorage growth (SCRUM-49 will persist this).
+    // validated results, then prepend it so historyRecipes stays in reverse
+    // chronological order. Cap at 50 entries to prevent unbounded localStorage
+    // growth (SCRUM-49 will persist this).
     const historyEntry = {
       id: crypto.randomUUID(),
       ingredients: [...ingredients],
       timestamp: new Date().toISOString(),
-      recipes: deduplicated,
+      recipes: validated,
     }
     setHistoryRecipes(prev => [historyEntry, ...prev].slice(0, 50))
 
