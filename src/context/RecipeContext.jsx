@@ -44,6 +44,10 @@ export function RecipeProvider({ children }) {
     localStorage.setItem('pantry-cook-saved', JSON.stringify(savedRecipes))
   }, [savedRecipes])
 
+  // SCRUM-107: Duplicate prevention — if the recipe is already in the
+  // saved library (matched by ID), the array is returned unchanged so
+  // no duplicate entry is created. The UI also indicates saved status
+  // by toggling the button label to "Remove from Library" (see RecipeTile).
   function saveRecipe(recipe) {
     setSavedRecipes(prev => {
       if (prev.some(r => r.id === recipe.id)) return prev
