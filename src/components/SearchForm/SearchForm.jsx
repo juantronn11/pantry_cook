@@ -4,6 +4,7 @@
 
 import styles from './SearchForm.module.css'
 import { useRecipeContext } from '../../context/RecipeContext';
+import { ingredientAutocomplete } from '../../api/spoonacular';
 
 import { useState } from 'react'
 import { useEffect } from 'react';
@@ -24,6 +25,7 @@ function SearchForm() {
           type = 'text'
           id = "ingredients"
           name = 'name'
+          onInput = {ingredientAutocomplete}
         />
       </div>
       
