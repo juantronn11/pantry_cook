@@ -2,6 +2,7 @@
 // Owner: Patrick Rucker
 
 import { useRecipeContext } from '../context/RecipeContext'
+import RecipeGrid from '../components/RecipeGrid/RecipeGrid'
 
 function SavedPage() {
   const { savedRecipes } = useRecipeContext()
@@ -18,6 +19,7 @@ function SavedPage() {
   return (
     <div>
       <h1>My Saved Recipes</h1>
+      <RecipeGrid recipes={savedRecipes} />
     </div>
   )
 }
