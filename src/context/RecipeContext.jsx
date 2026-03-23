@@ -17,6 +17,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { fetchMealDBRecipes } from '../api/mealdb'
 import { fetchSpoonacularRecipes } from '../api/spoonacular'
+import { normalizeMealDBRecipe, normalizeSpoonacularRecipe } from '../utils/normalizeRecipe'
 
 const RecipeContext = createContext(null)
 
@@ -143,21 +144,9 @@ export function RecipeProvider({ children }) {
     // SCRUM-19: normalize both API response shapes to a common format
     // SCRUM-43: matchScore added to both shapes — MealDB gets 0 since that API
     // does not return ingredient match counts
-    const normalizedMealDB = mealDBRecipes.map(meal => ({
-      id: `mealdb-${meal.idMeal}`,
-      name: meal.strMeal.toLowerCase().trim(),
-      source: 'mealdb',
-      matchScore: 0,
-      raw: meal,
-    }))
-
-    const normalizedSpoonacular = spoonacularRecipes.map(recipe => ({
-      id: `spoonacular-${recipe.id}`,
-      name: recipe.title.toLowerCase().trim(),
-      source: 'spoonacular',
-      matchScore: recipe.matchScore ?? 0,
-      raw: recipe,
-    }))
+    // SCRUM-46: inline map objects replaced with shared helpers from normalizeRecipe.js
+    const normalizedMealDB = mealDBRecipes.map(normalizeMealDBRecipe)
+    const normalizedSpoonacular = spoonacularRecipes.map(normalizeSpoonacularRecipe)
 
     // Deduplicate by name — MealDB entries are listed first so they take priority
     const seen = new Set()
