@@ -1,13 +1,13 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import styles from './AccessButton.module.css';
 
 function AccessButton() {
   const {
-    isLoading, // Loading state, the SDK needs to reach Auth0 on load
+    isLoading,
     isAuthenticated,
     error,
-    loginWithRedirect: login, // Starts the login flow
-    logout: auth0Logout, // Starts the logout flow
-    user
+    loginWithRedirect: login,
+    logout: auth0Logout,
   } = useAuth0();
 
   const signup = () =>
@@ -16,21 +16,18 @@ function AccessButton() {
   const logout = () =>
     auth0Logout({ logoutParams: { returnTo: window.location.origin } });
 
-  if (isLoading) return "Loading...";
+  if (isLoading) return <span className={styles.loading}>Loading...</span>;
 
   return isAuthenticated ? (
-    <>
-      <button onClick={logout}>Logout</button>
-      {console.log(user)}
-    </>
+    <div className={styles.btnGroup}>
+      <button onClick={logout} className={styles.btn}>Logout</button>
+    </div>
   ) : (
-    <>
-      {error && <p>Error: {error.message}</p>}
-
-      <button onClick={signup}>Signup</button>
-
-      <button onClick={login}>Login</button>
-    </>
+    <div className={styles.btnGroup}>
+      {error && <p className={styles.error}>Error: {error.message}</p>}
+      <button onClick={signup} className={`${styles.btn} ${styles.btnSignup}`}>Sign Up</button>
+      <button onClick={login} className={styles.btn}>Login</button>
+    </div>
   );
 }
 
