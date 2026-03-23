@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import styles from './AccessButton.module.css';
 
-function AccessButton() {
+function AccessButton({ variant = 'navbar' }) {
   const {
     isLoading,
     isAuthenticated,
@@ -19,11 +19,11 @@ function AccessButton() {
   if (isLoading) return <span className={styles.loading}>Loading...</span>;
 
   return isAuthenticated ? (
-    <div className={styles.btnGroup}>
+    <div className={`${styles.btnGroup} ${variant === 'page' ? styles.btnGroupPage : ''}`}>
       <button onClick={logout} className={styles.btn}>Logout</button>
     </div>
   ) : (
-    <div className={styles.btnGroup}>
+    <div className={`${styles.btnGroup} ${variant === 'page' ? styles.btnGroupPage : ''}`}>
       {error && <p className={styles.error}>Error: {error.message}</p>}
       <button onClick={signup} className={`${styles.btn} ${styles.btnSignup}`}>Sign Up</button>
       <button onClick={login} className={styles.btn}>Login</button>
