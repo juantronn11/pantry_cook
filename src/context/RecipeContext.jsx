@@ -196,7 +196,9 @@ export function RecipeProvider({ children }) {
       timestamp: new Date().toISOString(),
       recipes: validated,
     }
-    setHistoryRecipes(prev => [historyEntry, ...prev].slice(0, 50))
+    // SCRUM-114: Cap search history at 100 entries to prevent
+    // unbounded localStorage growth while giving users a generous buffer.
+    setHistoryRecipes(prev => [historyEntry, ...prev].slice(0, 100))
 
     setLoading(false)
   }
