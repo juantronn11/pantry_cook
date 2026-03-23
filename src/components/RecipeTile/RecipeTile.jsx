@@ -5,8 +5,6 @@
 // RecipeTile additional error handling — Owner: Tina Carter
 // Image error handling information:
 // https://medium.com/@hridoymahmud/solving-image-loading-and-error-handling-issues-in-react-with-a-custom-image-component-b6c5d0184f96
-// see line 106: 
-// 106 | | | | | |  <img src={modalData.strMealThumb} alt={modalData.strMeal} className={styles.modalImg} />
 
 // RecipeTile element validation - Owner: Christian Johnso
 // If any necessary values are not present or corrupted, recipe tile will not be displayed
@@ -15,6 +13,7 @@ import styles from './RecipeTile.module.css';
 import {useState} from 'react'
 import DownloadButton from '../DownloadButton/DownloadButton';
 import { useRecipeContext } from '../../context/RecipeContext';
+import errorImage from '../../../media/error_box_without_style.jpg';
 
 function RecipeTile({recipe}) {
   const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeContext();
@@ -85,8 +84,14 @@ function RecipeTile({recipe}) {
   };
 
   //SCRUM-74: Error handling for missing/invalid images. If the image fails to load, hide default broken image icon.
-  const handleImageError = () => {
-    setImageError(true);
+  //SCRUP-75: Error handling for missing/invalid images. (overwrites SCRUM-74) If the image fails to load, replace it with an error image but maintain the original image's dimensions.
+  const handleImageError = (e) => {
+    const width = e.currentTarget.style.width;
+    const height = e.currentTarget.style.height;
+    e.currentTarget.src = errorImage; // Set to custom error image
+    e.currentTarget.style.width = width; // Maintain original dimensions
+    e.currentTarget.style.height = height; 
+    setImageError(true); // Update state to indicate an image error occurred
   };
 
   return (
@@ -99,10 +104,11 @@ function RecipeTile({recipe}) {
           [{recipe.source}]
         </small>
         <img
-          src={recipe.raw.strMealThumb || recipe.raw.image}
+          src={imageError ? errorImage : recipe.raw.strMealThumb || recipe.raw.image}
           onClick={clickHandler}
           style={{ cursor: 'pointer' }}
-          alt={recipe.raw.strMeal || recipe.raw.title}
+          alt={imageError ? 'Error' :recipe.raw.strMeal || recipe.raw.title}
+          onError={handleImageError}
         />
         {loading && <p> Loading... </p>}
       </div>
@@ -123,7 +129,7 @@ function RecipeTile({recipe}) {
                   >
                     {saved ? 'Remove from Library' : 'Save to Library'}
                   </button>
-                  <img src={imageError ? '../../../media/chicken_alfredo.jpg' : modalData.strMealThumb} alt={imageError ? 'Error' : modalData.strMeal} className={imageError ? styles.error : styles.modalImg} onError={handleImageError} />
+                  <img src={imageError ? errorImage : modalData.strMealThumb} alt={imageError ? 'Error' : modalData.strMeal} className={styles.modalImg} onError={handleImageError} />
                   <h2 className={styles.recipeTitle}>{modalData.strMeal}</h2>
                   <p className={styles.other}><strong>Category:</strong> {modalData.strCategory}</p>
                   <p className={styles.other}><strong>Area:</strong> {modalData.strArea}</p>
