@@ -45,15 +45,23 @@ function SearchForm() {
 // concurrently, normalizes responses, deduplicates by name, and sets
 // recipes/loading/error state automatically.
 function SearchButton() {
-  const { fetchRecipes } = useRecipeContext();
+  const { fetchRecipes, setIngredients } = useRecipeContext();
 
   async function handleClick() {
-    if (selectedIngredients.length === 0) {
+    // SCRUM-41: Read the raw input value and split by comma into an array.
+    // parseIngredients (called inside fetchRecipes) handles trimming,
+    // lowercasing, and deduplication downstream.
+    const input = document.getElementById('ingredients')
+    const raw = input?.value?.split(',') ?? []
+    const ingredients = raw.map(i => i.trim()).filter(i => i !== '')
+
+    if (ingredients.length === 0) {
       alert("Please select at least one ingredient");
       return;
     }
 
-    await fetchRecipes(selectedIngredients);
+    setIngredients(ingredients)
+    await fetchRecipes(ingredients);
   }
 
   return (
