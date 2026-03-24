@@ -18,6 +18,7 @@ import { createContext, useContext, useState, useEffect } from 'react'
 import { fetchMealDBRecipes } from '../api/mealdb'
 import { fetchSpoonacularRecipes } from '../api/spoonacular'
 import { normalizeMealDBRecipe, normalizeSpoonacularRecipe } from '../utils/normalizeRecipe'
+import { parseIngredients } from '../utils/parseIngredients'
 
 const RecipeContext = createContext(null)
 
@@ -125,9 +126,13 @@ export function RecipeProvider({ children }) {
   // SCRUM-18: fetchRecipes fires both API calls concurrently via Promise.allSettled().
   // If one API fails, the error flag is set but results from the other still come through.
   // SCRUM-19: results from both APIs are normalized to a common shape and deduplicated by name.
-  async function fetchRecipes(ingredients) {
+  async function fetchRecipes(rawIngredients) {
     setLoading(true)
     setError(null)
+
+    // SCRUM-41: Parse and sanitize ingredients before sending to APIs.
+    // Ensures both services receive trimmed, lowercased, deduplicated strings.
+    const ingredients = parseIngredients(rawIngredients)
 
     const [mealDBResult, spoonacularResult] = await Promise.allSettled([
       fetchMealDBRecipes(ingredients),
