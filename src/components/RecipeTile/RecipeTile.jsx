@@ -13,7 +13,9 @@ import styles from './RecipeTile.module.css';
 import {useState} from 'react'
 import DownloadButton from '../DownloadButton/DownloadButton';
 import { useRecipeContext } from '../../context/RecipeContext';
-import errorImage from '../../../media/error_box_without_style.jpg';
+//SCRUM 77: added stylized error images for thumbnail and in-tile images.
+import errorThumb from '../../../media/error_thumbnail.jpg';
+import errorImage from '../../../media/error_image.jpg';
 
 function RecipeTile({recipe}) {
   const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeContext();
@@ -104,7 +106,7 @@ function RecipeTile({recipe}) {
           [{recipe.source}]
         </small>
         <img
-          src={imageError ? errorImage : recipe.raw.strMealThumb || recipe.raw.image}
+          src={imageError ? errorThumb : recipe.raw.strMealThumb || recipe.raw.image}
           onClick={clickHandler}
           style={{ cursor: 'pointer' }}
           alt={imageError ? 'Error' :recipe.raw.strMeal || recipe.raw.title}
