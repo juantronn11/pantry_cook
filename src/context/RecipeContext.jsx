@@ -19,6 +19,7 @@ import { fetchMealDBRecipes } from '../api/mealdb'
 import { fetchSpoonacularRecipes } from '../api/spoonacular'
 import { normalizeMealDBRecipe, normalizeSpoonacularRecipe } from '../utils/normalizeRecipe'
 import { parseIngredients } from '../utils/parseIngredients'
+import { withTimeout } from '../utils/withTimeout'
 
 const RecipeContext = createContext(null)
 
@@ -134,9 +135,14 @@ export function RecipeProvider({ children }) {
     // Ensures both services receive trimmed, lowercased, deduplicated strings.
     const ingredients = parseIngredients(rawIngredients)
 
+    // SCRUM-42: Wrap each API call with a 30-second timeout so the app
+    // does not hang indefinitely if an external service stops responding.
+    // If one API times out, Promise.allSettled marks it as rejected and
+    // results from the other API still come through.
+    const API_TIMEOUT = 30000
     const [mealDBResult, spoonacularResult] = await Promise.allSettled([
-      fetchMealDBRecipes(ingredients),
-      fetchSpoonacularRecipes(ingredients),
+      withTimeout(fetchMealDBRecipes(ingredients), API_TIMEOUT),
+      withTimeout(fetchSpoonacularRecipes(ingredients), API_TIMEOUT),
     ])
 
     if (mealDBResult.status === 'rejected' || spoonacularResult.status === 'rejected') {
