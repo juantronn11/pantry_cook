@@ -20,6 +20,7 @@ import { fetchSpoonacularRecipes } from '../api/spoonacular'
 import { normalizeMealDBRecipe, normalizeSpoonacularRecipe } from '../utils/normalizeRecipe'
 import { parseIngredients } from '../utils/parseIngredients'
 import { withTimeout } from '../utils/withTimeout'
+import { stripHtml } from '../utils/stripHtml'
 
 const RecipeContext = createContext(null)
 
@@ -179,7 +180,16 @@ export function RecipeProvider({ children }) {
         if (raw.strInstructions || raw.instructions) {
           const instructions = recipe.source === 'spoonacular' ? raw.instructions : raw.strInstructions
           const name = recipe.source === 'spoonacular' ? raw.title : raw.strMeal
-          if (instructions[0] === '<') throw new Error("Recipe Instructions for " + name + " returned in html")
+          // SCRUM-115: Strip HTML tags from instructions and convert to
+          // readable plain text instead of dropping the recipe entirely.
+          if (instructions[0] === '<') {
+            const stripped = stripHtml(instructions)
+            if (recipe.source === 'spoonacular') {
+              recipe.raw.instructions = stripped
+            } else {
+              recipe.raw.strInstructions = stripped
+            }
+          }
           if (instructions.includes('http')) throw new Error("Recipe Instructions for " + name + " returned a url")
         } else {
           const name = recipe.source === 'spoonacular' ? raw.title : raw.strMeal
