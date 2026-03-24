@@ -196,7 +196,14 @@ export function RecipeProvider({ children }) {
       timestamp: new Date().toISOString(),
       recipes: validated,
     }
-    setHistoryRecipes(prev => [historyEntry, ...prev].slice(0, 50))
+    // SCRUM-114: Filter out history entries older than 30 days, then cap
+    // at 100 entries. The time filter runs on each new search so stale
+    // entries are cleaned up naturally as the user continues to use the app.
+    const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000)
+    setHistoryRecipes(prev => {
+      const fresh = prev.filter(entry => new Date(entry.timestamp).getTime() > thirtyDaysAgo)
+      return [historyEntry, ...fresh].slice(0, 100)
+    })
 
     setLoading(false)
   }
