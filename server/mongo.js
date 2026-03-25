@@ -103,10 +103,10 @@ app.delete('/recipe', checkJwt, async (req, res) => {
     try {
         const email = req.auth.payload.email;
         if (!req.body.recipeId) return res.status(400).send({ error: 'recipeId is required' });
-
+        
         const result = await collections.updateOne(
         { email },
-        { $pull: { recipes: { _id: req.body.recipeId } } }
+        { $pull: { recipes: { id: req.body.recipeId } } }
         );
         if (result.modifiedCount === 0) return res.sendStatus(404);
         res.status(200).send({ message: 'Recipe deleted successfully' });
