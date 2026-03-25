@@ -32,6 +32,17 @@ function ExcludeIngredients() {
         placeholder="e.g. peanuts"
       />
       <button onClick={handleAdd}>+ Add</button>
+
+      {excluded.length > 0 && (
+        <div>
+          {excluded.map(item => (
+            <span key={item}>
+              {item}
+              <button onClick={() => setExcluded(prev => prev.filter(i => i !== item))}>✕</button>
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
