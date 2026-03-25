@@ -190,10 +190,25 @@ export function RecipeProvider({ children }) {
               recipe.raw.strInstructions = stripped
             }
           }
-          if (instructions.includes('http')) throw new Error("Recipe Instructions for " + name + " returned a url")
-        } else {
+          // SCRUM-40: Check if the instructions are just a URL (not real instructions).
+          // Allow recipes that mention URLs within real instruction text.
+          // Always allow YouTube links.
+          const urlPattern = /^https?:\/\/\\S+$/;
+          const youtubePattern = /https?:\/\/(www\\.)?(youtube\\.com|youtu\\.be)/i;
+
+          console.log(urlPattern + '\n' + youtubePattern)
+
+          if (urlPattern.test(instructions.trim())) {
+            // The entire instruction is just a URL
+            if (!youtubePattern.test(instructions.trim())) {
+              // It's not Youtube - drop this recipe
+              throw new Error("Recipe Intructions for " + name + " is a non-Youtube URL")
+            }
+          }
+          else {
           const name = recipe.source === 'spoonacular' ? raw.title : raw.strMeal
           throw new Error("Recipe Instructions not found for " + name)
+          }
         }
         return true
       } catch (e) {
