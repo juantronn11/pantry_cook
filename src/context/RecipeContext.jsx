@@ -22,6 +22,7 @@ import { parseIngredients } from '../utils/parseIngredients'
 import { withTimeout } from '../utils/withTimeout'
 import { stripHtml } from '../utils/stripHtml'
 import {useApi} from '../helperFunctions/helper'
+import { useAuth0 } from "@auth0/auth0-react";
 
 const RecipeContext = createContext(null)
 
@@ -45,11 +46,14 @@ export function RecipeProvider({ children }) {
   // Persisted to localStorage so saves survive page refreshes.
   const [savedRecipes, setSavedRecipes] = useState([]);
 
-    useEffect(() => {
-      getSavedRecipes()
-        .then(recipes => setSavedRecipes(recipes))
-        .catch(console.error);
-    }, []);
+  const { isAuthenticated } = useAuth0();
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    getSavedRecipes()
+      .then(recipes => setSavedRecipes(recipes))
+      .catch(console.error);
+  }, [isAuthenticated]);
 
   // SCRUM-107: Duplicate prevention — if the recipe is already in the
   // saved library (matched by ID), the array is returned unchanged so

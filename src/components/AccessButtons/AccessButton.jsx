@@ -1,5 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import styles from './AccessButton.module.css';
+import { useApi } from "../../helperFunctions/helper";
+import { useEffect } from "react";
 
 function AccessButton({ variant = 'navbar' }) {
   const {
@@ -9,6 +11,14 @@ function AccessButton({ variant = 'navbar' }) {
     loginWithRedirect: login,
     logout: auth0Logout,
   } = useAuth0();
+
+  const {createUser} = useApi();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      createUser().catch(console.error);
+    }
+  }, [isAuthenticated]);
 
   const signup = () =>
     login({ authorizationParams: { screen_hint: "signup" } });
