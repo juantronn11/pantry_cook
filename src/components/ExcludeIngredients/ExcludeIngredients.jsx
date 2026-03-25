@@ -4,6 +4,7 @@
 // Local state only in this SCRUM — wired to RecipeContext in SCRUM-106.
 
 import { useState } from 'react'
+import styles from './ExcludeIngredients.module.css'
 
 function ExcludeIngredients() {
   const [inputValue, setInputValue] = useState('')
@@ -21,24 +22,27 @@ function ExcludeIngredients() {
   }
 
   return (
-    <div>
-      <label htmlFor="exclude-input">Exclude ingredients:</label>
-      <input
-        id="exclude-input"
-        type="text"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="e.g. peanuts"
-      />
-      <button onClick={handleAdd}>+ Add</button>
+    <div className={styles.container}>
+      <label htmlFor="exclude-input" className={styles.label}>Exclude ingredients:</label>
+      <div className={styles.inputRow}>
+        <input
+          id="exclude-input"
+          type="text"
+          className={styles.input}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="e.g. peanuts"
+        />
+        <button className={styles.addButton} onClick={handleAdd}>+ Add</button>
+      </div>
 
       {excluded.length > 0 && (
-        <div>
+        <div className={styles.chipList}>
           {excluded.map(item => (
-            <span key={item}>
+            <span key={item} className={styles.chip}>
               {item}
-              <button onClick={() => setExcluded(prev => prev.filter(i => i !== item))}>✕</button>
+              <button className={styles.removeButton} onClick={() => setExcluded(prev => prev.filter(i => i !== item))}>✕</button>
             </span>
           ))}
         </div>
