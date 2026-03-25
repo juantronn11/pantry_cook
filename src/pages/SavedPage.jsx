@@ -3,24 +3,37 @@
 
 import { useRecipeContext } from '../context/RecipeContext'
 import RecipeGrid from '../components/RecipeGrid/RecipeGrid'
+import { useAuth0 } from "@auth0/auth0-react";
+import AccessButton from '../components/AccessButtons/AccessButton';
 
 function SavedPage() {
-  const { savedRecipes } = useRecipeContext()
+  const { savedRecipes } = useRecipeContext();
+  const {isAuthenticated} = useAuth0();
 
-  if (savedRecipes.length === 0) {
+  if(!isAuthenticated){
     return (
-      <div>
-        <h1>My Saved Recipes</h1>
-        <p>No saved recipes yet. Click "Save to Library" on any recipe to add it here!</p>
+      <div style={{ display: 'flex', flexDirection: 'column', 
+        alignItems: 'center', justifyContent: 'center', 
+        minHeight: '60vh', gap: '1rem' }}>
+
+        <p>Not Logged in!</p>
+        <p>Please sign in to access saved recipes</p>
+        
+        <AccessButton variant="page"/>
       </div>
     )
   }
 
-  return (
+  return (savedRecipes.length > 0) ? (
+      <div>
+        <h1>My Saved Recipes</h1>
+        <RecipeGrid recipes={savedRecipes} />
+      </div>
+  ) : (
     <div>
-      <h1>My Saved Recipes</h1>
-      <RecipeGrid recipes={savedRecipes} />
-    </div>
+        <h1>My Saved Recipes</h1>
+        <p>No saved recipes yet. Click "Save to Library" on any recipe to add it here!</p>
+      </div>
   )
 }
 
