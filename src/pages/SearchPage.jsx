@@ -2,6 +2,7 @@
 // Composes SearchForm + RecipeGrid components
 import SearchForm from '../components/SearchForm/SearchForm'
 import RecipeGrid from '../components/RecipeGrid/RecipeGrid'
+import ExcludeIngredients from '../components/ExcludeIngredients/ExcludeIngredients'
 import { useRecipeContext } from '../context/RecipeContext'
 import styles from './ResultsPage.module.css'
 
@@ -17,6 +18,10 @@ function SearchPage() {
       <h1>Search Recipes</h1>
 
       <SearchForm />
+
+      {/* SCRUM-104: Exclude ingredients section — user can add ingredients to
+          block from results. Wired to context in SCRUM-106. */}
+      <ExcludeIngredients />
 
       {showSortBar && (
         <div className={styles.sortBar}>
