@@ -4,7 +4,7 @@
 ## Table of Contents
 * [References Used](#references-used)
 * [Current State of the Server](#current-state-of-the-server)
-* [How to Duplicate this Portion of the Project](#how_to_duplicate_this_portion_of_the_project)
+* [How to Duplicate this Portion of the Project](#how-to-duplicate-this-portion-of-the-project)
 * [How to Update the Global Page](#how-to-update-the-global-page)
 
 ## References Used
