@@ -13,7 +13,7 @@ import LoadingSpinner from "../RecipeGrid/loading.svg";
 import { useEffect, useRef } from 'react';
 
 function RecipeGrid({ recipes: recipesProp }) {
-  const { recipes: contextRecipes, loading, ingredients } = useRecipeContext();
+  const { recipes: contextRecipes, loading, ingredients, excludedIngredients } = useRecipeContext();
   const recipes = recipesProp ?? contextRecipes;
   const gridRef = useRef(null);
 
