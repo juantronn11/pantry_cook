@@ -4,6 +4,7 @@
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.5rem;
 }
 
@@ -24,8 +25,7 @@
   font-size: 0.9rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  flex: 1;
-  max-width: 280px;
+  width: 135px;
 }
 
 .input:focus {

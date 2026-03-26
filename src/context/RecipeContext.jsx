@@ -35,6 +35,24 @@ export function RecipeProvider({ children }) {
           updateRecipes, 
           deleteRecipe } = useApi();
 
+  // SCRUM-106: Ingredients the user wants excluded from recipe results.
+  // Each entry is a lowercase trimmed string (e.g. 'peanuts', 'shellfish').
+  // addExclusion() prevents duplicates. removeExclusion() removes by value.
+  // Passed to Spoonacular via &excludeIngredients in SCRUM-108.
+  const [excludedIngredients, setExcludedIngredients] = useState([])
+
+  function addExclusion(ingredient) {
+    const trimmed = ingredient.trim().toLowerCase()
+    if (!trimmed) return
+    setExcludedIngredients(prev =>
+      prev.includes(trimmed) ? prev : [...prev, trimmed]
+    )
+  }
+
+  function removeExclusion(ingredient) {
+    setExcludedIngredients(prev => prev.filter(i => i !== ingredient))
+  }
+
   // SCRUM-45: Controls how the results list is sorted.
   // 'best-match'      — by matchScore descending (default, most ingredients matched first)
   // 'a-z'             — alphabetical by recipe name
@@ -282,6 +300,9 @@ export function RecipeProvider({ children }) {
     isRecipeSaved,
     sortOrder,
     setSortOrder,
+    excludedIngredients,
+    addExclusion,
+    removeExclusion,
   }
 
   return (
