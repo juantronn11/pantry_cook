@@ -161,7 +161,7 @@ export function RecipeProvider({ children }) {
     const API_TIMEOUT = 30000
     const [mealDBResult, spoonacularResult] = await Promise.allSettled([
       withTimeout(fetchMealDBRecipes(ingredients), API_TIMEOUT),
-      withTimeout(fetchSpoonacularRecipes(ingredients), API_TIMEOUT),
+      withTimeout(fetchSpoonacularRecipes(ingredients, excludedIngredients), API_TIMEOUT),
     ])
 
     if (mealDBResult.status === 'rejected' || spoonacularResult.status === 'rejected') {

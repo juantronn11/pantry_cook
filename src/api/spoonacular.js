@@ -25,9 +25,14 @@ export async function ingredientAutocomplete(query) {
 }
 
 // Makes one API call for a single ingredient
-async function searchByIngredient(ingredient) {
+// SCRUM-108: excludedIngredients passed as &excludeIngredients so Spoonacular
+// filters server-side — excluded recipes never come back in the response.
+async function searchByIngredient(ingredient, excludedIngredients = []) {
+  const excludeParam = excludedIngredients.length > 0
+    ? `&excludeIngredients=${encodeURIComponent(excludedIngredients.join(','))}`
+    : ''
   const res = await fetch(
-    `${BASE_URL}/recipes/findByIngredients?ingredients=${encodeURIComponent(ingredient)}&number=10&ranking=1&ignorePantry=true&apiKey=${API_KEY}`
+    `${BASE_URL}/recipes/findByIngredients?ingredients=${encodeURIComponent(ingredient)}&number=10&ranking=1&ignorePantry=true${excludeParam}&apiKey=${API_KEY}`
   )
   if (!res.ok) throw new Error(`Spoonacular search failed for "${ingredient}": ${res.status}`)
   return res.json()
@@ -67,10 +72,12 @@ async function batchGetDetails(recipes, batchSize = 3, delayMs = 500) {
 // SCRUM-43: usedIngredientCount is saved before the detail fetch because the
 // /information endpoint does not return match counts. matchScore is attached
 // to each result so RecipeContext can sort by relevance.
-export async function fetchSpoonacularRecipes(ingredients) {
+// SCRUM-108: Accept excludedIngredients and append to each search call so
+// Spoonacular filters server-side before returning any results.
+export async function fetchSpoonacularRecipes(ingredients, excludedIngredients = []) {
   // All ingredient searches fire at the same time
   const searchResults = await Promise.allSettled(
-    ingredients.map((ingredient) => searchByIngredient(ingredient))
+    ingredients.map((ingredient) => searchByIngredient(ingredient, excludedIngredients))
   )
 
   // Keep only successful searches
