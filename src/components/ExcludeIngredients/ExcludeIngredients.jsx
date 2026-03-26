@@ -1,19 +1,20 @@
-// ExcludeIngredients — SCRUM-104
+// ExcludeIngredients — SCRUM-104/106
 // Allows the user to specify ingredients they want excluded from recipe results.
-// Renders an input + add button, and displays excluded items as removable chips.
-// Local state only in this SCRUM — wired to RecipeContext in SCRUM-106.
+// SCRUM-106: Wired to RecipeContext — uses excludedIngredients, addExclusion,
+// and removeExclusion instead of local state. Actual filtering in SCRUM-108.
 
 import { useState } from 'react'
+import { useRecipeContext } from '../../context/RecipeContext'
 import styles from './ExcludeIngredients.module.css'
 
 function ExcludeIngredients() {
   const [inputValue, setInputValue] = useState('')
-  const [excluded, setExcluded] = useState([])
+  const { excludedIngredients, addExclusion, removeExclusion } = useRecipeContext()
 
   function handleAdd() {
     const trimmed = inputValue.trim().toLowerCase()
-    if (!trimmed || excluded.includes(trimmed)) return
-    setExcluded(prev => [...prev, trimmed])
+    if (!trimmed) return
+    addExclusion(trimmed)
     setInputValue('')
   }
 
@@ -37,12 +38,12 @@ function ExcludeIngredients() {
         <button className={styles.addButton} onClick={handleAdd}>+ Add</button>
       </div>
 
-      {excluded.length > 0 && (
+      {excludedIngredients.length > 0 && (
         <div className={styles.chipList}>
-          {excluded.map(item => (
+          {excludedIngredients.map(item => (
             <span key={item} className={styles.chip}>
               {item}
-              <button className={styles.removeButton} onClick={() => setExcluded(prev => prev.filter(i => i !== item))}>✕</button>
+              <button className={styles.removeButton} onClick={() => removeExclusion(item)}>✕</button>
             </span>
           ))}
         </div>
