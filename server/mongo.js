@@ -46,19 +46,18 @@ app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 
-app.post('/', checkJwt, async (req, res) => { //add user to db
+app.post('/user', checkJwt, async (req, res) => { //add user to db
 
     try {
-
         const email = req.auth.payload.email;
         const existingUser = await collections.findOne({ email });
         if (existingUser) {
-        return res.status(409).send({ error: 'User already exists' });
+            return res.status(200).send({ created: false, ...existingUser });
         }
 
         const newUser = {
-        email,
-        recipes: [],
+            email,
+            recipes: [],
         };
 
         const result = await collections.insertOne(newUser);
@@ -106,7 +105,7 @@ app.delete('/recipe', checkJwt, async (req, res) => {
 
         const result = await collections.updateOne(
         { email },
-        { $pull: { recipes: { _id: req.body.recipeId } } }
+        { $pull: { recipes: { id: req.body.recipeId } } }
         );
         if (result.modifiedCount === 0) return res.sendStatus(404);
         res.status(200).send({ message: 'Recipe deleted successfully' });

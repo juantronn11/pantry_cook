@@ -21,6 +21,8 @@ import { normalizeMealDBRecipe, normalizeSpoonacularRecipe } from '../utils/norm
 import { parseIngredients } from '../utils/parseIngredients'
 import { withTimeout } from '../utils/withTimeout'
 import { stripHtml } from '../utils/stripHtml'
+import {useApi} from '../helperFunctions/helper'
+import { useAuth0 } from "@auth0/auth0-react";
 
 const RecipeContext = createContext(null)
 
@@ -29,6 +31,9 @@ export function RecipeProvider({ children }) {
   const [recipes, setRecipes] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const { getSavedRecipes, 
+          updateRecipes, 
+          deleteRecipe } = useApi();
 
   // SCRUM-45: Controls how the results list is sorted.
   // 'best-match'      — by matchScore descending (default, most ingredients matched first)
@@ -39,28 +44,44 @@ export function RecipeProvider({ children }) {
   // SCRUM-51: Saved recipes library — stores recipes the user explicitly saves.
   // Each entry is a normalized recipe object ({ id, name, source, raw }).
   // Persisted to localStorage so saves survive page refreshes.
-  const [savedRecipes, setSavedRecipes] = useState(() => {
-    const saved = localStorage.getItem('pantry-cook-saved')
-    return saved ? JSON.parse(saved) : []
-  })
+  const [savedRecipes, setSavedRecipes] = useState([]);
+
+  const { isAuthenticated } = useAuth0();
 
   useEffect(() => {
-    localStorage.setItem('pantry-cook-saved', JSON.stringify(savedRecipes))
-  }, [savedRecipes])
+    if (!isAuthenticated) return;
+    getSavedRecipes()
+      .then(recipes => setSavedRecipes(recipes))
+      .catch(console.error);
+  }, [isAuthenticated]);
 
   // SCRUM-107: Duplicate prevention — if the recipe is already in the
   // saved library (matched by ID), the array is returned unchanged so
   // no duplicate entry is created. The UI also indicates saved status
   // by toggling the button label to "Remove from Library" (see RecipeTile).
-  function saveRecipe(recipe) {
-    setSavedRecipes(prev => {
-      if (prev.some(r => r.id === recipe.id)) return prev
-      return [...prev, recipe]
-    })
+
+  async function saveRecipe(recipe) {
+    if (savedRecipes.some(r => r.id === recipe.id)) return;
+
+    setSavedRecipes(prev => [...prev, recipe]);
+
+    try {
+      await updateRecipes(recipe);
+    } catch (e) {
+      setSavedRecipes(savedRecipes); // rollback if API fails
+      console.error('Failed to save recipe:', e);
+    }
   }
 
-  function removeSavedRecipe(recipeId) {
-    setSavedRecipes(prev => prev.filter(r => r.id !== recipeId))
+  async function removeSavedRecipe(recipeId) {
+    setSavedRecipes(prev => prev.filter(r => r.id !== recipeId));
+
+    try {
+      await deleteRecipe(recipeId);
+    } catch (e) {
+      setSavedRecipes(savedRecipes); // rollback if API fails
+      console.error('Failed to remove recipe:', e);
+    }
   }
 
   function isRecipeSaved(recipeId) {
