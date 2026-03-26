@@ -32,7 +32,9 @@ function SearchForm() {
       
       {/* SCRUM-106: Exclude ingredients sits between the ingredient input
           and the Search button so it feels part of the search experience */}
-      <ExcludeIngredients />
+      <div className={styles.searchForm}>
+        <ExcludeIngredients />
+      </div>
 
       <div className={styles.searchForm}>
         <p> Press Search for recipes with your ingredients</p>
