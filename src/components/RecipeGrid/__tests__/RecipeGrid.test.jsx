@@ -14,23 +14,35 @@ vi.mock('../../../context/RecipeContext', () => ({
 
 import { useRecipeContext } from '../../../context/RecipeContext'
 
+// Base mock return value — includes all fields RecipeGrid and its child
+// RecipeTile components read from context
+const baseMock = {
+  recipes: [],
+  loading: false,
+  ingredients: [],
+  excludedIngredients: [],
+  saveRecipe: vi.fn(),
+  removeSavedRecipe: vi.fn(),
+  isRecipeSaved: vi.fn().mockReturnValue(false),
+}
+
 // jsdom doesn't implement scrollIntoView — provide a no-op stub
 // so the useEffect in RecipeGrid doesn't throw
 beforeEach(() => {
   Element.prototype.scrollIntoView = vi.fn()
+  useRecipeContext.mockReturnValue(baseMock)
 })
 
 describe('RecipeGrid', () => {
 
   it('shows loading spinner when loading is true', () => {
-    useRecipeContext.mockReturnValue({ recipes: [], loading: true, ingredients: [] })
+    useRecipeContext.mockReturnValue({ ...baseMock, loading: true })
     render(<RecipeGrid />)
     // Miguel replaced the text with an SVG spinner that has alt="Loading..."
     expect(screen.getByAltText('Loading...')).toBeInTheDocument()
   })
 
   it('does not show loading spinner when loading is false', () => {
-    useRecipeContext.mockReturnValue({ recipes: [], loading: false, ingredients: [] })
     render(<RecipeGrid />)
     expect(screen.queryByAltText('Loading...')).not.toBeInTheDocument()
   })
@@ -40,7 +52,7 @@ describe('RecipeGrid', () => {
       { id: 'spoonacular-1', name: 'chicken curry', source: 'spoonacular', raw: { title: 'Chicken Curry', image: 'img1.jpg' } },
       { id: 'spoonacular-2', name: 'tomato soup', source: 'spoonacular', raw: { title: 'Tomato Soup', image: 'img2.jpg' } },
     ]
-    useRecipeContext.mockReturnValue({ recipes: mockRecipes, loading: false, ingredients: ['chicken'] })
+    useRecipeContext.mockReturnValue({ ...baseMock, recipes: mockRecipes, ingredients: ['chicken'] })
     render(<RecipeGrid />)
 
     // Each RecipeTile renders the recipe name as text
@@ -50,7 +62,7 @@ describe('RecipeGrid', () => {
 
   it('shows empty state message when there are no recipes but ingredients were selected', () => {
     // ingredients has items = user searched, but no recipes came back
-    useRecipeContext.mockReturnValue({ recipes: [], loading: false, ingredients: ['chicken'] })
+    useRecipeContext.mockReturnValue({ ...baseMock, ingredients: ['chicken'] })
     render(<RecipeGrid />)
 
     // Miguel added an early return with this message when recipes is empty

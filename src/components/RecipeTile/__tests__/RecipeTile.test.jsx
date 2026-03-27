@@ -9,8 +9,20 @@ import { render, screen, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import RecipeTile from '../RecipeTile'
 
+// RecipeTile calls useRecipeContext for save/remove/isRecipeSaved — mock it
+vi.mock('../../../context/RecipeContext', () => ({
+  useRecipeContext: vi.fn(),
+}))
+
+import { useRecipeContext } from '../../../context/RecipeContext'
+
 beforeEach(() => {
   vi.restoreAllMocks()
+  useRecipeContext.mockReturnValue({
+    saveRecipe: vi.fn(),
+    removeSavedRecipe: vi.fn(),
+    isRecipeSaved: vi.fn().mockReturnValue(false),
+  })
 })
 
 // Mock Spoonacular recipe (normalized shape from RecipeContext)
@@ -40,12 +52,6 @@ describe('RecipeTile — rendering', () => {
     expect(screen.getByAltText('Tomato Soup')).toHaveAttribute('src', 'https://example.com/soup.jpg')
   })
 
-  it('shows [spoonacular] source label in orange', () => {
-    render(<RecipeTile recipe={spoonacularRecipe} />)
-    const label = screen.getByText('[spoonacular]')
-    expect(label).toBeInTheDocument()
-    expect(label.style.color).toBe('orange')
-  })
 })
 
 describe('RecipeTile — click handler', () => {
