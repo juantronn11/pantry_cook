@@ -13,7 +13,7 @@ import LoadingSpinner from "../RecipeGrid/loading.svg";
 import { useEffect, useRef } from 'react';
 
 function RecipeGrid({ recipes: recipesProp }) {
-  const { recipes: contextRecipes, loading, ingredients } = useRecipeContext();
+  const { recipes: contextRecipes, loading, ingredients, excludedIngredients } = useRecipeContext();
   const recipes = recipesProp ?? contextRecipes;
   const gridRef = useRef(null);
 
@@ -24,9 +24,12 @@ function RecipeGrid({ recipes: recipesProp }) {
   }, [loading]);
 
   if (recipes.length === 0 && !loading && ingredients.length > 0) {
+    const message = excludedIngredients.length > 0
+      ? 'No recipes found — try removing some excluded ingredients.'
+      : 'No recipes found. Try adding some ingredients to search!'
     return (
       <div className={styles.emptyState}>
-        <p>No recipes found. Try adding some ingredients to search!</p>
+        <p>{message}</p>
       </div>
     );
   }  
