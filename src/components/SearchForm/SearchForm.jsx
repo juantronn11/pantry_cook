@@ -7,8 +7,7 @@ import { useRecipeContext } from '../../context/RecipeContext';
 import { ingredientAutocomplete } from '../../api/spoonacular';
 import ExcludeIngredients from '../ExcludeIngredients/ExcludeIngredients';
 
-import { useState } from 'react'
-import { useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react'
 
 var selectedIngredients;
 const MAX_INGREDIENTS = 5;
@@ -16,6 +15,31 @@ const API_URL = 'https://www.themealdb.com/api/json/v1/1/';
 
 function SearchForm() {
   selectedIngredients = useRecipeContext().ingredients;
+  const debounceTimer = useRef(null);
+  const autocompletedIngredients = useRef(new Set());
+
+  // SCRUM-116: Debounce autocomplete so the API is only called after the user
+  // stops typing for 500ms. Tracks which ingredients have already been
+  // autocompleted so each one only triggers one API call. Supports up to
+  // MAX_INGREDIENTS comma-separated entries.
+  const handleInput = useCallback((e) => {
+    const raw = e.target.value;
+    const parts = raw.split(',').map(p => p.trim()).filter(p => p !== '');
+    clearTimeout(debounceTimer.current);
+
+    debounceTimer.current = setTimeout(() => {
+      for (const ingredient of parts) {
+        if (ingredient.length >= 2 && !autocompletedIngredients.current.has(ingredient.toLowerCase())) {
+          autocompletedIngredients.current.add(ingredient.toLowerCase());
+          ingredientAutocomplete(ingredient);
+        }
+      }
+    }, 500);
+  }, []);
+
+  useEffect(() => {
+    return () => clearTimeout(debounceTimer.current);
+  }, []);
 
   return (
     <>
@@ -26,7 +50,7 @@ function SearchForm() {
           type = 'text'
           id = "ingredients"
           name = 'name'
-          onInput = {ingredientAutocomplete}
+          onInput = {handleInput}
         />
       </div>
       

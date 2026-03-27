@@ -15,8 +15,16 @@
 const BASE_URL = 'https://api.spoonacular.com'
 const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY
 
+// SCRUM-116: Counter tracks how many autocomplete API calls are made.
+// Check the browser console to see the count logged on each call.
+let autocompleteCallCount = 0
+export function getAutocompleteCallCount() { return autocompleteCallCount }
+export function resetAutocompleteCallCount() { autocompleteCallCount = 0 }
+
 // SCRUM-39: expose an endpoint for ingredient autocompletion with user input
 export async function ingredientAutocomplete(query) {
+  autocompleteCallCount++
+  console.log(`[Autocomplete] API call #${autocompleteCallCount} — query: "${query}"`)
   const res = await fetch (
     `${BASE_URL}/food/ingredients/autocomplete?query=${encodeURIComponent(query)}&number=10&meta_information=false&intolerances=&language=en&apiKey=${API_KEY}`
   )
