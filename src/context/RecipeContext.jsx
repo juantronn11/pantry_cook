@@ -182,7 +182,7 @@ export function RecipeProvider({ children }) {
     const API_TIMEOUT = 30000
     const [mealDBResult, spoonacularResult] = await Promise.allSettled([
       withTimeout(fetchMealDBRecipes(ingredients), API_TIMEOUT),
-      withTimeout(fetchSpoonacularRecipes(ingredients), API_TIMEOUT),
+      withTimeout(fetchSpoonacularRecipes(ingredients, excludedIngredients), API_TIMEOUT),
     ])
 
     if (mealDBResult.status === 'rejected' || spoonacularResult.status === 'rejected') {
@@ -199,9 +199,19 @@ export function RecipeProvider({ children }) {
     const normalizedMealDB = mealDBRecipes.map(normalizeMealDBRecipe)
     const normalizedSpoonacular = spoonacularRecipes.map(normalizeSpoonacularRecipe)
 
+    // SCRUM-108: MealDB's filter.php only returns idMeal, strMeal, and strMealThumb —
+    // no ingredient list is available (detail fetch is CORS-blocked on free tier).
+    // Best-effort: drop any MealDB recipe whose name contains an excluded ingredient.
+    // Spoonacular exclusions are handled server-side via &excludeIngredients.
+    const filteredMealDB = excludedIngredients.length === 0
+      ? normalizedMealDB
+      : normalizedMealDB.filter(recipe =>
+          !excludedIngredients.some(excl => recipe.name.includes(excl))
+        )
+
     // Deduplicate by name — MealDB entries are listed first so they take priority
     const seen = new Set()
-    const deduplicated = [...normalizedMealDB, ...normalizedSpoonacular].filter(recipe => {
+    const deduplicated = [...filteredMealDB, ...normalizedSpoonacular].filter(recipe => {
       if (seen.has(recipe.name)) return false
       seen.add(recipe.name)
       return true
