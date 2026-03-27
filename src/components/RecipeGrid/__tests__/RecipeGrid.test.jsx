@@ -37,7 +37,7 @@ describe('RecipeGrid', () => {
 
   it('renders a recipe tile for each recipe', () => {
     const mockRecipes = [
-      { id: 'mealdb-1', name: 'chicken curry', source: 'mealdb', raw: { strMeal: 'Chicken Curry', strMealThumb: 'img1.jpg' } },
+      { id: 'spoonacular-1', name: 'chicken curry', source: 'spoonacular', raw: { title: 'Chicken Curry', image: 'img1.jpg' } },
       { id: 'spoonacular-2', name: 'tomato soup', source: 'spoonacular', raw: { title: 'Tomato Soup', image: 'img2.jpg' } },
     ]
     useRecipeContext.mockReturnValue({ recipes: mockRecipes, loading: false, ingredients: ['chicken'] })

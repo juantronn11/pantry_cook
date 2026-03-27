@@ -31,7 +31,7 @@ function RecipeTile({recipe}) {
   // reach the grid. See SCRUM-110.
 
   // SCRUM-71: Transform Spoonacular's recipe format into the modal's expected shape.
-  function spoonacularToMealDBFormat(raw) {
+  function toModalFormat(raw) {
     const formatted = {
       strMeal: raw.title,
       strMealThumb: raw.image,
@@ -41,8 +41,7 @@ function RecipeTile({recipe}) {
       strYoutube: null,
     };
 
-    // Map Spoonacular's extendedIngredients array to MealDB's
-    // strIngredient1/strMeasure1, strIngredient2/strMeasure2, ... format
+    // Map extendedIngredients to strIngredient1/strMeasure1, strIngredient2/strMeasure2, ... format
     raw.extendedIngredients?.forEach((ing, i) => {
       formatted[`strIngredient${i + 1}`] = ing.name || ing.original;
       formatted[`strMeasure${i + 1}`] = ing.amount
@@ -59,7 +58,7 @@ function RecipeTile({recipe}) {
     setError(false);
 
     try {
-      setModalData(spoonacularToMealDBFormat(recipe.raw));
+      setModalData(toModalFormat(recipe.raw));
     } catch {
       setError(true);
     }
@@ -85,16 +84,12 @@ function RecipeTile({recipe}) {
 
     <>
       <div className={styles.recipeTile}>
-        <p>{recipe.raw.strMeal || recipe.raw.title}</p>
-        {/* SCRUM-71: Show which API the recipe came from */}
-        <small style={{ color: recipe.source === 'spoonacular' ? 'orange' : 'green', fontWeight: 'bold' }}>
-          [{recipe.source}]
-        </small>
+        <p>{recipe.raw.title}</p>
         <img
-          src={imageError ? errorThumb : recipe.raw.strMealThumb || recipe.raw.image}
+          src={imageError ? errorThumb : recipe.raw.image}
           onClick={clickHandler}
           style={{ cursor: 'pointer' }}
-          alt={imageError ? 'Error' :recipe.raw.strMeal || recipe.raw.title}
+          alt={imageError ? 'Error' : recipe.raw.title}
           onError={handleImageError}
         />
         {loading && <p> Loading... </p>}
