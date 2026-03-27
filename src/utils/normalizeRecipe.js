@@ -1,24 +1,7 @@
 // normalizeRecipe.js — Consistent output shape for all recipe results
 // SCRUM-46: Single source of truth for the normalized recipe shape used
-// throughout the app. All recipes from any API pass through these helpers
-// before being stored in context or displayed in the UI.
-
-/**
- * Normalizes a MealDB recipe to the app's standard shape.
- * matchScore is always 0 — MealDB does not return ingredient match counts.
- *
- * @param {object} meal - Raw MealDB recipe object
- * @returns {{ id: string, name: string, source: 'mealdb', matchScore: number, raw: object }}
- */
-export function normalizeMealDBRecipe(meal) {
-  return {
-    id: `mealdb-${meal.idMeal}`,
-    name: meal.strMeal.toLowerCase().trim(),
-    source: 'mealdb',
-    matchScore: 0,
-    raw: meal,
-  }
-}
+// throughout the app. All recipes pass through this helper before being
+// stored in context or displayed in the UI.
 
 /**
  * Normalizes a Spoonacular recipe to the app's standard shape.

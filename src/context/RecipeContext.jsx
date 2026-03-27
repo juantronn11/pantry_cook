@@ -138,7 +138,6 @@ export function RecipeProvider({ children }) {
   //   'best-match'     — highest matchScore first (most user ingredients used)
   //   'a-z'            — alphabetical by recipe name
   //   'fewest-missing' — fewest extra ingredients needed first (raw.missedIngredientCount)
-  //                      MealDB recipes don't have this field so they fall to the bottom.
   function sortRecipes(list, order) {
     const sorted = [...list]
     if (order === 'a-z') {
