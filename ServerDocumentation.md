@@ -49,8 +49,9 @@ ISSUES: `time remaining to fix: 10` `time spent so far: 5`
 
 ## How to Duplicate this Portion of the Project
 
-don't.
+Don't.
 
+### out of date but functional accross a network:
 Out of date: see README.md for details.
 <br>You must be on a version of the code before 24/03/2026
 <br>In terminal, in the location where this codebase is stored, type:
@@ -69,14 +70,39 @@ It should display the following:
 > <br>➜  Network: http://192.168.1.169:5173/
 
 It may have a longer list of Network urls. On a device that is securely connected to the same network (assumed: WiFi, but Ethernet and bluetooth (hotspot) do work as tested 27/03/2026 21:56) enter any Network url into the search bar to access (an old version of) PantryCook. 
+
+That looks like this, using VirtualBox to simulate a second device:
+![Old PantryCook](./media/pantry_cook_old_accross_devices.jpg)
+
 If you attempt this on a current version of the code (post requiring a second terminal running `node ./server/mongo.js/`) you will get a blank page:
 
 ![PantryCook Not Loading](./media/pantry_cook_not_loading.jpg)
 
-Other potential issues you could run into are unsecure connection errors: 
+Other potential issues you could run into are unsecure connection errors. I did't get a screenshot, but the error message is something link 'you have a non-secure connection to this network, so you cannot access this webpage'. Disconnecting and reconnecting to the network fixed the issue.
 
-![PantryCook Not Loading Because of Non-Secure Network Connection](./media/pantry_cook_network_security_error.jpg)
+### GitHub Pages
 
+The geeksforgeeks instructions are very clear to follow, so see them for more detail: https://www.geeksforgeeks.org/git/publish-websites-on-github-pages-with-a-custom-domain/.
+
+From bitbucket reposetory, copy link as though you were cloning it to a new location. In GitHub, import the repository using that link. It must be **public** or you must have a paid version of GitHub.
+
+Go to Settings > Pages.
+
+Under **Build and Deploy** choose "deploy from branch," then choose the branch dev2 (OR main, post 29/03/2026). Keep /root selected, as `index.html` is located in root, not in /docs. Save.
+
+There will be a link that populates in the form `https://account-name.github.io/RepoName/`. Custom domain names can be applied in the relevant box, but I did not do this.
+
+To have this link populate somthing other than a blank page, use branch `SCRUM-103-test-branch`. It contains an extra file and changes to index.html that cause the link to populate a page with a button that tries (and, due to two terminal command requirements of our current code, fail) to force the terminal comands to run, which would populate a local version of PantryCook in the same way running npm run dev does in commandline, were these changes implemented on dev (not dev2) or any other version of the code from before 24/03/2026.
+
+### Wordpress/run a server
+
+I used apache2, so downloading that is necessary to perform the same steps. Then, mostly following Indigo LLC and Redian's instructions, a webpage could be hosted that is globally avaiable.
+
+This resulted in a blank wordpress website that wasn't related to our codebase.
+
+Major pitfall 1: I changed locations (and thus wifi/router information) in the middle of testing this, so had to start the non-localisation process all over on 27/03/2026, including searching for the physical router. I do not recomend that you duplicate this step.
+
+Major pitfall 2: I was running this in VirtualBox (which is very slow when running so much code in it and on my main OS), which made permissions for moving code to the /var/www/http file very dificult (due to root and admin privileges being different from my primary OS) so the PantryCook code couldn't be associated with the database I made to hold the wordpress temporary/placeholder website.
 
 ## How to Update the Global Page
 
