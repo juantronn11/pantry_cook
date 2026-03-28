@@ -10,25 +10,16 @@
 ## References Used
 `Ubuntu 25.10` `Apache 2.4.43` `Wampserver 3.4.0` `GitHub Pages` `Wordpress 6.9.1`
 
-https://www.geeksforgeeks.org/git/publish-websites-on-github-pages-with-a-custom-domain/
-
-https://support.linksys.com/kb/article/318-en/
-
-https://wordpress.org/download/
-
-https://docs.npmjs.com/about-npm
-
-https://stackoverflow.com/questions/49275342/what-does-npm-run-do
-
-https://teamtreehouse.com/library/build-a-simple-dynamic-site-with-nodejs
-
-https://teamtreehouse.com/community/how-to-call-nodejs-in-html-file
-
-https://httpd.apache.org/
-
-https://www.youtube.com/watch?v=LnOaURGIdbA
-
-https://www.youtube.com/watch?v=U-Xi0EsMI0Y
+<br>&emsp; "Publish Websites on Github Pages with a Custom Domain," geeksforgeeks, https://www.geeksforgeeks.org/git/publish-websites-on-github-pages-with-a-custom-domain/.
+<br>&emsp; "How to set up Port Forwarding on the Linksys Smart WiFi router using the local access interface," linksys, https://support.linksys.com/kb/article/318-en/.
+<br>&emsp; _download wordpress,_ wordpress, https://wordpress.org/download/.
+<br>&emsp; "About npm," npm Docs, https://docs.npmjs.com/about-npm
+<br>&emsp; "What does npm run do?" stackoverflow, https://stackoverflow.com/questions/49275342/what-does-npm-run-do.
+<br>&emsp; "Build a Simple Dynamic Site with Node.js," teamtreehouse, https://teamtreehouse.com/library/build-a-simple-dynamic-site-with-nodejs.
+<br>&emsp; "How to call nodejs in html file?" teamtreehouse, https://teamtreehouse.com/community/how-to-call-nodejs-in-html-file.
+<br>&emsp; _download apache,_ apache, https://httpd.apache.org/.
+<br>&emsp; Indigo Software LLC, "How To Host Your Own Website For Free," youtube, https://www.youtube.com/watch?v=LnOaURGIdbA.
+<br>&emsp; Redian TopNotch Programmer, "How to Host your Website locally into a Ubuntu Virtual Machine," youtube, https://www.youtube.com/watch?v=U-Xi0EsMI0Y.
 
 <br>&emsp; Author(?) "Title of Website or Video or Document," host location (i.e. geeks for geeks), https://url-access-example.
 
@@ -58,7 +49,34 @@ ISSUES: `time remaining to fix: 10` `time spent so far: 5`
 
 ## How to Duplicate this Portion of the Project
 
-don't
+don't.
+
+Out of date: see README.md for details.
+<br>You must be on a version of the code before 24/03/2026
+<br>In terminal, in the location where this codebase is stored, type:
+> npm run dev -- --host
+
+It should display the following: 
+
+> hutts-project@0.0.0 dev
+> vite --host
+>
+>
+> VITE v7.3.1  ready in 568 ms
+>
+> ➜  Local:   http://localhost:5173/
+> <br>➜  Network: http://192.168.56.1:5173/
+> <br>➜  Network: http://192.168.1.169:5173/
+
+It may have a longer list of Network urls. On a device that is securely connected to the same network (assumed: WiFi, but Ethernet and bluetooth (hotspot) do work as tested 27/03/2026 21:56) enter any Network url into the search bar to access (an old version of) PantryCook. 
+If you attempt this on a current version of the code (post requiring a second terminal running `node ./server/mongo.js/`) you will get a blank page:
+
+![PantryCook Not Loading](./media/pantry_cook_not_loading.jpg)
+
+Other potential issues you could run into are unsecure connection errors: 
+
+![PantryCook Not Loading Because of Non-Secure Network Connection](./media/pantry_cook_network_security_error.jpg)
+
 
 ## How to Update the Global Page
 
