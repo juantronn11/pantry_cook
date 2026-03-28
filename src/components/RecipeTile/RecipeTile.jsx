@@ -21,7 +21,6 @@ function RecipeTile({recipe}) {
   const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeContext();
   const saved = isRecipeSaved(recipe.id);
 
-  const API_URL = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
   const [modalData, setModalData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -31,9 +30,8 @@ function RecipeTile({recipe}) {
   // Validation is now handled in RecipeContext.fetchRecipes() before recipes
   // reach the grid. See SCRUM-110.
 
-  // SCRUM-71: Transform Spoonacular's recipe format into MealDB's format
-  // so the modal rendering code works the same for both API sources.
-  function spoonacularToMealDBFormat(raw) {
+  // SCRUM-71: Transform Spoonacular's recipe format into the modal's expected shape.
+  function toModalFormat(raw) {
     const formatted = {
       strMeal: raw.title,
       strMealThumb: raw.image,
@@ -43,8 +41,7 @@ function RecipeTile({recipe}) {
       strYoutube: null,
     };
 
-    // Map Spoonacular's extendedIngredients array to MealDB's
-    // strIngredient1/strMeasure1, strIngredient2/strMeasure2, ... format
+    // Map extendedIngredients to strIngredient1/strMeasure1, strIngredient2/strMeasure2, ... format
     raw.extendedIngredients?.forEach((ing, i) => {
       formatted[`strIngredient${i + 1}`] = ing.name || ing.original;
       formatted[`strMeasure${i + 1}`] = ing.amount
@@ -55,26 +52,13 @@ function RecipeTile({recipe}) {
     return formatted;
   }
 
-  // SCRUM-71: Check recipe.source to use the correct API.
-  // MealDB recipes need a lookup call; Spoonacular recipes already have
-  // full details in recipe.raw so we just transform and display them.
+  // Full details already in recipe.raw — no API call needed
   const clickHandler = async () => {
     setLoading(true);
     setError(false);
 
     try {
-      if (recipe.source === 'spoonacular') {
-        // Spoonacular: full details already in recipe.raw — no API call needed
-        setModalData(spoonacularToMealDBFormat(recipe.raw));
-      } else {
-        // MealDB: fetch full details from lookup endpoint
-        const res = await fetch(API_URL + recipe.raw.idMeal);
-        const data = await res.json();
-
-        if (data.meals == "Invalid ID") throw new Error();
-
-        setModalData(data.meals[0]);
-      }
+      setModalData(toModalFormat(recipe.raw));
     } catch {
       setError(true);
     }
@@ -100,16 +84,12 @@ function RecipeTile({recipe}) {
 
     <>
       <div className={styles.recipeTile}>
-        <p>{recipe.raw.strMeal || recipe.raw.title}</p>
-        {/* SCRUM-71: Show which API the recipe came from */}
-        <small style={{ color: recipe.source === 'spoonacular' ? 'orange' : 'green', fontWeight: 'bold' }}>
-          [{recipe.source}]
-        </small>
+        <p>{recipe.raw.title}</p>
         <img
-          src={imageError ? errorThumb : recipe.raw.strMealThumb || recipe.raw.image}
+          src={imageError ? errorThumb : recipe.raw.image}
           onClick={clickHandler}
           style={{ cursor: 'pointer' }}
-          alt={imageError ? 'Error' :recipe.raw.strMeal || recipe.raw.title}
+          alt={imageError ? 'Error' : recipe.raw.title}
           onError={handleImageError}
         />
         {loading && <p> Loading... </p>}
