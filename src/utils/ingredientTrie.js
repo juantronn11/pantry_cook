@@ -3480,6 +3480,10 @@ class Trie {
 const trie = new Trie();
 for (const name of INGREDIENTS) trie.insert(name.toLowerCase());
 
+// SCRUM-118: Set to false when done testing to disable console logs
+const DEBUG_AUTOCOMPLETE = true;
+let autocompleteCallCount = 0;
+
 /**
  * Drop-in replacement for ingredientAutocomplete().
  * Returns up to 10 matching ingredient name strings.
@@ -3487,5 +3491,10 @@ for (const name of INGREDIENTS) trie.insert(name.toLowerCase());
  * @returns {string[]}
  */
 export function ingredientAutocomplete(query) {
-  return trie.search(query.trim());
+  const results = trie.search(query.trim());
+  if (DEBUG_AUTOCOMPLETE) {
+    autocompleteCallCount++;
+    console.log(`[Autocomplete] call #${autocompleteCallCount} — query: "${query}" — results: ${results.length}`);
+  }
+  return results;
 }
