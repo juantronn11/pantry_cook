@@ -83,9 +83,8 @@ function SearchForm() {
 
 
 // SearchButton — validates selection, then calls fetchRecipes() from context.
-// fetchRecipes() (defined in RecipeContext) fires both MealDB and Spoonacular
-// concurrently, normalizes responses, deduplicates by name, and sets
-// recipes/loading/error state automatically.
+// fetchRecipes() (defined in RecipeContext) calls Spoonacular, normalizes
+// responses, deduplicates by name, and sets recipes/loading/error state.
 function SearchButton({selectedIngredients}) {
   const { fetchRecipes, setIngredients } = useRecipeContext();
 

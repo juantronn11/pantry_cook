@@ -15,9 +15,8 @@
 //   const { recipes, loading, fetchRecipes } = useRecipeContext()
 
 import { createContext, useContext, useState, useEffect } from 'react'
-import { fetchMealDBRecipes } from '../api/mealdb'
 import { fetchSpoonacularRecipes } from '../api/spoonacular'
-import { normalizeMealDBRecipe, normalizeSpoonacularRecipe } from '../utils/normalizeRecipe'
+import { normalizeSpoonacularRecipe } from '../utils/normalizeRecipe'
 import { parseIngredients } from '../utils/parseIngredients'
 import { withTimeout } from '../utils/withTimeout'
 import { stripHtml } from '../utils/stripHtml'
@@ -139,7 +138,6 @@ export function RecipeProvider({ children }) {
   //   'best-match'     — highest matchScore first (most user ingredients used)
   //   'a-z'            — alphabetical by recipe name
   //   'fewest-missing' — fewest extra ingredients needed first (raw.missedIngredientCount)
-  //                      MealDB recipes don't have this field so they fall to the bottom.
   function sortRecipes(list, order) {
     const sorted = [...list]
     if (order === 'a-z') {
@@ -180,38 +178,22 @@ export function RecipeProvider({ children }) {
     // If one API times out, Promise.allSettled marks it as rejected and
     // results from the other API still come through.
     const API_TIMEOUT = 30000
-    const [mealDBResult, spoonacularResult] = await Promise.allSettled([
-      withTimeout(fetchMealDBRecipes(ingredients), API_TIMEOUT),
+    const [spoonacularResult] = await Promise.allSettled([
       withTimeout(fetchSpoonacularRecipes(ingredients, excludedIngredients), API_TIMEOUT),
     ])
 
-    if (mealDBResult.status === 'rejected' || spoonacularResult.status === 'rejected') {
+    if (spoonacularResult.status === 'rejected') {
       setError('Some results may be missing — one or more APIs failed.')
     }
 
-    const mealDBRecipes = mealDBResult.status === 'fulfilled' ? mealDBResult.value : []
     const spoonacularRecipes = spoonacularResult.status === 'fulfilled' ? spoonacularResult.value : []
 
-    // SCRUM-19: normalize both API response shapes to a common format
-    // SCRUM-43: matchScore added to both shapes — MealDB gets 0 since that API
-    // does not return ingredient match counts
-    // SCRUM-46: inline map objects replaced with shared helpers from normalizeRecipe.js
-    const normalizedMealDB = mealDBRecipes.map(normalizeMealDBRecipe)
+    // SCRUM-19/46: normalize Spoonacular response to common shape
     const normalizedSpoonacular = spoonacularRecipes.map(normalizeSpoonacularRecipe)
 
-    // SCRUM-108: MealDB's filter.php only returns idMeal, strMeal, and strMealThumb —
-    // no ingredient list is available (detail fetch is CORS-blocked on free tier).
-    // Best-effort: drop any MealDB recipe whose name contains an excluded ingredient.
-    // Spoonacular exclusions are handled server-side via &excludeIngredients.
-    const filteredMealDB = excludedIngredients.length === 0
-      ? normalizedMealDB
-      : normalizedMealDB.filter(recipe =>
-          !excludedIngredients.some(excl => recipe.name.includes(excl))
-        )
-
-    // Deduplicate by name — MealDB entries are listed first so they take priority
+    // Deduplicate by name
     const seen = new Set()
-    const deduplicated = [...filteredMealDB, ...normalizedSpoonacular].filter(recipe => {
+    const deduplicated = [...normalizedSpoonacular].filter(recipe => {
       if (seen.has(recipe.name)) return false
       seen.add(recipe.name)
       return true

@@ -1,30 +1,29 @@
 // Unit tests for RecipeTile component (src/components/RecipeTile/RecipeTile.jsx)
 //
 // RecipeTile renders a recipe card and opens a modal with full details on click.
-// The click handler is source-aware: MealDB recipes fetch from the lookup API,
-// Spoonacular recipes use pre-loaded raw data (no API call).
-// All fetch calls are mocked.
+// All recipes come from Spoonacular — raw data is pre-loaded so no API call is
+// needed when opening the modal.
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import RecipeTile from '../RecipeTile'
 
+// RecipeTile calls useRecipeContext for save/remove/isRecipeSaved — mock it
+vi.mock('../../../context/RecipeContext', () => ({
+  useRecipeContext: vi.fn(),
+}))
+
+import { useRecipeContext } from '../../../context/RecipeContext'
+
 beforeEach(() => {
   vi.restoreAllMocks()
+  useRecipeContext.mockReturnValue({
+    saveRecipe: vi.fn(),
+    removeSavedRecipe: vi.fn(),
+    isRecipeSaved: vi.fn().mockReturnValue(false),
+  })
 })
-
-// Mock MealDB recipe (normalized shape from RecipeContext)
-const mealdbRecipe = {
-  id: 'mealdb-100',
-  name: 'chicken curry',
-  source: 'mealdb',
-  raw: {
-    idMeal: '100',
-    strMeal: 'Chicken Curry',
-    strMealThumb: 'https://example.com/chicken.jpg',
-  },
-}
 
 // Mock Spoonacular recipe (normalized shape from RecipeContext)
 const spoonacularRecipe = {
@@ -47,79 +46,15 @@ const spoonacularRecipe = {
 
 describe('RecipeTile — rendering', () => {
 
-  it('renders MealDB recipe name and image', () => {
-    render(<RecipeTile recipe={mealdbRecipe} />)
-    expect(screen.getByText('Chicken Curry')).toBeInTheDocument()
-    expect(screen.getByAltText('Chicken Curry')).toHaveAttribute('src', 'https://example.com/chicken.jpg')
-  })
-
   it('renders Spoonacular recipe name and image', () => {
     render(<RecipeTile recipe={spoonacularRecipe} />)
     expect(screen.getByText('Tomato Soup')).toBeInTheDocument()
     expect(screen.getByAltText('Tomato Soup')).toHaveAttribute('src', 'https://example.com/soup.jpg')
   })
 
-  it('shows [mealdb] source label in green for MealDB recipes', () => {
-    render(<RecipeTile recipe={mealdbRecipe} />)
-    const label = screen.getByText('[mealdb]')
-    expect(label).toBeInTheDocument()
-    expect(label.style.color).toBe('green')
-  })
-
-  it('shows [spoonacular] source label in orange for Spoonacular recipes', () => {
-    render(<RecipeTile recipe={spoonacularRecipe} />)
-    const label = screen.getByText('[spoonacular]')
-    expect(label).toBeInTheDocument()
-    expect(label.style.color).toBe('orange')
-  })
 })
 
-describe('RecipeTile — MealDB click handler', () => {
-
-  it('opens modal with recipe details after clicking a MealDB tile', async () => {
-    const user = userEvent.setup()
-
-    // Mock the lookup API response
-    const fullMeal = {
-      strMeal: 'Chicken Curry',
-      strMealThumb: 'https://example.com/chicken.jpg',
-      strCategory: 'Chicken',
-      strArea: 'Indian',
-      strInstructions: 'Cook the chicken with curry spices.',
-      strIngredient1: 'Chicken',
-      strMeasure1: '500g',
-    }
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ meals: [fullMeal] }),
-    })
-
-    render(<RecipeTile recipe={mealdbRecipe} />)
-    await act(async () => {
-      await user.click(screen.getByAltText('Chicken Curry'))
-    })
-
-    // Modal should show full recipe details — use getByRole to target the
-    // modal's <h2> specifically (the tile also has the name in a <p>)
-    expect(screen.getByRole('heading', { name: 'Chicken Curry' })).toBeInTheDocument()
-    expect(screen.getByText(/Cook the chicken with curry spices/)).toBeInTheDocument()
-    expect(global.fetch).toHaveBeenCalledTimes(1)
-  })
-
-  it('shows error message when MealDB fetch fails', async () => {
-    const user = userEvent.setup()
-    global.fetch = vi.fn().mockRejectedValue(new Error('Network error'))
-
-    render(<RecipeTile recipe={mealdbRecipe} />)
-    await act(async () => {
-      await user.click(screen.getByAltText('Chicken Curry'))
-    })
-
-    expect(screen.getByText('Unable to get recipe')).toBeInTheDocument()
-  })
-})
-
-describe('RecipeTile — Spoonacular click handler', () => {
+describe('RecipeTile — click handler', () => {
 
   it('opens modal using raw data without making a fetch call', async () => {
     const user = userEvent.setup()
