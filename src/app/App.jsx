@@ -9,10 +9,10 @@
 //        /saved    → SavedPage   (future feature — saved recipe collection)
 
 import { Routes, Route } from 'react-router-dom'
-import Navbar from './components/Navbar/Navbar'
-import SearchPage from './pages/SearchPage'
-import HistoryPage from './pages/HistoryPage'
-import SavedPage from './pages/SavedPage'
+import Navbar from '../components/Navbar/Navbar'
+import SearchPage from '../pages/SearchPage'
+import HistoryPage from '../pages/HistoryPage'
+import SavedPage from '../pages/SavedPage'
 
 function App() {
 

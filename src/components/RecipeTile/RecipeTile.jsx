@@ -13,6 +13,7 @@ import styles from './RecipeTile.module.css';
 import {useState} from 'react'
 import DownloadButton from '../DownloadButton/DownloadButton';
 import { useRecipeContext } from '../../context/RecipeContext';
+import { useAuth0 } from "@auth0/auth0-react";
 //SCRUM 77: added stylized error images for thumbnail and in-tile images.
 import errorThumb from '../../../media/error_thumbnail.jpg';
 import errorImage from '../../../media/error_image.jpg';
@@ -20,6 +21,8 @@ import errorImage from '../../../media/error_image.jpg';
 function RecipeTile({recipe}) {
   const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeContext();
   const saved = isRecipeSaved(recipe.id);
+  const {isAuthenticated} = useAuth0();
+  
 
   const [modalData, setModalData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -92,7 +95,7 @@ function RecipeTile({recipe}) {
           alt={imageError ? 'Error' : recipe.raw.title}
           onError={handleImageError}
         />
-        {loading && <p> Loading... </p>}
+        
       </div>
 
       {(modalData || error) && (
@@ -105,12 +108,12 @@ function RecipeTile({recipe}) {
             ) : (
               <>
                   <DownloadButton></DownloadButton>
-                  <button
+                  {isAuthenticated && <button
                     onClick={() => saved ? removeSavedRecipe(recipe.id) : saveRecipe(recipe)}
                     className={styles.saveBtn}
                   >
                     {saved ? 'Remove from Library' : 'Save to Library'}
-                  </button>
+                  </button>}
                   <img src={imageError ? errorImage : modalData.strMealThumb} alt={imageError ? 'Error' : modalData.strMeal} className={styles.modalImg} onError={handleImageError} />
                   <h2 className={styles.recipeTitle}>{modalData.strMeal}</h2>
                   <p className={styles.other}><strong>Category:</strong> {modalData.strCategory}</p>
