@@ -6,14 +6,6 @@
     justify-content: center;
 }
 
-.ingredientButton {
-    display: flex;
-    flex-flow: row wrap;
-    padding-inline: 5%;
-    justify-content: center;
-    gap: 10px 1%;
-}
-
 /* Hide the entire search form (text + ingredient buttons + search button) when printing */
 @media print {
   .searchForm {
@@ -22,4 +14,43 @@
   .ingredientButton {
     display: none !important;
   }
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 10;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestions li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.suggestions li:hover {
+  background: #f0f0f0;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 2px;
 }

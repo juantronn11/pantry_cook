@@ -2,103 +2,106 @@
 // Multi-select ingredient buttons + Search button
 // Validates at least one ingredient is selected before submission
 
-import styles from './SearchForm.module.css'
+import { useState } from 'react';
+import styles from './SearchForm.module.css';
 import { useRecipeContext } from '../../context/RecipeContext';
+import { ingredientAutocomplete } from '../../utils/ingredientTrie';
+import ExcludeIngredients from '../ExcludeIngredients/ExcludeIngredients';
 
-import { useState } from 'react'
-import { useEffect } from 'react';
-
-var selectedIngredients;
 const MAX_INGREDIENTS = 5;
-const API_URL = 'https://www.themealdb.com/api/json/v1/1/';
 
 function SearchForm() {
-  var ingredientsList = setIngredientButtons();
-  selectedIngredients = useRecipeContext().ingredients;
+  const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
+
+  function handleInput(e) {
+    const value = e.target.value;
+    setQuery(value);
+    setSuggestions(value.trim() ? ingredientAutocomplete(value) : []);
+  }
+
+  function handleSelect(ingredient) {
+    if (selectedIngredients.length >= MAX_INGREDIENTS) return;
+    if (selectedIngredients.includes(ingredient)) return;
+    setSelectedIngredients(prev => [...prev, ingredient]);
+    setQuery('');
+    setSuggestions([]);
+  }
+
+  function handleRemove(ingredient) {
+    setSelectedIngredients(prev => prev.filter(i => i !== ingredient));
+  }
 
   return (
     <>
       <div className={styles.searchForm}>
-        <p>Select up to {MAX_INGREDIENTS} ingredients</p>
+        <label htmlFor="ingredients">
+          Select up to {MAX_INGREDIENTS} ingredients
+        </label>
+
+        <div className={styles.selectedIngredients}>
+          {selectedIngredients.map(ingredient => (
+            <span key={ingredient} className={styles.tag}>
+              {ingredient}
+              <button onClick={() => handleRemove(ingredient)}>✕</button>
+            </span>
+          ))}
+        </div>
+
+        <div className={styles.inputWrapper}>
+          <input
+            type="text"
+            id="ingredients"
+            name="name"
+            value={query}
+            onInput={handleInput}
+            disabled={selectedIngredients.length >= MAX_INGREDIENTS}
+            placeholder="Type an ingredient..."
+            autoComplete="off"
+          />
+          {suggestions.length > 0 && (
+            <ul className={styles.suggestions}>
+              {suggestions.map(s => (
+                <li key={s} onMouseDown={() => handleSelect(s)}>
+                  {s}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
 
-      <div className={styles.ingredientButton}>
-        {ingredientsList}
-      </div>
-      
+      <ExcludeIngredients />
+
       <div className={styles.searchForm}>
-        <p> Press Search for recipes with your ingredients</p>
-        <SearchButton />
-      </div>  
+        <p>Press Search for recipes with your ingredients</p>
+        <SearchButton selectedIngredients={selectedIngredients} />
+      </div>
     </>
-  )
+  );
 }
 
-function setIngredientButtons() {
-  const [ingredientList, setIngredientList] = useState(null);
-  var ingredientButtons = [];
-  useEffect(() => {
-    fetch(API_URL + 'list.php?i=list')
-      .then(response => response.json())
-      .then(data => setIngredientList(data.meals));
-  }, []);
 
-  if (!ingredientList) {
-    return (<p>Loading...</p>)
-  }
-  else {
-    ingredientList.sort((a, b) => a.strIngredient.localeCompare(b.strIngredient));
-    for (var n = 0; n < ingredientList.length; n++) {
-      ingredientButtons[n] = {name: ingredientList[n].strIngredient, id: n + 1, button: <Button text={ingredientList[n].strIngredient} key={n}/>}
-    }
-  }
-
-  return ingredientButtons.map(button =>
-    <div key={button.id}>{button.button}</div>
-  )
-}
-
-function Button({ text }) {
- const [clicked, setClicked] = useState(false);
- const { ingredients, setIngredients } = useRecipeContext();
-
-  function handleClick() {
-    setClicked(!clicked)
-    
-    if (!clicked) {
-      selectedIngredients = [...selectedIngredients, text];
-    } else {
-      selectedIngredients = selectedIngredients.filter(i => i !== text);
-    }
-
-    if (selectedIngredients.length > MAX_INGREDIENTS){
-      alert("Please refrain from selecting more than " + MAX_INGREDIENTS + " ingredients at a time.");
-      selectedIngredients = selectedIngredients.filter(i => i !== text);
-      setClicked(false);
-    }
-
-    setIngredients(selectedIngredients);
-  }
- 
-  return (
-    <button onClick={handleClick} style={{color: !ingredients.includes(text) ? 'white' : 'lime', backgroundColor: 'grey', fontSize: 'large'}}>{text}</button>
-  )
-}
 
 
 // SearchButton — validates selection, then calls fetchRecipes() from context.
-// fetchRecipes() (defined in RecipeContext) fires both MealDB and Spoonacular
-// concurrently, normalizes responses, deduplicates by name, and sets
-// recipes/loading/error state automatically.
-function SearchButton() {
-  const { fetchRecipes } = useRecipeContext();
+// fetchRecipes() (defined in RecipeContext) calls Spoonacular, normalizes
+// responses, deduplicates by name, and sets recipes/loading/error state.
+function SearchButton({selectedIngredients}) {
+  const { fetchRecipes, setIngredients } = useRecipeContext();
 
   async function handleClick() {
+    // SCRUM-41: Read the raw input value and split by comma into an array.
+    // parseIngredients (called inside fetchRecipes) handles trimming,
+    // lowercasing, and deduplication downstream.
+
     if (selectedIngredients.length === 0) {
       alert("Please select at least one ingredient");
       return;
     }
 
+    setIngredients(selectedIngredients)
     await fetchRecipes(selectedIngredients);
   }
 

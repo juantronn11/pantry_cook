@@ -2,20 +2,39 @@
 // Individual recipe card with name, thumbnail, summary, and link
 // Includes DownloadButton for PDF/print functionality
 
+// RecipeTile additional error handling — Owner: Tina Carter
+// Image error handling information:
+// https://medium.com/@hridoymahmud/solving-image-loading-and-error-handling-issues-in-react-with-a-custom-image-component-b6c5d0184f96
+
+// RecipeTile element validation - Owner: Christian Johnso
+// If any necessary values are not present or corrupted, recipe tile will not be displayed
+
 import styles from './RecipeTile.module.css';
 import {useState} from 'react'
 import DownloadButton from '../DownloadButton/DownloadButton';
+import { useRecipeContext } from '../../context/RecipeContext';
+import { useAuth0 } from "@auth0/auth0-react";
+//SCRUM 77: added stylized error images for thumbnail and in-tile images.
+import errorThumb from '../../../media/error_thumbnail.jpg';
+import errorImage from '../../../media/error_image.jpg';
 
 function RecipeTile({recipe}) {
+  const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeContext();
+  const saved = isRecipeSaved(recipe.id);
+  const {isAuthenticated} = useAuth0();
+  
 
-  const API_URL = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
   const [modalData, setModalData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  // SCRUM-79/80/86: Validation previously lived here (ValidationCheck) but
+  // called setRecipes() during render, causing an infinite re-render loop.
+  // Validation is now handled in RecipeContext.fetchRecipes() before recipes
+  // reach the grid. See SCRUM-110.
 
-  // SCRUM-71: Transform Spoonacular's recipe format into MealDB's format
-  // so the modal rendering code works the same for both API sources.
-  function spoonacularToMealDBFormat(raw) {
+  // SCRUM-71: Transform Spoonacular's recipe format into the modal's expected shape.
+  function toModalFormat(raw) {
     const formatted = {
       strMeal: raw.title,
       strMealThumb: raw.image,
@@ -25,8 +44,7 @@ function RecipeTile({recipe}) {
       strYoutube: null,
     };
 
-    // Map Spoonacular's extendedIngredients array to MealDB's
-    // strIngredient1/strMeasure1, strIngredient2/strMeasure2, ... format
+    // Map extendedIngredients to strIngredient1/strMeasure1, strIngredient2/strMeasure2, ... format
     raw.extendedIngredients?.forEach((ing, i) => {
       formatted[`strIngredient${i + 1}`] = ing.name || ing.original;
       formatted[`strMeasure${i + 1}`] = ing.amount
@@ -37,30 +55,15 @@ function RecipeTile({recipe}) {
     return formatted;
   }
 
-  // SCRUM-71: Check recipe.source to use the correct API.
-  // MealDB recipes need a lookup call; Spoonacular recipes already have
-  // full details in recipe.raw so we just transform and display them.
+  // Full details already in recipe.raw — no API call needed
   const clickHandler = async () => {
     setLoading(true);
     setError(false);
 
     try {
-      if (recipe.source === 'spoonacular') {
-        // Spoonacular: full details already in recipe.raw — no API call needed
-        setModalData(spoonacularToMealDBFormat(recipe.raw));
-      } else {
-        // MealDB: fetch full details from lookup endpoint
-        const res = await fetch(API_URL + recipe.raw.idMeal);
-        const data = await res.json();
-
-        if (data.meals == "Invalid ID") throw new Error();
-
-        setModalData(data.meals[0]);
-      }
+      setModalData(toModalFormat(recipe.raw));
     } catch {
       setError(true);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -69,22 +72,30 @@ function RecipeTile({recipe}) {
     setError(false);
   };
 
+  //SCRUM-74: Error handling for missing/invalid images. If the image fails to load, hide default broken image icon.
+  //SCRUP-75: Error handling for missing/invalid images. (overwrites SCRUM-74) If the image fails to load, replace it with an error image but maintain the original image's dimensions.
+  const handleImageError = (e) => {
+    const width = e.currentTarget.style.width;
+    const height = e.currentTarget.style.height;
+    e.currentTarget.src = errorImage; // Set to custom error image
+    e.currentTarget.style.width = width; // Maintain original dimensions
+    e.currentTarget.style.height = height; 
+    setImageError(true); // Update state to indicate an image error occurred
+  };
+
   return (
 
     <>
       <div className={styles.recipeTile}>
-        <p>{recipe.raw.strMeal || recipe.raw.title}</p>
-        {/* SCRUM-71: Show which API the recipe came from */}
-        <small style={{ color: recipe.source === 'spoonacular' ? 'orange' : 'green', fontWeight: 'bold' }}>
-          [{recipe.source}]
-        </small>
+        <p>{recipe.raw.title}</p>
         <img
-          src={recipe.raw.strMealThumb || recipe.raw.image}
+          src={imageError ? errorThumb : recipe.raw.image}
           onClick={clickHandler}
           style={{ cursor: 'pointer' }}
-          alt={recipe.raw.strMeal || recipe.raw.title}
+          alt={imageError ? 'Error' : recipe.raw.title}
+          onError={handleImageError}
         />
-        {loading && <p> Loading... </p>}
+        
       </div>
 
       {(modalData || error) && (
@@ -97,7 +108,13 @@ function RecipeTile({recipe}) {
             ) : (
               <>
                   <DownloadButton></DownloadButton>
-                  <img src={modalData.strMealThumb} alt={modalData.strMeal} className={styles.modalImg} />
+                  {isAuthenticated && <button
+                    onClick={() => saved ? removeSavedRecipe(recipe.id) : saveRecipe(recipe)}
+                    className={styles.saveBtn}
+                  >
+                    {saved ? 'Remove from Library' : 'Save to Library'}
+                  </button>}
+                  <img src={imageError ? errorImage : modalData.strMealThumb} alt={imageError ? 'Error' : modalData.strMeal} className={styles.modalImg} onError={handleImageError} />
                   <h2 className={styles.recipeTitle}>{modalData.strMeal}</h2>
                   <p className={styles.other}><strong>Category:</strong> {modalData.strCategory}</p>
                   <p className={styles.other}><strong>Area:</strong> {modalData.strArea}</p>

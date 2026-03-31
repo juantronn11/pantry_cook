@@ -20,9 +20,6 @@ dist-ssr
 # Personal / local-only files
 juan-personal-notes.md
 
-# Personal / local-only files
-juan-personal-notes.md
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -37,3 +34,5 @@ juan-personal-notes.md
 # Personal files
 patrick_logs.md
 conflict_analysis.md
+sprint2_planning_notes.md
+sprint2_scrums.pdf

@@ -8,14 +8,39 @@
 // Endpoints used:
 //   GET /recipes/findByIngredients — returns recipes matching an ingredient
 //   GET /recipes/{id}/information  — returns full details for one recipe
+// User text book autocomplete — SCRUM-27
+// Endpoints used:
+//   GET /food/ingredients/autocomplete — returns a list of ingredients given a string query
 
 const BASE_URL = 'https://api.spoonacular.com'
 const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY
 
+// SCRUM-116: Counter tracks how many autocomplete API calls are made.
+// Check the browser console to see the count logged on each call.
+let autocompleteCallCount = 0
+export function getAutocompleteCallCount() { return autocompleteCallCount }
+export function resetAutocompleteCallCount() { autocompleteCallCount = 0 }
+
+// SCRUM-39: expose an endpoint for ingredient autocompletion with user input
+export async function ingredientAutocomplete(query) {
+  autocompleteCallCount++
+  console.log(`[Autocomplete] API call #${autocompleteCallCount} — query: "${query}"`)
+  const res = await fetch (
+    `${BASE_URL}/food/ingredients/autocomplete?query=${encodeURIComponent(query)}&number=10&meta_information=false&intolerances=&language=en&apiKey=${API_KEY}`
+  )
+  if (!res.ok) throw new Error(`Spoonacular autocomplete failed for "${query}"`)
+    return res.json();
+}
+
 // Makes one API call for a single ingredient
-async function searchByIngredient(ingredient) {
+// SCRUM-108: excludedIngredients passed as &excludeIngredients so Spoonacular
+// filters server-side — excluded recipes never come back in the response.
+async function searchByIngredient(ingredient, excludedIngredients = []) {
+  const excludeParam = excludedIngredients.length > 0
+    ? `&excludeIngredients=${encodeURIComponent(excludedIngredients.join(','))}`
+    : ''
   const res = await fetch(
-    `${BASE_URL}/recipes/findByIngredients?ingredients=${encodeURIComponent(ingredient)}&number=10&ranking=1&ignorePantry=true&apiKey=${API_KEY}`
+    `${BASE_URL}/recipes/findByIngredients?ingredients=${encodeURIComponent(ingredient)}&number=10&ranking=1&ignorePantry=true${excludeParam}&apiKey=${API_KEY}`
   )
   if (!res.ok) throw new Error(`Spoonacular search failed for "${ingredient}": ${res.status}`)
   return res.json()
@@ -52,10 +77,15 @@ async function batchGetDetails(recipes, batchSize = 3, delayMs = 500) {
 
 // Fires all ingredient searches concurrently then fetches details in throttled
 // batches to stay within Spoonacular's rate limits (SCRUM-17, SCRUM-71)
-export async function fetchSpoonacularRecipes(ingredients) {
+// SCRUM-43: usedIngredientCount is saved before the detail fetch because the
+// /information endpoint does not return match counts. matchScore is attached
+// to each result so RecipeContext can sort by relevance.
+// SCRUM-108: Accept excludedIngredients and append to each search call so
+// Spoonacular filters server-side before returning any results.
+export async function fetchSpoonacularRecipes(ingredients, excludedIngredients = []) {
   // All ingredient searches fire at the same time
   const searchResults = await Promise.allSettled(
-    ingredients.map((ingredient) => searchByIngredient(ingredient))
+    ingredients.map((ingredient) => searchByIngredient(ingredient, excludedIngredients))
   )
 
   // Keep only successful searches
@@ -64,18 +94,31 @@ export async function fetchSpoonacularRecipes(ingredients) {
     if (result.status === 'fulfilled') allRecipes.push(...result.value)
   }
 
-  // Deduplicate by recipe ID
-  const seen = new Set()
-  const uniqueRecipes = allRecipes.filter((recipe) => {
-    if (seen.has(recipe.id)) return false
-    seen.add(recipe.id)
-    return true
-  })
+  // SCRUM-44: Deduplicate by ID — when the same recipe appears across multiple
+  // ingredient searches, keep the entry with the highest usedIngredientCount
+  // so matchScore (used by SCRUM-43's sort) reflects the best match found.
+  const recipeMap = new Map()
+  for (const recipe of allRecipes) {
+    const existing = recipeMap.get(recipe.id)
+    if (!existing || (recipe.usedIngredientCount ?? 0) > (existing.usedIngredientCount ?? 0)) {
+      recipeMap.set(recipe.id, recipe)
+    }
+  }
+  const uniqueRecipes = Array.from(recipeMap.values())
+
+  // SCRUM-43: Preserve match counts before detail fetch loses them
+  const matchScoreById = new Map(
+    uniqueRecipes.map((r) => [r.id, r.usedIngredientCount ?? 0])
+  )
 
   // SCRUM-71: Fetch details in batches of 3 with 500ms delay to avoid 429 rate limits
   const detailResults = await batchGetDetails(uniqueRecipes)
 
+  // SCRUM-43: Attach matchScore to each result so RecipeContext can rank by relevance
   return detailResults
     .filter((r) => r.status === 'fulfilled' && r.value)
-    .map((r) => r.value)
+    .map((r) => ({
+      ...r.value,
+      matchScore: matchScoreById.get(r.value.id) ?? 0,
+    }))
 }
