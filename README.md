@@ -150,11 +150,11 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 >
 >   As a user, I would like to see recipes displayed as individual tiles after entering my available ingredients so that I can quickly browse what I'm able to cook with what I have on hand.
 
->`IN PROGRESS` User Story 2: Form Display for User Input (frontend)
+>`COMPLETE` User Story 2: Form Display for User Input (frontend)
 >
 >   As a user, I would like a form where I can enter the ingredients I currently have in my kitchen so that the app can find recipes I can actually make right now.
 
->`DUPLICATED` User Story 3: Full Recipe Listing (frontend)
+>`DUPLICATE` User Story 3: Full Recipe Listing (frontend)
 >
 >   As a user, I would like to view the full details of a recipe I selected from my search results so that I can see all the ingredients and step-by-step instructions needed to make the dish.
 
@@ -166,7 +166,7 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 >
 >   As a user, I would like a navigation toolbar so that I can easily switch between searching for recipes with my ingredients, viewing my cooking history, and accessing my saved recipe collection.
 
->`DUPLICATED` User Story 6: User Form Data (Requests) (backend)
+>`DUPLICATE` User Story 6: User Form Data (Requests) (backend)
 >
 >   As a back end developer, I would like the app to accept and process the list of ingredients I submit so that it can search for recipes that match what I have available.
 
@@ -184,19 +184,31 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 
 >`COMPLETE` User Story 10: Non-Temporary Library Storage (backend)
 >
->   As a back end developer, I would like to save favorite recipes to a permanent personal library so that I can build a go-to collection of meals I know I can make and access them anytime.
+>   As a logged-in user, I would like to save favorite recipes to a personal library tied to my account so that I can build a go-to collection of meals and access them anytime from a dedicated Saved Recipes page.
 
-> `COMPLETE` User Story :
+> `COMPLETE` User Story 11: Recipe Loading Validation
 >
->   As
+>   As a user, I would like the app to verify that recipe data loads correctly so that I am never shown broken, incomplete, or incorrect recipe information in my search results.
 
-> `COMPLETE` User Story :
+> `COMPLETE` User Story 12: Filter Out Ingredients
 >
->   As
+>   As a user, I would like to exclude specific ingredients from my search so that I can avoid recipes containing things I don't want to use, such as allergens or ingredients I dislike.
 
-> `COMPLETE` User Story :
+> `COMPLETE` User Story 13: User Login
 >
->   As
+>   As a user, I would like to create an account and log in so that the app can track my personal search history and saved recipes across sessions.
+
+> `COMPLETE` User Story 14: User Profiles
+>
+>   As a logged-in user, I would like a profile tied to my login so that my preferences, history, and saved recipes are personal to me and not shared with other users.
+
+> `COMPLETE` User Story 15: Image Loading Validation
+>
+>   As a user, I would like recipe images to load correctly and display a fallback when they don't so that the app looks polished and I'm never shown broken images. 
+
+> `IN PROGRESS` User Story 16: Hosted Web Application
+>
+>   As a user, I would like to access the app from a public URL rather than running it locally so that I can use it from any device without needing to set up the project myself. 
 
 
 ## Images
