@@ -384,20 +384,20 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 
 
 ### Next Steps (Sprint 3)
-- apply auto complete to exclude (correctly)
-- allow arrow keys for selecting autocomplete (instead of needing to click it)
-- actually implement the autocomplete for exclude ingredients
-- remove broken links (React has a function that checks for broken links, I'm pretty sure)
-- loading continues to display after exiting out of a recipe. don't do that
-- add (when logged in) 'loged in as' to nav. bar next to log out button
-- saved recipes aren't saving???? so like, fix that, but also add error handler that tells the user that the recipe failed to save + potential solution (like 'clear your cookies' or 'please have patience' that sort of thing that makes you want to kill the developers of whatever website is broken becuase 'have patience' really???)
-    - ^ can you tell I was recently told to 'have patience' as a potential fix in the 'see details' section of a non-loading webpage >:(
-- stop history page from scrolling all the way down to the bottom for whatever reason
-- clear history (button)
-- remove individual days/searches from your history (button??)
-- allow for 'generalization' of products for ingredient exclusion (i.e. type 'dairy' and exclude all dairy products, instead of needing to type 'milk' and 'cream' and 'heavy cream' etc.)
-- change error handling (try catch... ModalData raw reformat thing....)
+- `Group` Make codebase more SOLID. Specific actions to be discussed
 
+- Implement arrow keys for selecting autocomplete (instead of needing to click it)
+- Remove broken links ([React has a function that checks for broken links]())
+- When logged in, add 'loged in as' to nav. bar next to log out button
+- Add error handler that tells the user that the recipe failed to save + potential solution (like 'clear your cookies' or 'please have patience' that sort of thing that makes you want to kill the developers of whatever website is broken becuase 'have patience' really???)
+    - ^ can you tell I was recently told to 'have patience' as a potential fix in the 'see details' section of a non-loading webpage >:(
+- Fix new search button so that it actually clears user's serach
+- Fix history page so it no longer scrolls all the way down to the bottom on load
+- Implement and add a clear history feature (button)
+- Allow for removal of individual days/searches from your history (button??)
+- Allow for 'generalization' of products for ingredient exclusion (i.e. type 'dairy' and exclude all dairy products, instead of needing to type 'milk' and 'cream' and 'heavy cream' etc.)
+- Change error handling to include error logging (see: try/catch ModalData raw reformat in [RecipeTile.jsx lines 63-67](./src/components/RecipeTile/RecipeTile.jsx#63-67). There may be other loccations as well)
+    - Make database to store logged errors, rather than just console logs.  
 
 ## Room for Improvement
 Include areas you believe need improvement / could be improved. Also add TODOs for future development.
