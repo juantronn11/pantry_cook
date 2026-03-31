@@ -309,8 +309,8 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 
 ### Patrick Rucker
 
-| Jira Task | Title | Bitbucket PR |
-|-----------|-------|--------------|
+| Jira Task                                                    | Title                                                        | Bitbucket PR                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [SCRUM-48](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-48) | The history stores key recipe details (title, ID, and timestamp of when I last viewed it) | [PR #32](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/32) — Commits: [b8c79cf](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/b8c79cf), [5077003](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/5077003) |
 | [SCRUM-47](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-47) | Each time the user submits an ingredient search, the search query and returned recipes are automatically added to their search history | [PR #33](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/33) — Commits: [56d9d77](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/56d9d77) |
 | [SCRUM-49](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-49) | The history is persisted using local storage so it survives page refreshes and is not lost when the tab is closed | [PR #34](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/34) — Commits: [625001d](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/625001d) |
@@ -324,6 +324,7 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 | [SCRUM-42](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-42) | The endpoint responds within a reasonable time frame (e.g., < 2 seconds) under normal conditions | [PR #59](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/59) — Commits: [a6eb920](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/a6eb920), [6ca616a](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/6ca616a), [ab0908e](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/ab0908e) |
 | [SCRUM-115](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-115) | Returned recipes that have HTML instructions are parsed and displayed as readable plain text | [PR #60](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/60) — Commits: [de59325](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/de59325), [c9b79b0](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c9b79b0) |
 | [SCRUM-116](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-116) | Add debounce and API call counter to ingredient autocomplete | [PR #69](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/69) — Commits: [eaeac4b](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/eaeac4b), [fe68d25](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/fe68d25) |
+| [SCRUM-118](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-118) | Fix ingredient filter. Re-add ExcludeIngredients filter and autocomplete debug logging | [PR #72](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/72) — Commits: [6b27ee8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/6b27ee8) |
 
 ### Christian Johnson
 
@@ -340,19 +341,19 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 
 
 ### Next Steps (Sprint 3)
-#### Patrick Rucker
-- Tie search history persistence to authenticated user account (MongoDB) so history is not just local storage
-- Implement user-specific saved recipes page that persists across devices via MongoDB
-- Add pagination or lazy-loading to the History page for users with large history sets
-- Write additional unit tests for the new Save/History features (SCRUM-47, 48, 49, 51, 54)
-
-#### Christian Johnson
-- Improve autocomplete ingredient search to handle edge cases (partial matches, special characters)
-- Expand recipe validation to include additional fields such as nutrition info and allergen data
-- Add user-facing error messages that are more descriptive and actionable
-- Write unit tests to cover the new autocomplete and validation logic
-
-#### 
+- apply auto complete to exclude (correctly)
+- allow arrow keys for selecting autocomplete (instead of needing to click it)
+- actually implement the autocomplete for exclude ingredients
+- remove broken links (React has a function that checks for broken links, I'm pretty sure)
+- loading continues to display after exiting out of a recipe. don't do that
+- add (when logged in) 'loged in as' to nav. bar next to log out button
+- saved recipes aren't saving???? so like, fix that, but also add error handler that tells the user that the recipe failed to save + potential solution (like 'clear your cookies' or 'please have patience' that sort of thing that makes you want to kill the developers of whatever website is broken becuase 'have patience' really???)
+    - ^ can you tell I was recently told to 'have patience' as a potential fix in the 'see details' section of a non-loading webpage >:(
+- stop history page from scrolling all the way down to the bottom for whatever reason
+- clear history (button)
+- remove individual days/searches from your history (button??)
+- allow for 'generalization' of products for ingredient exclusion (i.e. type 'dairy' and exclude all dairy products, instead of needing to type 'milk' and 'cream' and 'heavy cream' etc.)
+- change error handling (try catch... ModalData raw reformat thing....)
 
 
 ## Room for Improvement
