@@ -170,7 +170,6 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 >
 >   As a back end developer, I would like the app to accept and process the list of ingredients I submit so that it can search for recipes that match what I have available.
 
-
 >`COMPLETE` User Story 7: Make Multiple API Requests for Recipe Listing (backend)
 >
 >   As a back end developer, I would like the app to search across multiple sources or queries based on my ingredient list so that I get a comprehensive set of recipes I can make with what I have.
@@ -281,11 +280,27 @@ Project is: _in progress_ as of 03/31/2026 (Mar.)
 
 
 
+
+# Sprint 2 Contributions
+
+**Sprint Duration:** March 9, 2026 – March 27, 2026
+
+**Sprint Goal:** Improved WebApp: Operation Make it Better, Operation Independence Day, Side Quest Search and Destroy, and Side Quest Save Me as well as some bug fixes.
+
+**Sprint Summary:**
+SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint end, 78 story points (98%) were completed with only 1.5 story points remaining in progress (SCRUM-96 — load webpage on global server/url). The sprint focused on five major feature areas:
+- **User Story 9:** Storing User Recipe History Locally
+- **User Story 10:** Non-Temporary Library Storage
+- **User Story 11/12:** Recipe Validation & Ingredient Exclusion Filtering
+- **User Story 13/14:** User Login / Profile Page via Auth0 + MongoDB
+- **User Story 15/16:** Image Error Handling & Web Hosting
+
+
 ### Next Steps (Sprint 2)
 
 #### Patrick Rucker
 
-- New Feature | Seperate Users: implement search history functoinality tied to a user's login `User Story 9`
+- New Feature | Seperate Users: implement search history functionality tied to a user's login `User Story 9`
 - New Feature | Seperate Users: implement save page of recipes tied to a user's login `User Story 10`
 
 #### Christian Johnson
