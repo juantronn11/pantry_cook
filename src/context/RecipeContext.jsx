@@ -174,6 +174,8 @@ export function RecipeProvider({ children }) {
   // SCRUM-18: fetchRecipes fires both API calls concurrently via Promise.allSettled().
   // If one API fails, the error flag is set but results from the other still come through.
   // SCRUM-19: results from both APIs are normalized to a common shape and deduplicated by name.
+  // SCRUM-119: If the user re-searches with the same ingredients and only added exclusions
+  // (none removed), skip the API call and filter allRecipes client-side instead.
   async function fetchRecipes(rawIngredients) {
     setLoading(true)
     setError(null)
@@ -181,6 +183,30 @@ export function RecipeProvider({ children }) {
     // SCRUM-41: Parse and sanitize ingredients before sending to APIs.
     // Ensures both services receive trimmed, lowercased, deduplicated strings.
     const ingredients = parseIngredients(rawIngredients)
+
+    // SCRUM-119: Check if we can skip the API call and filter client-side.
+    // Same ingredients = no new fetch needed for the base results.
+    // Exclusion removed = we need recipes back that the API already excluded, so re-fetch.
+    const sameIngredients =
+      ingredients.length === lastSearchedIngredients.length &&
+      ingredients.every(i => lastSearchedIngredients.includes(i))
+
+    const exclusionRemoved = lastFetchedExclusions.some(
+      e => !excludedIngredients.includes(e)
+    )
+
+    if (sameIngredients && !exclusionRemoved && allRecipes.length > 0) {
+      const filtered = allRecipes.filter(recipe =>
+        !excludedIngredients.some(excl =>
+          recipe.raw?.extendedIngredients?.some(i =>
+            i.name.toLowerCase().includes(excl)
+          )
+        )
+      )
+      setRecipes(sortRecipes(filtered, sortOrder))
+      setLoading(false)
+      return
+    }
 
     // SCRUM-42: Wrap each API call with a 30-second timeout so the app
     // does not hang indefinitely if an external service stops responding.
@@ -255,6 +281,12 @@ export function RecipeProvider({ children }) {
         return false
       }
     })
+
+    // SCRUM-119: Store the full validated results and search params so future
+    // re-searches with the same ingredients can filter client-side instead of re-fetching.
+    setAllRecipes(validated)
+    setLastSearchedIngredients(ingredients)
+    setLastFetchedExclusions([...excludedIngredients])
 
     // SCRUM-43 + SCRUM-45: Sort the deduplicated list using the active sortOrder.
     // Default is 'best-match' (matchScore descending). User can change this via the
