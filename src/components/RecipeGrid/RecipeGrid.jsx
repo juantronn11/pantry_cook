@@ -38,7 +38,7 @@ function RecipeGrid({ recipes: recipesProp }) {
       {loading && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
-            <img src={LoadingSpinner} alt="Loading..." width="150" height="150" />
+            <img src={LoadingSpinner} alt="Loading... maybe" width="150" height="150" />
           </div>
         </div>
       )}

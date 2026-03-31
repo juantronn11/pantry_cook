@@ -6,6 +6,7 @@ import { useState } from 'react';
 import styles from './SearchForm.module.css';
 import { useRecipeContext } from '../../context/RecipeContext';
 import { ingredientAutocomplete } from '../../utils/ingredientTrie';
+import ExcludeIngredients from '../ExcludeIngredients/ExcludeIngredients';
 
 const MAX_INGREDIENTS = 5;
 
@@ -70,6 +71,8 @@ function SearchForm() {
           )}
         </div>
       </div>
+
+      <ExcludeIngredients />
 
       <div className={styles.searchForm}>
         <p>Press Search for recipes with your ingredients</p>

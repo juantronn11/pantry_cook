@@ -9,8 +9,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { RecipeProvider } from './context/RecipeContext'
-import App from './App.jsx'
+import { RecipeProvider } from '../context/RecipeContext.jsx'
+import App from '../app/App.jsx'
 import './index.css'
 import { Auth0Provider } from "@auth0/auth0-react";
 
