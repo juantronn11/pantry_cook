@@ -40,6 +40,15 @@ export function RecipeProvider({ children }) {
   // Passed to Spoonacular via &excludeIngredients in SCRUM-108.
   const [excludedIngredients, setExcludedIngredients] = useState([])
 
+  // SCRUM-119: Track the last API fetch so we can skip re-fetching when
+  // the user only adds exclusions without changing their ingredients.
+  // allRecipes holds the full validated results from the last API call.
+  // lastSearchedIngredients holds the ingredients used in that call.
+  // lastFetchedExclusions holds the exclusions sent to the API in that call.
+  const [allRecipes, setAllRecipes] = useState([])
+  const [lastSearchedIngredients, setLastSearchedIngredients] = useState([])
+  const [lastFetchedExclusions, setLastFetchedExclusions] = useState([])
+
   function addExclusion(ingredient) {
     const trimmed = ingredient.trim().toLowerCase()
     if (!trimmed) return
