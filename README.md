@@ -307,33 +307,53 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 - **User Story 13/14:** User Login / Profile Page via Auth0 + MongoDB
 - **User Story 15/16:** Image Error Handling & Web Hosting
 
+### Patrick Rucker
 
-### Next Steps (Sprint 2)
+| Jira Task | Title | Bitbucket PR |
+|-----------|-------|--------------|
+| [SCRUM-48](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-48) | The history stores key recipe details (title, ID, and timestamp of when I last viewed it) | [PR #32](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/32) — Commits: [b8c79cf](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/b8c79cf), [5077003](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/5077003) |
+| [SCRUM-47](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-47) | Each time the user submits an ingredient search, the search query and returned recipes are automatically added to their search history | [PR #33](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/33) — Commits: [56d9d77](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/56d9d77) |
+| [SCRUM-49](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-49) | The history is persisted using local storage so it survives page refreshes and is not lost when the tab is closed | [PR #34](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/34) — Commits: [625001d](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/625001d) |
+| [SCRUM-102](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-102) | The user can view their search history from the Search History page, showing past searches in reverse chronological order | [PR #43](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/43) — Commits: [4d68b9b](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/4d68b9b), [f3d4a3b](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/f3d4a3b), [40aca52](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/40aca52) |
+| [SCRUM-51](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-51) | A "Save to Library" button is available on each full recipe listing page | [PR #44](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/44) — Commits: [f614ac5](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/f614ac5), [cdb26c5](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/cdb26c5) |
+| [SCRUM-54](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-54) | I can view, access, and remove recipes from my saved library through the navigation toolbar | [PR #49](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/49) — Commits: [f0e277d](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/f0e277d), [f30f1f8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/f30f1f8) |
+| [SCRUM-107](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-107) | If the user tries to save a recipe they have already saved, the app prevents the duplicate and indicates the recipe is already in their collection | [PR #50](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/50) — Commits: [55e3127](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/55e3127) |
+| [SCRUM-113](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-113) | Fix infinite re-render loop caused by ValidationCheck in RecipeTile | [PR #52](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/52) — Commits: [d4e7a2c](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/d4e7a2c), [d94078f](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/d94078f) |
+| [SCRUM-114](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-114) | Set a limit on how much history is stored (100-entry cap + 30-day expiration) | [PR #55](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/55) — Commits: [de1b887](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/de1b887), [cfa23a9](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/cfa23a9) |
+| [SCRUM-41](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-41) | The submitted ingredients are parsed and made available for downstream recipe API query construction | [PR #58](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/58) — Commits: [cba66e0](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/cba66e0), [bd947c6](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/bd947c6) |
+| [SCRUM-42](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-42) | The endpoint responds within a reasonable time frame (e.g., < 2 seconds) under normal conditions | [PR #59](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/59) — Commits: [a6eb920](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/a6eb920), [6ca616a](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/6ca616a), [ab0908e](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/ab0908e) |
+| [SCRUM-115](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-115) | Returned recipes that have HTML instructions are parsed and displayed as readable plain text | [PR #60](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/60) — Commits: [de59325](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/de59325), [c9b79b0](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c9b79b0) |
+| [SCRUM-116](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-116) | Add debounce and API call counter to ingredient autocomplete | [PR #69](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/69) — Commits: [eaeac4b](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/eaeac4b), [fe68d25](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/fe68d25) |
 
+### Christian Johnson
+
+| Jira Task | Title | Bitbucket PR |
+|-----------|-------|--------------|
+| [SCRUM-11](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-11) | There are multi-select buttons for ingredients and a SEARCH or ENTER button (autocomplete text input) | [PR #51](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/51) — Commits: [e646a40](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/e646a40), [a562757](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/a562757), [216ed04](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/216ed04), [23c901d](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/23c901d), [aa1977c](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/aa1977c) |
+| [SCRUM-39](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-39) | The backend exposes an endpoint that accepts the user's submitted ingredient list via an HTTP request | Included in [PR #51](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/51) |
+| [SCRUM-40](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-40) | The endpoint validates incoming data and returns an appropriate error response if required fields are missing or malformed | [PR #63](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/63) — Commits: [36e1500](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/36e1500), [9720a85](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/9720a85) |
+| [SCRUM-79](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-79) | Before displaying a recipe tile, the app validates that required fields are present and non-empty | [PR #36](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/36) — Commits: [c61d195](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c61d195) |
+| [SCRUM-80](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-80) | Recipes with missing or malformed data are filtered out and not displayed to the user | [PR #37](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/37) |
+| [SCRUM-83](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-83) | If a recipe's image fails to load, a placeholder image is shown instead of a broken image icon | Included in [PR #37](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/37) |
+| [SCRUM-85](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-85) | If all recipes from a search fail validation, the user sees a meaningful error message with the option to try a new search | [PR #42](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/42) |
+| [SCRUM-86](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-86) | The app logs validation failures to the console for debugging without exposing technical errors to the user | [PR #41](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/41) |
+
+
+### Next Steps (Sprint 3)
 #### Patrick Rucker
-
-- New Feature | Seperate Users: implement search history functionality tied to a user's login `User Story 9`
-- New Feature | Seperate Users: implement save page of recipes tied to a user's login `User Story 10`
+- Tie search history persistence to authenticated user account (MongoDB) so history is not just local storage
+- Implement user-specific saved recipes page that persists across devices via MongoDB
+- Add pagination or lazy-loading to the History page for users with large history sets
+- Write additional unit tests for the new Save/History features (SCRUM-47, 48, 49, 51, 54)
 
 #### Christian Johnson
+- Improve autocomplete ingredient search to handle edge cases (partial matches, special characters)
+- Expand recipe validation to include additional fields such as nutrition info and allergen data
+- Add user-facing error messages that are more descriptive and actionable
+- Write unit tests to cover the new autocomplete and validation logic
 
-- New Feature | Searching: ingredient entry by type in with auto-fill rather than field of buttons `User Story 2` `User Story 6`
-- Error correction: check for recipe loading correctly and do not load incorrect recipes
+#### 
 
-#### Juan Estrada
-
-- New Feature | Searching: 'filter out' ingredient
-- New Feature | Searching: exclusively search by ingredient (i.e. recipe contains no ingredients not selected)
-
-#### Miguel Alvarez
-
-- New Feature | Seperate Users: create login functionality
-- New Feature | Seperate Users: implement user profiles and tie to log-in
-
-#### Tina Carter
-
-- Error correction: check for image loading correctly
-- New Feature | Backend: host webapp on server rather than local
 
 ## Room for Improvement
 Include areas you believe need improvement / could be improved. Also add TODOs for future development.
