@@ -57,6 +57,8 @@ npm test
 ```
 This runs all 38 unit tests using [Vitest](https://vitest.dev/). Tests cover the API services, RecipeContext, and all React components. All fetch calls are mocked — no API keys or internet connection needed.
 
+Tests are not avaiable on the main branch. To access tests, see dev or dev2, or any further out development, feature, or bug fix branch.
+
 To run tests for a specific file or folder:
 ```bash
 npx vitest run src/api/__tests__/         # API service tests only
@@ -115,9 +117,19 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
         * Task 4 – Build the Express API Endpoint for Server-Side Recipe Retrieval
         * Task 5 – Unit Testing for Print/Download Features
 
+**Specific features for Deployment 2:**
+* Choose your ingredients (up to 5): via type-in field with auto complete drop down options for recognized ingredients
+* Exclude ingredients: type-in field with same auto complete drop down as include ingredients.
+    * implemented to minimize API calls: if a search is modified to exclude an ingredient, the sorting is done through a local cache array(ELEPHANT?) of the recipes and their ingredients from original search.
+* Search function/recipes in tile grid displays only after 'search' button is clicked. IE not every time a key in pressed or ingredient is selected.
+* Log in feature has been added.
+* Recipes can be saved in association with specific user login. Save button does not dispay if user is not logged in.
+* Search history of the last 30 days (ELEPHANT) or 100 searches (ELEPHANT) displays in history tab. It is locally saved for non-logged in users, and associated with specific login when the user is logged in (is this true ELEPHANT).
+* API calling was minimized by implementing local cache of recipes that have been recently search. (ELEPHANT)
+
 **Potential future features/improvements:**
-- Operation Make it Better:
-    text entry of ingredients; recepies are returned based on compliance with 'only use ingredients listed by user'
+- Operation Make it Better: 
+    `Implemented in Dep2` text entry of ingredients; recepies are returned based on compliance with 'only use ingredients listed by user'
 - Operation Make it Better-er:
     search for recepies based on compliance with 'ingredients not listed by user are...' CHEAP to find, EASY to find, etc
 - Dificult Side Quest:
@@ -126,6 +138,10 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
     filter recepies by TYPE of food (i.e. cusine)
 - Operation Independance Day:
      host our own database, so as API is used to query recepies, database is built, so in future API becomes less relevant for accessing recipes from existing database of recipies
+- Side Quest Search and Destroy:
+    `Implemented in Dep2` searching can be modified to exclude specific ingredients using the text entry format that included ingredients use, in a different text field
+- Side Quest Save Me: 
+    `Impelemented in Dep2` recipes can be saved on the webapp in association with a specific user
 
 **User Stories for Features**
 - Details for each user story and acceptance criteria can be found in Jira.
@@ -138,7 +154,7 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 >
 >   As a user, I would like a form where I can enter the ingredients I currently have in my kitchen so that the app can find recipes I can actually make right now.
 
->User Story 3: Full Recipe Listing (frontend)
+>`DUPLICATED` User Story 3: Full Recipe Listing (frontend)
 >
 >   As a user, I would like to view the full details of a recipe I selected from my search results so that I can see all the ingredients and step-by-step instructions needed to make the dish.
 
@@ -150,7 +166,7 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 >
 >   As a user, I would like a navigation toolbar so that I can easily switch between searching for recipes with my ingredients, viewing my cooking history, and accessing my saved recipe collection.
 
->User Story 6: User Form Data (Requests) (backend)
+>`DUPLICATED` User Story 6: User Form Data (Requests) (backend)
 >
 >   As a back end developer, I would like the app to accept and process the list of ingredients I submit so that it can search for recipes that match what I have available.
 
@@ -159,17 +175,29 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 >
 >   As a back end developer, I would like the app to search across multiple sources or queries based on my ingredient list so that I get a comprehensive set of recipes I can make with what I have.
 
->User Story 8: Filter Recipes for Multiple Ingredients from Multiple Calls (backend)
+>`COMPLETE` User Story 8: Filter Recipes for Multiple Ingredients from Multiple Calls (backend)
 >
 >   As a back end developer, I would like the app to intelligently combine and filter results from multiple searches so that I see recipes ranked by how well they match the ingredients I have on hand.
 
->User Story 9: Storing User Recipe History Locally (backend)
+>`COMPLETE` User Story 9: Storing User Recipe History Locally (backend)
 >
 >   As a back end developer, I would like the app to keep track of recipes I've viewed so that I can easily find and revisit dishes I was interested in without searching for them again.
 
->User Story 10: Non-Temporary Library Storage (backend)
+>`COMPLETE` User Story 10: Non-Temporary Library Storage (backend)
 >
 >   As a back end developer, I would like to save favorite recipes to a permanent personal library so that I can build a go-to collection of meals I know I can make and access them anytime.
+
+> `COMPLETE` User Story :
+>
+>   As
+
+> `COMPLETE` User Story :
+>
+>   As
+
+> `COMPLETE` User Story :
+>
+>   As
 
 
 ## Images
@@ -189,7 +217,9 @@ Find recipe with: ☑ chicken | ☑ parmesan | ☑ cream
 
 ## Project Status
 MVP deployed: _functional_ on 02/27/2026 (Feb.)
-<br/>Project is: _in progress_ as of 03/03/2026 (Mar.)
+<br/>Dep2 deployed: _functional_ on 03/30/2026 (Mar.)
+
+Project is: _in progress_ as of 03/31/2026 (Mar.)
 
 ### Sprint 1 Contributions
 
