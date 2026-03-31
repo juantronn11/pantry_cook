@@ -354,6 +354,19 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 | [SCRUM-111 / Remove MealDB](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-111) | Remove MealDB, switch to Spoonacular-only pipeline | [PR #68](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/68) — Commits: [af78b41](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/af78b41), [07a34d9](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/07a34d9), [14f9818](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/14f9818), [273b7f2](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/273b7f2), [40fdb9f](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/40fdb9f) |
 | [SCRUM-119 / Bugfix](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-119) | Filter API Reduce Usage | [PR #74](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/74)
 
+### Miguel Alvarez
+
+| Jira Task | Title | Bitbucket PR |
+|-----------|-------|--------------|
+| [SCRUM-88](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-88) | Create MongoDB for Users | [PR #46](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/46) — Commits: [c909791](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c909791), [c09724e](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c09724e) |
+| [SCRUM-92](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-92) | Create User Login/Log Off | [PR #54](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/54) — Commits: [c474416](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c474416), [a838fc3](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/a838fc3), [869d5a1](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/869d5a1) |
+| [SCRUM-95](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-95) | JWT Context to be used T/O Application | Handled in [PR #54](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/54) (SCRUM-92 login/logout implementation) |
+| [SCRUM-94](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-94) | Handle Recipe to UserData | [PR #62](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/62) — Commits: [8aca092](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/8aca092), [df66f91](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/df66f91) |
+| [SCRUM-109](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-109) | Saved and Recent Recipes show Login page for non logged-in users | [PR #57](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/57) + [PR #61](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/61) — Commits: [7fa2884](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/7fa2884) |
+| [SCRUM-99](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-99) | Add/Remove Saved Recipes | Handled in [PR #62](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/62) — SCRUM-94/109 Save/Delete connects with MongoDB |
+| [SCRUM-112](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-112) | Save Recipe Button Added to Recipe Tiles | Handled in [PR #44](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/44) (SCRUM-51 — Patrick Rucker) |
+| [SCRUM-118](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-118) | Fix ingredient filter. Re-add ExcludeIngredients filter and autocomplete debug logging | [PR #72](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/72) — Commits: [12fd9d8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/12fd9d8701e8e6b2bd3a5a0313476042e171dcf0) |
+
 
 ### Next Steps (Sprint 3)
 - apply auto complete to exclude (correctly)
