@@ -206,9 +206,46 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 >
 >   As a user, I would like recipe images to load correctly and display a fallback when they don't so that the app looks polished and I'm never shown broken images. 
 
-> `IN PROGRESS` User Story 16: Hosted Web Application
+> `SPRINT 3` User Story 16: Hosted Web Application
 >
 >   As a user, I would like to access the app from a public URL rather than running it locally so that I can use it from any device without needing to set up the project myself. 
+><br/>   As a developer, I want the webapp and server to be globally accessible, so that users can access the app from any device without running it locally.
+
+> `SPRINT 3` User Story 17: Shopping List Generator
+>
+> As a user, I want to generate a shopping list from a recipe, so that I know exactly what ingredients I need to buy without manually writing them down.
+
+> `SPRINT 3` User Story 18: SOLID Principles Refactor
+>
+> As a team manager, I want my team's code to follow SOLID principles, so that the codebase is maintainable, testable, and extensible for future sprints.
+
+> `SPRINT 3` User Story 19: API Caching Optimization
+>
+> As a user, I want my search results to be cached, so that adding or removing ingredient exclusions doesn't waste API calls or slow down my experience.
+
+
+> `SPRINT 3` User Story 20: Page Bug Fixes
+>
+> As a user, I want the app pages to work correctly, so that I can navigate and use the app without unexpected behavior.
+
+> `SPRINT 3` User Story 21: History Management
+>
+> As a user, I want to be able to edit and clear my search history, so that I can remove old or unwanted searches and keep my history clean.
+
+> `SPRINT 3` User Story 22: Improved Search & Error Handling
+>
+> As a user, I want better error messages, smarter exclusions, and keyboard-friendly autocomplete, so that I can troubleshoot issues, exclude ingredient categories easily, and navigate the app efficiently.
+
+
+> `SPRINT 3` User Story 23: Recipe Tile Verification
+>
+> As a user, I want recipe tiles to only display working links and verified content, so that I don't encounter broken links or invalid recipe data.
+
+
+> `SPRINT 3` User Story 24: Exclusion Filter Bug Fix
+> > **Note:** This belongs under **USER STORY 19 (API Caching)** or **USER STORY 20 (Bug Fixes)** — it's a bug in the exclusion filtering logic, not a standalone story.
+>
+> As a user, I want ingredient exclusion to match exact ingredient names, so that excluding "rice" doesn't also remove recipes containing "licorice."
 
 
 ## Images
@@ -293,7 +330,7 @@ Project is: _in progress_ as of 03/31/2026 (Mar.)
 
 
 
-# Sprint 2 Contributions
+### Sprint 2 Contributions
 
 **Sprint Duration:** March 9, 2026 – March 27, 2026
 
@@ -307,7 +344,7 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 - **User Story 13/14:** User Login / Profile Page via Auth0 + MongoDB
 - **User Story 15/16:** Image Error Handling & Web Hosting
 
-### Patrick Rucker
+#### Patrick Rucker
 
 | Jira Task                                                    | Title                                                        | Bitbucket PR                                                 |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -326,7 +363,7 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 | [SCRUM-116](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-116) | Add debounce and API call counter to ingredient autocomplete | [PR #69](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/69) — Commits: [eaeac4b](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/eaeac4b), [fe68d25](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/fe68d25) |
 | [SCRUM-118](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-118) | Fix ingredient filter. Re-add ExcludeIngredients filter and autocomplete debug logging | [PR #72](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/72) — Commits: [6b27ee8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/6b27ee8) |
 
-### Christian Johnson
+#### Christian Johnson
 
 | Jira Task | Title | Bitbucket PR |
 |-----------|-------|--------------|
@@ -339,7 +376,7 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 | [SCRUM-85](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-85) | If all recipes from a search fail validation, the user sees a meaningful error message with the option to try a new search | [PR #42](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/42) |
 | [SCRUM-86](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-86) | The app logs validation failures to the console for debugging without exposing technical errors to the user | [PR #41](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/41) |
 
-### Juan Estrada
+#### Juan Estrada
 
 | Jira Task | Title | Bitbucket PR |
 |-----------|-------|--------------|
@@ -354,7 +391,7 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 | [SCRUM-111 / Remove MealDB](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-111) | Remove MealDB, switch to Spoonacular-only pipeline | [PR #68](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/68) — Commits: [af78b41](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/af78b41), [07a34d9](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/07a34d9), [14f9818](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/14f9818), [273b7f2](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/273b7f2), [40fdb9f](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/40fdb9f) |
 | [SCRUM-119 / Bugfix](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-119) | Filter API Reduce Usage | [PR #74](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/74) — Commits: [a412169](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/a4121690c0cb626c43c31a58a5bd2ac8e3eafd12), [8654168](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/865416860c1c5fe75df85be512477a0f6caeb51a), [8b62246](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/8b62246b8ac662d88f3ffed6460b490bcdbb1f13), [af48ded](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/af48ded0b7e1c7b65460167b4da873afd20dc0b3), [7c8e0d7](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/7c8e0d7227e2f8a611f3ba79cc4f636ca77b0a9c), [9c76ac8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/9c76ac8fb29f078982fce84d4916ebc3d4cc89b3), [c4a4d73](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c4a4d738f709efd9f36fc9d40f6008afc73bc9a2) [6207d51](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/6207d517f3f422dc126d61443482319bb5e1dbc9) |
 
-### Miguel Alvarez
+#### Miguel Alvarez
 
 | Jira Task | Title | Bitbucket PR |
 |-----------|-------|--------------|
@@ -367,7 +404,7 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 | [SCRUM-112](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-112) | Save Recipe Button Added to Recipe Tiles | Handled in [PR #44](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/44) (SCRUM-51 — Patrick Rucker) |
 | [SCRUM-118](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-118) | Fix ingredient filter. Re-add ExcludeIngredients filter and autocomplete debug logging | [PR #72](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/72) — Commits: [12fd9d8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/12fd9d8701e8e6b2bd3a5a0313476042e171dcf0) |
 
-### Tina Carter
+#### Tina Carter
 
 | Jira Task | Title | Bitbucket PR |
 |-----------|-------|--------------|
@@ -384,24 +421,111 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 
 
 ### Next Steps (Sprint 3)
-- `Group` `Priority` Make codebase more SOLID. Specific actions to be discussed (see: SOLID-ANALYSIS.md in slack)
 
-- `Miguel` Implement arrow keys for selecting autocomplete (instead of needing to click it)
-- `Christian` Remove broken links ([React has a function that checks for broken links]())
-- `Juan` When logged in, add 'loged in as' to nav. bar next to log out button
-- `Juan` Add error handler that tells the user that the recipe failed to save + potential solution (like 'clear your cookies' or 'please have patience' that sort of thing that makes you want to kill the developers of whatever website is broken becuase 'have patience' really???)
-    - ^ can you tell I was recently told to 'have patience' as a potential fix in the 'see details' section of a non-loading webpage >:(
-- `Christian` Fix new search button so that it actually clears user's serach
-- `Miguel` Fix history page so it no longer scrolls all the way down to the bottom on load
-- `Patrick` Implement and add a clear history feature (button)
-- `Tina` Allow for removal of individual days/searches from your history (button??)
-- `Tina` Allow for 'generalization' of products for ingredient exclusion (i.e. type 'dairy' and exclude all dairy products, instead of needing to type 'milk' and 'cream' and 'heavy cream' etc.)
-- `Patrick` Change error handling to include error logging (see: try/catch ModalData raw reformat in [RecipeTile.jsx lines 63-67](./src/components/RecipeTile/RecipeTile.jsx#63-67). There may be other loccations as well)
-    - Make database to store logged errors, rather than just console logs.  
-- `Patrick` Change substring parsing for filtering to be less agressive (i.e. stop couting 'licourice' when string is 'rice.' see: [RecipeContext.jsx lines 200-202](./src/context/RecipeContext.jsx#200-202))
-- `Miguel` Finish implementing global access of webapp/server creation
-- `Christian` Cache unflitered results to avoid refetches on ingredient removals (exclusion) with a time to live of TBD
-- `Tina` Implement time to live for cache for invalidation  
+#### <span style="font-size: 20px;">Miguel Alvarez:</span>
+
+#### <span style="font-size: 20px;">Tina Carter:</span>
+
+#### <span style="font-size: 20px;">Juan Estrada</span>
+
+#### <span style="font-size: 20px;">Christian Johnson:</span>
+
+#### <span style="font-size: 20px;">Patrick Rucker:</span>
+
+#### <span style="font-size: 20px;">Group:</span>
+## <span style="font-size: 18px;">User Story 18: SOLID Principles Refactor</span>
+### Tasks:
+- [ ] Make codebase more SOLID — specific actions to be discussed (see: SOLID-ANALYSIS.md in Slack)
+### Acceptance Criteria:
+1. 
+2. 
+3. 
+4. 
+
+## <span style="font-size: 18px;">User Story 16: Global Access Setup (Continued)</span>
+### Tasks:
+- [ ] Finish implementing global access of webapp/server creation
+### Acceptance Critera:
+1. Webapp functionality is the same when accessed through localhost or internet-accessable URL
+2. Webapp does not face loading issues when accessed from a network other than server's network
+3. 
+
+## <span style="font-size: 18px;">User Story 17: Shopping List Generator</span>
+### Tasks: 
+- [ ] Create a ShoppingList component that displays ingredients needed for a selected recipe
+- [ ] Add a "Generate Shopping List" button to the recipe modal (next to Save/Download)
+- [ ] Allow users to check off ingredients they already have, removing them from the list
+- [ ] Support combining ingredients from multiple saved recipes into one consolidated shopping list (e.g., two recipes both need "flour" → show "flour" once with combined amounts)
+- [ ] Persist the shopping list to MongoDB so it survives across sessions (new endpoint or extend user document)
+- [ ] Add a dedicated Shopping List page accessible from the navbar
+- [ ] Allow users to manually add custom items to the list (e.g., "paper towels")
+- [ ] Add a "Clear List" button to reset the shopping list
+### Acceptance Critera:
+1. User can click "Add to Shopping List" on any recipe and its ingredients appear on the Shopping List page
+2. Duplicate ingredients from multiple recipes are merged with combined quantities (e.g., 1 cup flour + 2 cups flour = 3 cups flour)
+3. User can check off items they already have, and checked items are visually distinguished (strikethrough or dimmed)
+4. Shopping list persists across sessions — refreshing the browser or logging in from another device shows the same list
+5. User can clear the entire list or remove individual items
+
+## <span style="font-size: 18px;">User Story 19: API Caching Optimization</span>
+### Tasks:
+- [ ] Cache unfiltered results to avoid re-fetches on exclusion removal (TTL to be determined)
+- [ ] Implement time-to-live (TTL) for cache invalidation so stale results don't persist indefinitely
+### Acceptance Criteria:
+1. API calls are minimized.... idk ELEPHANT
+2. 
+3. 
+
+## <span style="font-size: 18px;">User Story 20: Page Bug Fixes</span>
+### Tasks:
+- [ ] Fix "New Search" button so it actually clears the user's search (ingredients, results, and exclusions)
+- [ ] Fix History page so it no longer auto-scrolls to the bottom on load
+- [ ] When logged in, display "Logged in as [email/username]" in the navbar next to the logout button
+### Acceptance Criteria:
+1. Pressing the 'New Search' button returns user to search page with all fields cleared.
+2. Hsitory page automatically loads to display most recent search. All old searches must be scrolled down to (page down).
+3. When logged in, user information is displayed in navbar. No empty fields or placeholder display when user is not logged in. Information persists reguardless of what page the user is on.
+
+## <span style="font-size: 18px;">User Story 21: History Management</span>
+### Tasks:
+- [ ] Implement a "Clear All History" button on the History page
+- [ ] Allow removal of individual search entries from history (per-entry delete button)
+### Acceptance Criteria:
+1. History page displays 'Clear All History' (or similar button)
+2. Upon user pressing button, all history is removed from user view and local webpage history. (Maybe include 'are you sure' confirmation?)
+3. Individual Searchs can be removed from history without breaking history page formatting through use of a clear to understand 'remove' or simmilar button.
+
+## <span style="font-size: 18px;">User Story 22: Improved Search & Error Handling</span>
+### Tasks:
+- [ ] Add user-facing error handler when a recipe fails to save, with actionable suggestions (e.g., "Clear your cookies" or "Check your network connection")
+- [ ] Improve error handling to include persistent error logging (see: try/catch in RecipeTile.jsx lines 63-67 — may exist in other locations as well)
+  - [ ] Create a database/collection to store logged errors rather than relying on console.log
+- [ ] Allow generalized ingredient exclusion by category (e.g., type "dairy" to exclude all dairy products instead of individually typing "milk", "cream", "heavy cream", etc.)
+- [ ] Implement arrow key navigation for autocomplete suggestions in both the ingredient input and exclusion input (instead of requiring mouse click)
+### Acceptance Criteria: 
+1. All errors that occur are uniquely logged in error loggin databse.
+2. Error are either hiden from the user (i.e. hide broken images and links) or create alert() with relevant (to the user) error information.
+3. Exlude ingredients can pass 'categories' of ingredients and either appropriately filter out that categoy (i.e. dairy, gluten, meat, other common dietary restrictions) or informs user that that is an invalid search-exclusion term.
+4. Autocomplete suggestions for ingredients (include and exclude) can be toggled through with arrow keys and selected with 'enter' as well as keeping mouse clickability functionality.
+
+## <span style="font-size: 18px;">User Story 23: Recipe Tile Verification</span>
+### Tasks:
+- [ ] Remove or flag broken links in recipe tiles (reference: [linkcheckermd](https://github.com/Microsoft/linkcheckermd), [linkcheckerhtml](https://github.com/BillDietrich/linkcheckerhtml) — note: React libraries for this typically only handle embedded links like images)
+- [ ] Review and address any remaining recipe verification issues (team to discuss)
+### Acceptance Criteria:
+1. No recipe tile displays any broken link (whether it is a rotten or incorrect link) to user.
+2. All links that do dispay in recipe tiles lead to valid web pages.
+3. ELEPHANT ??? Incorrect links (i.e. missing 'http://' or other link-markers) are considered broken links.
+
+## <span style="font-size: 18px;">User Story 24: Exclusion Filter Bug Fix</span>
+> **Note:** This belongs under **USER STORY 18 (API Caching)** or **USER STORY 19 (Bug Fixes)** — it's a bug in the exclusion filtering logic, not a standalone story.
+### Tasks:
+- [ ] Change substring matching to exact matching in exclusion filter (see: RecipeContext.jsx lines 200-202)
+  - Current: `i.name.toLowerCase().includes(excl)` — "rice" matches "licorice"
+  - Fix: `i.name.toLowerCase() === excl` — "rice" only matches "rice"
+### Acceptance Criteria:
+1. No unrelated ingredients are filtered out for any valid input to exclude ingredient function (i.e. "rice" will not exclude "licourice").
+2. All forms of valid ingredient entries to exclude are excluded (i.e. "rice" will excluder "jasmine rice").
 
 ## Room for Improvement
 Include areas you believe need improvement / could be improved. Also add TODOs for future development.
