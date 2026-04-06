@@ -35,8 +35,12 @@ cook on budget.
    npm install
    ```
 
-### Running the Development Server
-Start the local dev server:
+### Running the Development Server`
+Start a local access port for MongoDB:
+```bash
+node ./server/mongo.js
+```
+In a different terminal, start the local dev server:
 ```bash
 npm run dev
 ```
@@ -423,59 +427,91 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 ### Next Steps (Sprint 3)
 
 #### <span style="font-size: 20px;">Miguel Alvarez:</span>
-
-#### <span style="font-size: 20px;">Tina Carter:</span>
-
-#### <span style="font-size: 20px;">Juan Estrada</span>
-
-#### <span style="font-size: 20px;">Christian Johnson:</span>
-
-#### <span style="font-size: 20px;">Patrick Rucker:</span>
-
-#### <span style="font-size: 20px;">Group:</span>
-## <span style="font-size: 18px;">User Story 18: SOLID Principles Refactor</span>
-### Tasks:
-- [ ] Make codebase more SOLID — specific actions to be discussed (see: SOLID-ANALYSIS.md in Slack)
-### Acceptance Criteria:
-1. 
-2. 
-3. 
-4. 
-
-## <span style="font-size: 18px;">User Story 16: Global Access Setup (Continued)</span>
-### Tasks:
-- [ ] Finish implementing global access of webapp/server creation
-### Acceptance Critera:
-1. Webapp functionality is the same when accessed through localhost or internet-accessable URL
-2. Webapp does not face loading issues when accessed from a network other than server's network
-3. 
-
 ## <span style="font-size: 18px;">User Story 17: Shopping List Generator</span>
 ### Tasks: 
-- [ ] Create a ShoppingList component that displays ingredients needed for a selected recipe
-- [ ] Add a "Generate Shopping List" button to the recipe modal (next to Save/Download)
-- [ ] Allow users to check off ingredients they already have, removing them from the list
-- [ ] Support combining ingredients from multiple saved recipes into one consolidated shopping list (e.g., two recipes both need "flour" → show "flour" once with combined amounts)
 - [ ] Persist the shopping list to MongoDB so it survives across sessions (new endpoint or extend user document)
 - [ ] Add a dedicated Shopping List page accessible from the navbar
 - [ ] Allow users to manually add custom items to the list (e.g., "paper towels")
 - [ ] Add a "Clear List" button to reset the shopping list
 ### Acceptance Critera:
-1. User can click "Add to Shopping List" on any recipe and its ingredients appear on the Shopping List page
-2. Duplicate ingredients from multiple recipes are merged with combined quantities (e.g., 1 cup flour + 2 cups flour = 3 cups flour)
-3. User can check off items they already have, and checked items are visually distinguished (strikethrough or dimmed)
 4. Shopping list persists across sessions — refreshing the browser or logging in from another device shows the same list
 5. User can clear the entire list or remove individual items
-
 ## <span style="font-size: 18px;">User Story 19: API Caching Optimization</span>
 ### Tasks:
 - [ ] Cache unfiltered results to avoid re-fetches on exclusion removal (TTL to be determined)
 - [ ] Implement time-to-live (TTL) for cache invalidation so stale results don't persist indefinitely
 ### Acceptance Criteria:
 1. API calls are minimized.... idk ELEPHANT
-2. 
-3. 
 
+#### <span style="font-size: 20px;">Tina Carter:</span>
+## <span style="font-size: 18px;">User Story 22: Improved Search & Error Handling</span>
+### Tasks:
+- [ ] Implement arrow key navigation for autocomplete suggestions in both the ingredient input and exclusion input (instead of requiring mouse click)
+### Acceptance Criteria: 
+4. Autocomplete suggestions for ingredients (include and exclude) can be toggled through with arrow keys and selected with 'enter' as well as keeping mouse clickability functionality.
+## <span style="font-size: 18px;">User Story 17: Shopping List Generator</span>
+### Tasks: 
+- [ ] Add a "Generate Shopping List" button to the recipe modal (next to Save/Download)
+### Acceptance Critera:
+1. User can click "Add to Shopping List" on any recipe and its ingredients appear on the Shopping List page
+## <span style="font-size: 18px;">User Story 23: Recipe Tile Verification</span>
+### Tasks:
+- [ ] Remove or flag broken links in recipe tiles (reference: [linkcheckermd](https://github.com/Microsoft/linkcheckermd), [linkcheckerhtml](https://github.com/BillDietrich/linkcheckerhtml) — note: React libraries for this typically only handle embedded links like images)
+- [ ] Review and address any remaining recipe verification issues (team to discuss)
+### Acceptance Criteria:
+1. No recipe tile displays any broken link (whether it is a rotten or incorrect link) to user.
+2. All links that do dispay in recipe tiles lead to valid web pages.
+3. ELEPHANT ??? Incorrect links (i.e. missing 'http://' or other link-markers) are considered broken links.
+## <span style="font-size: 18px;">User Story 24: Exclusion Filter Bug Fix</span>
+> **Note:** This belongs under **USER STORY 18 (API Caching)** or **USER STORY 19 (Bug Fixes)** — it's a bug in the exclusion filtering logic, not a standalone story.
+### Tasks:
+- [ ] Change substring matching to exact matching in exclusion filter (see: RecipeContext.jsx lines 200-202)
+  - Current: `i.name.toLowerCase().includes(excl)` — "rice" matches "licorice"
+  - Fix: `i.name.toLowerCase() === excl` — "rice" only matches "rice"
+### Acceptance Criteria:
+1. No unrelated ingredients are filtered out for any valid input to exclude ingredient function (i.e. "rice" will not exclude "licourice").
+2. All forms of valid ingredient entries to exclude are excluded (i.e. "rice" will excluder "jasmine rice").
+
+
+#### <span style="font-size: 20px;">Juan Estrada</span>
+## <span style="font-size: 18px;">User Story 16: Global Access Setup (Continued)</span>
+### Tasks:
+- [ ] Finish implementing global access of webapp/server creation
+### Acceptance Critera:
+1. Webapp functionality is the same when accessed through localhost or internet-accessable URL
+2. Webapp does not face loading issues when accessed from a network other than server's network
+
+## <span style="font-size: 18px;">User Story 22: Improved Search & Error Handling</span>
+### Tasks:
+- [ ] Add user-facing error handler when a recipe fails to save, with actionable suggestions (e.g., "Clear your cookies" or "Check your network connection")
+- [ ] Improve error handling to include persistent error logging (see: try/catch in RecipeTile.jsx lines 63-67 — may exist in other locations as well)
+  - [ ] Create a database/collection to store logged errors rather than relying on console.log
+- [ ] Allow generalized ingredient exclusion by category (e.g., type "dairy" to exclude all dairy products instead of individually typing "milk", "cream", "heavy cream", etc.)
+### Acceptance Criteria: 
+1. All errors that occur are uniquely logged in error loggin databse.
+2. Error are either hiden from the user (i.e. hide broken images and links) or create alert() with relevant (to the user) error information.
+3. Exlude ingredients can pass 'categories' of ingredients and either appropriately filter out that categoy (i.e. dairy, gluten, meat, other common dietary restrictions) or informs user that that is an invalid search-exclusion term.
+
+#### <span style="font-size: 20px;">Christian Johnson:</span>
+## <span style="font-size: 18px;">User Story 21: History Management</span>
+### Tasks:
+- [ ] Implement a "Clear All History" button on the History page
+- [ ] Allow removal of individual search entries from history (per-entry delete button)
+### Acceptance Criteria:
+1. History page displays 'Clear All History' (or similar button)
+2. Upon user pressing button, all history is removed from user view and local webpage history. (Maybe include 'are you sure' confirmation?)
+3. Individual Searchs can be removed from history without breaking history page formatting through use of a clear to understand 'remove' or simmilar button.
+
+#### <span style="font-size: 20px;">Patrick Rucker:</span>
+## <span style="font-size: 18px;">User Story 17: Shopping List Generator</span>
+### Tasks: 
+- [ ] Create a ShoppingList component that displays ingredients needed for a selected recipe
+- [ ] Allow users to check off ingredients they already have, removing them from the list
+- [ ] Support combining ingredients from multiple saved recipes into one consolidated shopping list (e.g., two recipes both need "flour" → show "flour" once with combined amounts)
+### Acceptance Critera:
+1. User can click "Add to Shopping List" on any recipe and its ingredients appear on the Shopping List page
+2. Duplicate ingredients from multiple recipes are merged with combined quantities (e.g., 1 cup flour + 2 cups flour = 3 cups flour)
+3. User can check off items they already have, and checked items are visually distinguished (strikethrough or dimmed)
 ## <span style="font-size: 18px;">User Story 20: Page Bug Fixes</span>
 ### Tasks:
 - [ ] Fix "New Search" button so it actually clears the user's search (ingredients, results, and exclusions)
@@ -486,46 +522,10 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 2. Hsitory page automatically loads to display most recent search. All old searches must be scrolled down to (page down).
 3. When logged in, user information is displayed in navbar. No empty fields or placeholder display when user is not logged in. Information persists reguardless of what page the user is on.
 
-## <span style="font-size: 18px;">User Story 21: History Management</span>
+#### <span style="font-size: 20px;">Group:</span>
+## <span style="font-size: 18px;">User Story 18: SOLID Principles Refactor</span>
 ### Tasks:
-- [ ] Implement a "Clear All History" button on the History page
-- [ ] Allow removal of individual search entries from history (per-entry delete button)
-### Acceptance Criteria:
-1. History page displays 'Clear All History' (or similar button)
-2. Upon user pressing button, all history is removed from user view and local webpage history. (Maybe include 'are you sure' confirmation?)
-3. Individual Searchs can be removed from history without breaking history page formatting through use of a clear to understand 'remove' or simmilar button.
-
-## <span style="font-size: 18px;">User Story 22: Improved Search & Error Handling</span>
-### Tasks:
-- [ ] Add user-facing error handler when a recipe fails to save, with actionable suggestions (e.g., "Clear your cookies" or "Check your network connection")
-- [ ] Improve error handling to include persistent error logging (see: try/catch in RecipeTile.jsx lines 63-67 — may exist in other locations as well)
-  - [ ] Create a database/collection to store logged errors rather than relying on console.log
-- [ ] Allow generalized ingredient exclusion by category (e.g., type "dairy" to exclude all dairy products instead of individually typing "milk", "cream", "heavy cream", etc.)
-- [ ] Implement arrow key navigation for autocomplete suggestions in both the ingredient input and exclusion input (instead of requiring mouse click)
-### Acceptance Criteria: 
-1. All errors that occur are uniquely logged in error loggin databse.
-2. Error are either hiden from the user (i.e. hide broken images and links) or create alert() with relevant (to the user) error information.
-3. Exlude ingredients can pass 'categories' of ingredients and either appropriately filter out that categoy (i.e. dairy, gluten, meat, other common dietary restrictions) or informs user that that is an invalid search-exclusion term.
-4. Autocomplete suggestions for ingredients (include and exclude) can be toggled through with arrow keys and selected with 'enter' as well as keeping mouse clickability functionality.
-
-## <span style="font-size: 18px;">User Story 23: Recipe Tile Verification</span>
-### Tasks:
-- [ ] Remove or flag broken links in recipe tiles (reference: [linkcheckermd](https://github.com/Microsoft/linkcheckermd), [linkcheckerhtml](https://github.com/BillDietrich/linkcheckerhtml) — note: React libraries for this typically only handle embedded links like images)
-- [ ] Review and address any remaining recipe verification issues (team to discuss)
-### Acceptance Criteria:
-1. No recipe tile displays any broken link (whether it is a rotten or incorrect link) to user.
-2. All links that do dispay in recipe tiles lead to valid web pages.
-3. ELEPHANT ??? Incorrect links (i.e. missing 'http://' or other link-markers) are considered broken links.
-
-## <span style="font-size: 18px;">User Story 24: Exclusion Filter Bug Fix</span>
-> **Note:** This belongs under **USER STORY 18 (API Caching)** or **USER STORY 19 (Bug Fixes)** — it's a bug in the exclusion filtering logic, not a standalone story.
-### Tasks:
-- [ ] Change substring matching to exact matching in exclusion filter (see: RecipeContext.jsx lines 200-202)
-  - Current: `i.name.toLowerCase().includes(excl)` — "rice" matches "licorice"
-  - Fix: `i.name.toLowerCase() === excl` — "rice" only matches "rice"
-### Acceptance Criteria:
-1. No unrelated ingredients are filtered out for any valid input to exclude ingredient function (i.e. "rice" will not exclude "licourice").
-2. All forms of valid ingredient entries to exclude are excluded (i.e. "rice" will excluder "jasmine rice").
+- [ ] Make codebase more SOLID — specific actions to be discussed (see: SOLID-ANALYSIS.md in Slack)
 
 ## Room for Improvement
 Include areas you believe need improvement / could be improved. Also add TODOs for future development.
