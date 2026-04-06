@@ -35,8 +35,12 @@ cook on budget.
    npm install
    ```
 
-### Running the Development Server
-Start the local dev server:
+### Running the Development Server`
+Start a local access port for MongoDB:
+```bash
+npm ./server/mongoDB/
+```
+In a different terminal, start the local dev server:
 ```bash
 npm run dev
 ```
