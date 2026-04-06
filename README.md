@@ -38,7 +38,7 @@ cook on budget.
 ### Running the Development Server`
 Start a local access port for MongoDB:
 ```bash
-npm ./server/mongoDB/
+npm ./server/mongo.js
 ```
 In a different terminal, start the local dev server:
 ```bash
