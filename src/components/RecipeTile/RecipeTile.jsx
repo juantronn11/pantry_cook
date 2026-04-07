@@ -17,6 +17,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 //SCRUM 77: added stylized error images for thumbnail and in-tile images.
 import errorThumb from '../../../media/error_thumbnail.jpg';
 import errorImage from '../../../media/error_image.jpg';
+import ShoppingListButton from '../ShoppingListButton/ShoppingListButton';
 
 function RecipeTile({recipe}) {
   const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeContext();
@@ -114,6 +115,7 @@ function RecipeTile({recipe}) {
                   >
                     {saved ? 'Remove from Library' : 'Save to Library'}
                   </button>}
+                  {isAuthenticated && <ShoppingListButton></ShoppingListButton> }
                   <img src={imageError ? errorImage : modalData.strMealThumb} alt={imageError ? 'Error' : modalData.strMeal} className={styles.modalImg} onError={handleImageError} />
                   <h2 className={styles.recipeTitle}>{modalData.strMeal}</h2>
                   <p className={styles.other}><strong>Category:</strong> {modalData.strCategory}</p>

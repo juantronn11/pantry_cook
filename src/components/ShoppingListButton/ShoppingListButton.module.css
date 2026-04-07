@@ -1,6 +1,6 @@
-/* DownloadButton styles — Owner: Tina Carter */
+/* ShoppingListButton styles — Owner: Tina Carter */
 @import '../../assets/print.css';
-.downloadButton {
+.listButton {
   background-color: rgb(173, 216, 230);
   border: none;
   color: black;
@@ -13,21 +13,21 @@
   border-radius: 2px;
   cursor: pointer;
   position: fixed; /* Stays in place while scrolling */
-  bottom: 20px;    /* Distance from bottom */
+  bottom: 100px;    /* Distance from bottom */
   right: 20px;     /* Distance from right */
   z-index: 1000;   /* Ensures it sits on top of other elements */
   padding: 10px 20px;
   width: 210px;
 }
 
-.downloadButton:hover {
+.listButton:hover {
   background-color: darkblue;
   color: white;
 }
 
 @media print {
-  /* Hide the download/print button itself in the printed output */
-  .downloadButton {
+  /* Hide the button itself in the printed output */
+  .listButton {
     display: none !important;
   }
 

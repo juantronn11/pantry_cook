@@ -86,10 +86,11 @@
   border-radius: 2px;
   cursor: pointer;
   position: fixed;
-  bottom: 20px;
-  right: 170px;
+  bottom: 60px;
+  right: 20px;
   z-index: 1000;
   padding: 10px 20px;
+  width: 210px;
 }
 
 .saveBtn:hover {
