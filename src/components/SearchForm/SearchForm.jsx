@@ -2,7 +2,7 @@
 // Multi-select ingredient buttons + Search button
 // Validates at least one ingredient is selected before submission
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './SearchForm.module.css';
 import { useRecipeContext } from '../../context/RecipeContext';
 import { ingredientAutocomplete } from '../../utils/ingredientTrie';
@@ -11,9 +11,20 @@ import ExcludeIngredients from '../ExcludeIngredients/ExcludeIngredients';
 const MAX_INGREDIENTS = 5;
 
 function SearchForm() {
+  const { ingredients } = useRecipeContext();
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
+
+  // SCRUM-141: When context ingredients are cleared (e.g. via "New Search"),
+  // sync the local form state so the UI reflects the reset.
+  useEffect(() => {
+    if (ingredients.length === 0) {
+      setSelectedIngredients([]);
+      setQuery('');
+      setSuggestions([]);
+    }
+  }, [ingredients]);
 
   function handleInput(e) {
     const value = e.target.value;

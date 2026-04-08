@@ -22,19 +22,18 @@ import styles from './Navbar.module.css'
 //   - Saved Recipes link — navigates to saved recipes page (placeholder for now)
 //   - New Search button — clears all current search data and navigates to home
 function Navbar() {
-  const { setIngredients, setRecipes, setError } = useRecipeContext()
+  const { resetSearch } = useRecipeContext()
   const navigate = useNavigate()
 
   // menuOpen controls whether the mobile nav links are visible
   // false = collapsed (default), true = expanded
   const [menuOpen, setMenuOpen] = useState(false)
 
-  // handleNewSearch clears the shared state (ingredients, recipes, errors),
-  // closes the mobile menu, and navigates back to home for a fresh search
+  // handleNewSearch clears all shared search state (ingredients, exclusions,
+  // recipes, cached results, errors, sort order) via resetSearch(),
+  // closes the mobile menu, and navigates back to home for a fresh search.
   const handleNewSearch = () => {
-    setIngredients([])
-    setRecipes([])
-    setError(null)
+    resetSearch()
     setMenuOpen(false)
     navigate('/')
   }

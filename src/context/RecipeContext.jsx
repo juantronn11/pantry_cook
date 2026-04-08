@@ -315,6 +315,19 @@ export function RecipeProvider({ children }) {
     setLoading(false)
   }
 
+  // SCRUM-141: Resets all search-related state so the user gets a completely
+  // clean search page. Called by the "New Search" button in Navbar.
+  function resetSearch() {
+    setIngredients([])
+    setExcludedIngredients([])
+    setRecipes([])
+    setAllRecipes([])
+    setLastSearchedIngredients([])
+    setLastFetchedExclusions([])
+    setError(null)
+    setSortOrder('best-match')
+  }
+
   const value = {
     ingredients,
     setIngredients,
@@ -336,6 +349,7 @@ export function RecipeProvider({ children }) {
     excludedIngredients,
     addExclusion,
     removeExclusion,
+    resetSearch,
   }
 
   return (
