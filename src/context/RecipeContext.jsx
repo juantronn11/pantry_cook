@@ -234,12 +234,15 @@ export function RecipeProvider({ children }) {
     const exclusionRemoved = lastFetchedExclusions.some(
       e => !excludedIngredients.includes(e)
     )
-
+// User Story 24 | SCRUM-153: Change substring matching to exact matching in exclusion filter
+// Current: `i.name.toLowerCase().includes(excl)` — "rice" matches "licorice"
+// Fix: `i.name.toLowerCase() === excl` — "rice" only matches "rice"
+// Check: (better fix?) ^ and exclude (' ' + excl) and (excl + ' ')
     if (sameIngredients && !exclusionRemoved && allRecipes.length > 0) {
       const filtered = allRecipes.filter(recipe =>
         !excludedIngredients.some(excl =>
           recipe.raw?.extendedIngredients?.some(i =>
-            i.name.toLowerCase().includes(excl)
+            i.name.toLowerCase() === excl || i.name.toLowerCase().includes(' '+excl) || i.name.toLowerCase().includes(excl+' ')
           )
         )
       )
