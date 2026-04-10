@@ -1,0 +1,17 @@
+.removeButton {
+  top: 0;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.removeButton:hover {
+    background: red;
+    color: white;
+}
