@@ -4,6 +4,7 @@
 import { useRecipeContext } from '../context/RecipeContext'
 import RecipeGrid from '../components/RecipeGrid/RecipeGrid'
 import ClearHistoryButton from '../components/ClearHistoryButton/ClearHistoryButton';
+import RemoveHistoryButton from '../components/RemoveHistoryButton/RemoveHistoryButton';
 
 function HistoryPage() {
   const { historyRecipes } = useRecipeContext()
@@ -26,6 +27,8 @@ function HistoryPage() {
             <h3>
               Searched: {entry.ingredients.join(', ')}
               <small> — {new Date(entry.timestamp).toLocaleString()}</small>
+
+              <RemoveHistoryButton timestamp={entry.timestamp}></RemoveHistoryButton>
             </h3>
             <RecipeGrid recipes={entry.recipes} />
           </section>
