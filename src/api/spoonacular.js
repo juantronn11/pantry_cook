@@ -14,6 +14,7 @@
 
 const BASE_URL = 'https://api.spoonacular.com'
 const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY
+const CACHE_TTL_MS = 30 * 60 * 1000
 
 const recipeCache = new Map();
 
@@ -25,12 +26,18 @@ function getCachedResults(ingredients){
   const key = getCacheKey(ingredients);
   const entry = recipeCache.get(key);
   if(!entry) return null;
+
+  if (Date.now() - entry.timestamp > CACHE_TTL_MS) {
+    recipeCache.delete(key)
+    return null
+  }
+
   return entry.results;
 
 }
 
 function setCachedResults(ingredients, results){
-  recipeCache.set(getCacheKey(ingredients),{ results } )
+  recipeCache.set(getCacheKey(ingredients),{results, timestamp: Date.now()})
 }
 
 // SCRUM-116: Counter tracks how many autocomplete API calls are made.
