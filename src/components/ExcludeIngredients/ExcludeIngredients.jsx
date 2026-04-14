@@ -11,6 +11,7 @@ import styles from './ExcludeIngredients.module.css'
 function ExcludeIngredients() {
   const [inputValue, setInputValue] = useState('')
   const [suggestions, setSuggestions] = useState([])
+  const [activeIndex, setActiveIndex] = useState(-1)
   const { excludedIngredients, addExclusion, removeExclusion } = useRecipeContext()
 
   function handleInput(e) {
@@ -23,6 +24,27 @@ function ExcludeIngredients() {
     addExclusion(ingredient)
     setInputValue('')
     setSuggestions([])
+  }
+
+  function handleKeySelection(event) {
+    // if no suggestions, you can't scroll through suggestions
+    if (!suggestions.length) return;
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setActiveIndex(i => Math.min(i + 1, suggestions.length - 1));
+      if (activeIndex + 1 >= suggestions.length) {setActiveIndex(0)}
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActiveIndex(i => Math.max(i - 1, 0));
+      if (activeIndex - 1 < 0) {setActiveIndex(suggestions.length - 1)}
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      if (activeIndex >= 0 && activeIndex < suggestions.length) {
+        handleSelect(suggestions[activeIndex]);
+      }
+      else handleKeyDown(event);
+    }
   }
 
   function handleAdd() {
@@ -48,14 +70,19 @@ function ExcludeIngredients() {
             className={styles.input}
             value={inputValue}
             onChange={handleInput}
-            onKeyDown={handleKeyDown}
+            onKeyDown={handleKeySelection}
+            aria-activedescendant={activeIndex >= 0 ? `suggestion-${activeIndex}` : undefined}
             placeholder="e.g. peanuts"
             autoComplete="off"
           />
           {suggestions.length > 0 && (
             <ul className={styles.suggestions}>
               {suggestions.map(s => (
-                <li key={s} onMouseDown={() => handleSelect(s)}>
+                <li
+                  key={s}
+                  onMouseDown={() => handleSelect(s)}
+                  data-hover={activeIndex === suggestions.indexOf(s)}
+                >
                   {s}
                 </li>
               ))}

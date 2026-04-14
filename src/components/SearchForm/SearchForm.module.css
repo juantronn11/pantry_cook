@@ -45,6 +45,10 @@
   background: #f0f0f0;
 }
 
+.suggestions li[data-hover="true"] {
+  background: #f0f0f0;
+}
+
 .tag {
   display: inline-flex;
   align-items: center;

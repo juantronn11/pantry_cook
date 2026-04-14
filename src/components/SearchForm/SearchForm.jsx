@@ -14,6 +14,7 @@ function SearchForm() {
   const { ingredients } = useRecipeContext();
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const [selectedIngredients, setSelectedIngredients] = useState([]);
 
   // SCRUM-141: When context ingredients are cleared (e.g. via "New Search"),
@@ -30,6 +31,7 @@ function SearchForm() {
     const value = e.target.value;
     setQuery(value);
     setSuggestions(value.trim() ? ingredientAutocomplete(value) : []);
+    setActiveIndex(-1);
   }
 
   function handleSelect(ingredient) {
@@ -38,6 +40,26 @@ function SearchForm() {
     setSelectedIngredients(prev => [...prev, ingredient]);
     setQuery('');
     setSuggestions([]);
+  }
+
+  function handleKeySelection(event) {
+    if (selectedIngredients.length >= MAX_INGREDIENTS) return;
+    if (!suggestions.length) return;
+
+    if (event.key === 'ArrowDown') { 
+      event.preventDefault();
+      setActiveIndex(i => Math.min(i + 1, suggestions.length - 1));
+      if (activeIndex + 1 >= suggestions.length) {setActiveIndex(0)}
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActiveIndex(i => Math.max(i - 1, 0));
+      if (activeIndex - 1 < 0) {setActiveIndex(suggestions.length - 1)}
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      if (activeIndex >= 0 && activeIndex < suggestions.length) {
+        handleSelect(suggestions[activeIndex]);
+      }
+    }
   }
 
   function handleRemove(ingredient) {
@@ -51,6 +73,11 @@ function SearchForm() {
           Select up to {MAX_INGREDIENTS} ingredients
         </label>
 
+      
+        <p 
+        // Code Purpose: handels the display of selected ingredient as tag, 
+        // not the dropdown/autocomplete suggestions.
+        />
         <div className={styles.selectedIngredients}>
           {selectedIngredients.map(ingredient => (
             <span key={ingredient} className={styles.tag}>
@@ -67,14 +94,33 @@ function SearchForm() {
             name="name"
             value={query}
             onInput={handleInput}
-            disabled={selectedIngredients.length >= MAX_INGREDIENTS}
+            onKeyDown={handleKeySelection}
+            aria-activedescendant={activeIndex >= 0 ? `suggestion-${activeIndex}` : undefined}
             placeholder="Type an ingredient..."
             autoComplete="off"
           />
           {suggestions.length > 0 && (
-            <ul className={styles.suggestions}>
-              {suggestions.map(s => (
-                <li key={s} onMouseDown={() => handleSelect(s)}>
+            // Code Purpose: lines 79-85 handel the creation of dropdown/autocomplete 
+            // suggestions. onMouseDown() ~ onClick() but higher priority so it acts 
+            // before dropdown unloads b/c another action is called (clicking)
+            // Fix/Augment: presumably adding an 'onArrowDown' or similar to replicate 
+            // 'hover' and 'onEnter' to replicate 'click' would make arrowkey selection possible.
+            // Research: how to do BOTH as once, because we want to keep mouse functionality
+            <ul
+              className={styles.suggestions}
+              role="listbox"
+              aria-label="ingredient suggestions"
+            >
+              {suggestions.map((s, idx) => (
+                <li
+                  id={`suggestion-${idx}`}
+                  key={s}
+                  role="option"
+                  aria-selected={idx === activeIndex}
+                  data-hover={idx === activeIndex}
+                  onMouseDown={() => handleSelect(s)}
+                  onMouseEnter={() => setActiveIndex(idx)}
+                >
                   {s}
                 </li>
               ))}

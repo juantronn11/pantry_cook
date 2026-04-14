@@ -49,6 +49,10 @@
   background: #f0f0f0;
 }
 
+.suggestions li[data-hover="true"] {
+  background: #f0f0f0;
+}
+
 .input {
   padding: 0.4rem 0.75rem;
   font-size: 0.9rem;
