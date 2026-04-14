@@ -8,6 +8,7 @@ function AccessButton({ variant = 'navbar' }) {
     isLoading,
     isAuthenticated,
     error,
+    user,
     loginWithRedirect: login,
     logout: auth0Logout,
   } = useAuth0();
@@ -30,6 +31,7 @@ function AccessButton({ variant = 'navbar' }) {
 
   return isAuthenticated ? (
     <div className={`${styles.btnGroup} ${variant === 'page' ? styles.btnGroupPage : ''}`}>
+      <span className={styles.userLabel}>Logged in as {user?.email || user?.name}</span>
       <button onClick={logout} className={styles.btn}>Logout</button>
     </div>
   ) : (
