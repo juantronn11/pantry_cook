@@ -505,18 +505,18 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 #### <span style="font-size: 20px;">Patrick Rucker:</span>
 ## <span style="font-size: 18px;">User Story 17: Shopping List Generator</span>
 ### Tasks: 
-- [ ] Create a ShoppingList component that displays ingredients needed for a selected recipe
-- [ ] Allow users to check off ingredients they already have, removing them from the list
-- [ ] Support combining ingredients from multiple saved recipes into one consolidated shopping list (e.g., two recipes both need "flour" → show "flour" once with combined amounts)
+- [ ] user story 17 - Create a ShoppingList component that displays ingredients needed for a selected recipe
+- [ ] user story 17 - Allow users to check off ingredients they already have, removing them from the list
+- [ ] user story 17 - Support combining ingredients from multiple saved recipes into one consolidated shopping list (e.g., two recipes both need "flour" → show "flour" once with combined amounts)
 ### Acceptance Critera:
 1. User can click "Add to Shopping List" on any recipe and its ingredients appear on the Shopping List page
 2. Duplicate ingredients from multiple recipes are merged with combined quantities (e.g., 1 cup flour + 2 cups flour = 3 cups flour)
 3. User can check off items they already have, and checked items are visually distinguished (strikethrough or dimmed)
 ## <span style="font-size: 18px;">User Story 20: Page Bug Fixes</span>
 ### Tasks:
-- [ ] Fix "New Search" button so it actually clears the user's search (ingredients, results, and exclusions)
-- [ ] Fix History page so it no longer auto-scrolls to the bottom on load
-- [ ] When logged in, display "Logged in as [email/username]" in the navbar next to the logout button
+- [ ] user story 20 - Fix "New Search" button so it actually clears the user's search (ingredients, results, and exclusions)
+- [ ] user story 20 - Fix History page so it no longer auto-scrolls to the bottom on load
+- [ ] user story 20 - When logged in, display "Logged in as [email/username]" in the navbar next to the logout button
 ### Acceptance Criteria:
 1. Pressing the 'New Search' button returns user to search page with all fields cleared.
 2. Hsitory page automatically loads to display most recent search. All old searches must be scrolled down to (page down).
