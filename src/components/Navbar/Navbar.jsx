@@ -92,6 +92,16 @@ function Navbar() {
           </NavLink>
         </li>
         <li>
+          <NavLink
+            to="/shopping-list"
+            className={({ isActive }) => isActive ? styles.activeLink : ''}
+            onClick={() => setMenuOpen(false)}
+            title="View your shopping list"
+          >
+            Shopping List
+          </NavLink>
+        </li>
+        <li>
           <button onClick={handleNewSearch} className={styles.newSearchBtn} title="Clear current search and start over">
             New Search
           </button>

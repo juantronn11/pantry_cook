@@ -1,0 +1,91 @@
+/* ShoppingListPage styles — Owner: Patrick Rucker */
+
+.container {
+  max-width: 700px;
+  margin: 1.5rem auto;
+  padding: 0 2rem;
+}
+
+.emptyState {
+  max-width: 700px;
+  margin: 1.5rem auto;
+  padding: 0 2rem;
+  color: #555;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.clearBtn {
+  color: #ffffff;
+  background-color: #e74c3c;
+  border: none;
+  font-size: 0.9rem;
+  font-family: inherit;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.clearBtn:hover {
+  background-color: #c0392b;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.checked {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  flex: 1;
+}
+
+.text {
+  font-size: 1rem;
+  color: #2c3e50;
+}
+
+.removeBtn {
+  color: #999;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.removeBtn:hover {
+  color: #e74c3c;
+  background-color: rgba(231, 76, 60, 0.1);
+}

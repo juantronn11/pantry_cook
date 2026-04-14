@@ -37,6 +37,7 @@
   text-decoration: none;
   padding: 0.5rem 0.75rem;
   border-radius: 4px;
+  white-space: nowrap;
 }
 
 /* Hover effect on nav links */

@@ -20,6 +20,7 @@ import { normalizeSpoonacularRecipe } from '../utils/normalizeRecipe'
 import { parseIngredients } from '../utils/parseIngredients'
 import { withTimeout } from '../utils/withTimeout'
 import { stripHtml } from '../utils/stripHtml'
+import { mergeIngredients } from '../utils/mergeIngredients'
 import {useApi} from '../helperFunctions/helper'
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -141,6 +142,45 @@ export function RecipeProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('pantry-cook-history', JSON.stringify(historyRecipes))
   }, [historyRecipes])
+
+  // SCRUM-131: Shopping list state — stores ingredients the user wants to buy.
+  // Each entry has shape:
+  //   { id: string, name: string, amount: number, unit: string, checked: boolean }
+  // Persisted to localStorage so the list survives page refreshes.
+  const [shoppingList, setShoppingList] = useState(() => {
+    const saved = localStorage.getItem('pantry-cook-shopping-list')
+    return saved ? JSON.parse(saved) : []
+  })
+
+  useEffect(() => {
+    localStorage.setItem('pantry-cook-shopping-list', JSON.stringify(shoppingList))
+  }, [shoppingList])
+
+  // SCRUM-131: Add all ingredients from a recipe to the shopping list.
+  // Merges duplicates: if an ingredient with the same name and unit already
+  // exists, the amounts are combined. Otherwise a new entry is added.
+  function addToShoppingList(recipe) {
+    const newIngredients = recipe.raw?.extendedIngredients || []
+    if (newIngredients.length === 0) return
+
+    setShoppingList(prev => mergeIngredients(prev, newIngredients))
+  }
+
+  function removeFromShoppingList(itemId) {
+    setShoppingList(prev => prev.filter(item => item.id !== itemId))
+  }
+
+  function toggleShoppingListItem(itemId) {
+    setShoppingList(prev =>
+      prev.map(item =>
+        item.id === itemId ? { ...item, checked: !item.checked } : item
+      )
+    )
+  }
+
+  function clearShoppingList() {
+    setShoppingList([])
+  }
 
   // SCRUM-45: Sorts a list of normalized recipe objects based on the active sortOrder.
   // Called both after a fresh fetch and whenever the user changes the sort dropdown.
@@ -350,6 +390,11 @@ export function RecipeProvider({ children }) {
     addExclusion,
     removeExclusion,
     resetSearch,
+    shoppingList,
+    addToShoppingList,
+    removeFromShoppingList,
+    toggleShoppingListItem,
+    clearShoppingList,
   }
 
   return (
