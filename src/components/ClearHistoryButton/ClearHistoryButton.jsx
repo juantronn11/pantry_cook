@@ -10,7 +10,9 @@ function ClearHistoryButton() {
     return (
         <button className = {styles.ClearHistoryButton} onClick={() => {
             // Clear the user's search history
-            setHistoryRecipes([]);
+            if (confirm('Are you sure you want to clear your search history? This action cannot be undone.')) {
+                setHistoryRecipes([]);
+            }
         }}>
             Clear History
         </button>
