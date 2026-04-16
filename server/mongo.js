@@ -14,8 +14,12 @@ import express from 'express'
 import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
 import { auth } from 'express-oauth2-jwt-bearer';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 dotenv.config({ path: './.env' });
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 
@@ -116,11 +120,20 @@ app.delete('/recipe', checkJwt, async (req, res) => {
 });
 
 
+// Serve the built Vite frontend as static files
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Catch-all for React Router — must be last so /history, /saved, etc. work
+app.get('/{*splat}', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
 async function startServer() {
     await client.connect();
     console.log('Connected to MongoDB');
-    app.listen(3000, () => {
-        console.log(`Server running on port ${3000}`);
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
     });
 }
 

@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 
-const url = "http://localhost:3000/";
+const url = "/";
 
 // helper to handle responses consistently
 async function handleResponse(response) {
