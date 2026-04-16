@@ -1,0 +1,10 @@
+image: node:18
+
+pipelines:
+  branches:
+    main:
+      - step:
+          name: Deploy to Railway
+          script:
+            - npm i -g @railway/cli
+            - railway up --service=$RAILWAY_SERVICE
