@@ -146,6 +146,8 @@ function RecipeTile({recipe}) {
                     {saved ? 'Remove from Library' : 'Save to Library'}
                   </button>}
                   {isAuthenticated && <ShoppingListButton recipe={scaledRecipe} /> }
+                  {saveError && <p className={styles.saveError}>{saveError}</p>}
+                  {isAuthenticated && <ShoppingListButton recipe={recipe} /> }
                   <img src={imageError ? errorImage : modalData.strMealThumb} alt={imageError ? 'Error' : modalData.strMeal} className={styles.modalImg} onError={handleImageError} />
                   <h2 className={styles.recipeTitle}>{modalData.strMeal}</h2>
                   <p className={styles.other}><strong>Category:</strong> {modalData.strCategory}</p>
