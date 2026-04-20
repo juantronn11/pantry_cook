@@ -121,6 +121,25 @@ app.delete('/recipe', checkJwt, async (req, res) => {
 });
 
 
+app.post('/errors', async (req, res) => {
+    try {
+        const { message, component, userId } = req.body;
+        if (!message) return res.status(400).send({ error: 'message is required' });
+
+        await errorLogs.insertOne({
+            timestamp: new Date(),
+            message,
+            component: component || 'unknown',
+            userId: userId || null,
+        });
+
+        res.status(201).send({ logged: true });
+    } catch (e) {
+        console.error('Failed to log error:', e);
+        res.status(500).send({ error: 'Internal server error' });
+    }
+});
+
 // Serve the built Vite frontend as static files
 app.use(express.static(path.join(__dirname, '../dist')));
 
