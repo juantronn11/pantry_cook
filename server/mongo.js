@@ -29,6 +29,7 @@ if (!cs) throw new Error("MONGODB_URL is not defined");
 const client = new MongoClient(cs);
 const database = client.db('pantrycook');
 const collections = database.collection("users");
+const errorLogs = database.collection("errorLogs");
 
 const checkJwt = auth({
     audience: process.env.AUTH0_AUDIENCE,
