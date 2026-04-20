@@ -8,6 +8,7 @@ export default defineConfig({
     proxy: {
       '/user': 'http://localhost:3000',
       '/recipe': 'http://localhost:3000',
+      '/errors': 'http://localhost:3000',
     }
   },
   test: {
