@@ -43,6 +43,7 @@ function RecipeTile({recipe}) {
       strArea: raw.cuisines?.join(', ') || 'N/A',
       strInstructions: raw.instructions,
       strYoutube: null,
+      strCookTime: raw.readyInMinutes || 'N/A',
     };
 
     // Map extendedIngredients to strIngredient1/strMeasure1, strIngredient2/strMeasure2, ... format
@@ -120,6 +121,7 @@ function RecipeTile({recipe}) {
                   <h2 className={styles.recipeTitle}>{modalData.strMeal}</h2>
                   <p className={styles.other}><strong>Category:</strong> {modalData.strCategory}</p>
                   <p className={styles.other}><strong>Area:</strong> {modalData.strArea}</p>
+                  <p className={styles.other}><strong>Cook Time:</strong> {modalData.strCookTime} minutes</p>
                   <p><strong>Ingredients:</strong></p>
                   <ul className={styles.ingredientsList}> {modalData.strInstructions && Object.keys(modalData).filter(key => key.startsWith('strIngredient') && modalData[key]).map((key, index) => (
                     <li key={index}>{modalData[key]} - {modalData[`strMeasure${key.slice(13)}`]}</li>
