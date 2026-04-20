@@ -178,6 +178,17 @@ export function RecipeProvider({ children }) {
     )
   }
 
+  function addCustomItem(name) {
+    const newItem = {
+        id: Date.now(),
+        name: name.trim(),
+        amount: 0,
+        unit: '',
+        checked: false,
+    }
+    setShoppingList(prev => [...prev, newItem])
+}
+
   function clearShoppingList() {
     setShoppingList([])
   }
@@ -398,6 +409,7 @@ export function RecipeProvider({ children }) {
     removeFromShoppingList,
     toggleShoppingListItem,
     clearShoppingList,
+    addCustomItem,
   }
 
   return (

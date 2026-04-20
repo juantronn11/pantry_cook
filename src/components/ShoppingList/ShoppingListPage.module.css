@@ -89,3 +89,37 @@
   color: #e74c3c;
   background-color: rgba(231, 76, 60, 0.1);
 }
+
+.addItem {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.addItemInput {
+    width: 300px;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.addItemBtn {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.9rem;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.addItemBtn:hover:not(:disabled) {
+    background-color: #3d5166;
+}
+
+.addItemBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
