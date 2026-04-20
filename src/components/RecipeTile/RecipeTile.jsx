@@ -30,6 +30,7 @@ function RecipeTile({recipe}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [saveError, setSaveError] = useState(null);
   // SCRUM-164: Track the current serving size the user has selected in the modal.
   // Initialized to the recipe's original servings when the modal opens.
   // Used to scale ingredient amounts in the display and when sending to the shopping list.
@@ -75,9 +76,23 @@ function RecipeTile({recipe}) {
   }
 
   const closeModal = () => {
-    setModalData(null)
+    setModalData(null);
     setError(false);
+    setSaveError(null);
     setServings(recipe.raw?.servings || 1);
+  };
+
+  const handleSaveToggle = async () => {
+    setSaveError(null);
+    try {
+      if (saved) {
+        await removeSavedRecipe(recipe.id);
+      } else {
+        await saveRecipe(recipe);
+      }
+    } catch {
+      setSaveError('Failed to save. Check your network connection or try logging out and back in.');
+    }
   };
 
   //SCRUM-74: Error handling for missing/invalid images. If the image fails to load, hide default broken image icon.
@@ -125,7 +140,7 @@ function RecipeTile({recipe}) {
               <>
                   <DownloadButton></DownloadButton>
                   {isAuthenticated && <button
-                    onClick={() => saved ? removeSavedRecipe(recipe.id) : saveRecipe(recipe)}
+                    onClick={handleSaveToggle}
                     className={styles.saveBtn}
                   >
                     {saved ? 'Remove from Library' : 'Save to Library'}
