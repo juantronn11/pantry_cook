@@ -10,7 +10,7 @@
   max-width: 700px;
   margin: 1.5rem auto;
   padding: 0 2rem;
-  color: #555;
+  color: var(--text-muted);
 }
 
 .header {
@@ -26,7 +26,7 @@
 
 .clearBtn {
   color: #ffffff;
-  background-color: #e74c3c;
+  background-color: var(--danger);
   border: none;
   font-size: 0.9rem;
   font-family: inherit;
@@ -36,7 +36,7 @@
 }
 
 .clearBtn:hover {
-  background-color: #c0392b;
+  background-color: var(--danger-hover);
 }
 
 .list {
@@ -50,7 +50,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.6rem 0.75rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .item:last-child {
@@ -72,11 +72,11 @@
 
 .text {
   font-size: 1rem;
-  color: #2c3e50;
+  color: var(--text-secondary);
 }
 
 .removeBtn {
-  color: #999;
+  color: var(--text-muted);
   background: none;
   border: none;
   font-size: 1.1rem;
@@ -86,7 +86,7 @@
 }
 
 .removeBtn:hover {
-  color: #e74c3c;
+  color: var(--danger);
   background-color: rgba(231, 76, 60, 0.1);
 }
 

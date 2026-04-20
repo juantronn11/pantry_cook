@@ -1,9 +1,9 @@
 .removeButton {
   position: relative;
   left: 15px;
-  background: white;
-  color: black;
-  border: 1px solid black;
+  background: var(--bg-modal);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
   border-radius: 50%;
   width: 2rem;
   height: 2rem;
@@ -13,7 +13,7 @@
 }
 
 .removeButton:hover {
-    background: red;
+    background: var(--danger);
     color: white;
     border: none;
 }

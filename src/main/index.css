@@ -1,12 +1,44 @@
 /* Global styles for the Recipe App */
 /* Replaces Vite's default demo styles */
 
+/* Light theme (default) — CSS custom properties for theme colors.
+   Components reference these via var(--name) so switching themes
+   only requires overriding the variable values below. */
 :root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-modal: #ffffff;
+  --text-primary: #213547;
+  --text-secondary: #2c3e50;
+  --text-muted: #555;
+  --border-color: #cccccc;
+  --border-subtle: #eeeeee;
+  --accent: #2c3e50;
+  --navbar-bg: #2c3e50;
+  --danger: #e74c3c;
+  --danger-hover: #c0392b;
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #213547;
-  background-color: #ffffff;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+}
+
+/* Dark theme — overrides variables when <html data-theme="dark"> is set. */
+[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2a2a2a;
+  --bg-modal: #252525;
+  --text-primary: #e8e8e8;
+  --text-secondary: #d0d0d0;
+  --text-muted: #a0a0a0;
+  --border-color: #444444;
+  --border-subtle: #333333;
+  --accent: #4a6785;
+  --navbar-bg: #0f1a24;
+  --danger: #e74c3c;
+  --danger-hover: #c0392b;
 }
 
 /* Reset default margins so the navbar sits at the very top */
@@ -14,6 +46,8 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 h1 {

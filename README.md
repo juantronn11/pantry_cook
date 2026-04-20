@@ -521,6 +521,20 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 1. Pressing the 'New Search' button returns user to search page with all fields cleared.
 2. Hsitory page automatically loads to display most recent search. All old searches must be scrolled down to (page down).
 3. When logged in, user information is displayed in navbar. No empty fields or placeholder display when user is not logged in. Information persists reguardless of what page the user is on.
+## <span style="font-size: 18px;">User Story 27: Dark Mode</span>
+### Tasks:
+- [ ] SCRUM-162 - Dark Mode Toggle
+- [ ] SCRUM-163 - Dark Mode CSS
+### Acceptance Criteria:
+1. A toggle is available in the navbar (or similar accessible location) to switch between light and dark modes.
+2. Dark mode applies a consistent color scheme across all pages and components.
+3. User's selected mode persists across page refreshes.
+## <span style="font-size: 18px;">User Story 28: Scale Recipes</span>
+### Tasks:
+- [ ] SCRUM-164 - Scale Recipe Servings and Adjust Ingredient Amounts
+### Acceptance Criteria:
+1. User can adjust the serving size of a recipe and see ingredient amounts scale proportionally.
+2. Scaled amounts carry through to the shopping list when added.
 
 #### <span style="font-size: 20px;">Group:</span>
 ## <span style="font-size: 18px;">User Story 18: SOLID Principles Refactor</span>

@@ -11,6 +11,7 @@ import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useRecipeContext } from '../../context/RecipeContext'
 import AccessButton from '../AccessButtons/AccessButton'
+import ThemeToggle from '../ThemeToggle/ThemeToggle'
 import styles from './Navbar.module.css'
 
 // Navbar renders the top navigation bar on every page.
@@ -105,6 +106,9 @@ function Navbar() {
           <button onClick={handleNewSearch} className={styles.newSearchBtn} title="Clear current search and start over">
             New Search
           </button>
+        </li>
+        <li>
+          <ThemeToggle/>
         </li>
       </ul>
     </nav>
