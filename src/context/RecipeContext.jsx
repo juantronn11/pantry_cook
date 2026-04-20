@@ -97,6 +97,7 @@ export function RecipeProvider({ children }) {
     } catch (e) {
       setSavedRecipes(savedRecipes); // rollback if API fails
       console.error('Failed to save recipe:', e);
+      throw e;
     }
   }
 
@@ -108,6 +109,7 @@ export function RecipeProvider({ children }) {
     } catch (e) {
       setSavedRecipes(savedRecipes); // rollback if API fails
       console.error('Failed to remove recipe:', e);
+      throw e;
     }
   }
 
