@@ -18,6 +18,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import errorThumb from '../../../media/error_thumbnail.jpg';
 import errorImage from '../../../media/error_image.jpg';
 import ShoppingListButton from '../ShoppingListButton/ShoppingListButton';
+import { scaleIngredients } from '../../utils/scaleIngredients';
 
 function RecipeTile({recipe}) {
   const { saveRecipe, removeSavedRecipe, isRecipeSaved } = useRecipeContext();
@@ -29,6 +30,10 @@ function RecipeTile({recipe}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [imageError, setImageError] = useState(false);
+  // SCRUM-164: Track the current serving size the user has selected in the modal.
+  // Initialized to the recipe's original servings when the modal opens.
+  // Used to scale ingredient amounts in the display and when sending to the shopping list.
+  const [servings, setServings] = useState(recipe.raw?.servings || 1);
   // SCRUM-79/80/86: Validation previously lived here (ValidationCheck) but
   // called setRecipes() during render, causing an infinite re-render loop.
   // Validation is now handled in RecipeContext.fetchRecipes() before recipes
@@ -72,6 +77,7 @@ function RecipeTile({recipe}) {
   const closeModal = () => {
     setModalData(null)
     setError(false);
+    setServings(recipe.raw?.servings || 1);
   };
 
   //SCRUM-74: Error handling for missing/invalid images. If the image fails to load, hide default broken image icon.
@@ -100,8 +106,16 @@ function RecipeTile({recipe}) {
         
       </div>
 
-      {(modalData || error) && (
-
+      {(modalData || error) && (() => {
+        const scaledIngredients = scaleIngredients(
+          recipe.raw?.extendedIngredients || [],
+          servings / (recipe.raw?.servings || 1)
+        );
+        const scaledRecipe = {
+          ...recipe,
+          raw: { ...recipe.raw, extendedIngredients: scaledIngredients },
+        };
+        return (
         <div className={styles.overlay} onClick={closeModal}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <button className={styles.closeBtn} onClick={closeModal}>X</button>
@@ -116,16 +130,55 @@ function RecipeTile({recipe}) {
                   >
                     {saved ? 'Remove from Library' : 'Save to Library'}
                   </button>}
-                  {isAuthenticated && <ShoppingListButton recipe={recipe} /> }
+                  {isAuthenticated && <ShoppingListButton recipe={scaledRecipe} /> }
                   <img src={imageError ? errorImage : modalData.strMealThumb} alt={imageError ? 'Error' : modalData.strMeal} className={styles.modalImg} onError={handleImageError} />
                   <h2 className={styles.recipeTitle}>{modalData.strMeal}</h2>
                   <p className={styles.other}><strong>Category:</strong> {modalData.strCategory}</p>
                   <p className={styles.other}><strong>Area:</strong> {modalData.strArea}</p>
                   <p className={styles.other}><strong>Cook Time:</strong> {modalData.strCookTime} minutes</p>
+                  <div className={styles.servingsControl}>
+                    <strong>Servings:</strong>
+                    {isAuthenticated && (
+                      <button
+                        onClick={() => setServings(s => Math.max(1, s - 1))}
+                        disabled={servings <= 1}
+                        className={styles.servingsBtn}
+                        aria-label="Decrease servings"
+                      >
+                        -
+                      </button>
+                    )}
+                    <span className={styles.servingsCount}>{servings}</span>
+                    {isAuthenticated && (
+                      <>
+                        <button
+                          onClick={() => setServings(s => s + 1)}
+                          className={styles.servingsBtn}
+                          aria-label="Increase servings"
+                        >
+                          +
+                        </button>
+                        <button
+                          onClick={() => setServings(recipe.raw?.servings || 1)}
+                          disabled={servings === (recipe.raw?.servings || 1)}
+                          className={styles.servingsResetBtn}
+                          aria-label="Reset servings to original"
+                          title="Reset to original servings"
+                        >
+                          Reset
+                        </button>
+                      </>
+                    )}
+                  </div>
                   <p><strong>Ingredients:</strong></p>
-                  <ul className={styles.ingredientsList}> {modalData.strInstructions && Object.keys(modalData).filter(key => key.startsWith('strIngredient') && modalData[key]).map((key, index) => (
-                    <li key={index}>{modalData[key]} - {modalData[`strMeasure${key.slice(13)}`]}</li>
-                  ))} </ul>
+                  <ul className={styles.ingredientsList}>
+                    {modalData.strInstructions && scaledIngredients.map((ing, index) => (
+                      <li key={index}>
+                        {ing.name || ing.original}
+                        {ing.amount > 0 && ` - ${Number(ing.amount.toFixed(2))} ${ing.unit || ''}`.trimEnd()}
+                      </li>
+                    ))}
+                  </ul>
                   <p><strong>Instructions:</strong></p>
                   <p className={styles.recipeInstructions}>{modalData.strInstructions}</p>
                   {modalData.strYoutube && (
@@ -135,7 +188,8 @@ function RecipeTile({recipe}) {
             )}
           </div>
         </div>
-      )}
+        );
+      })()}
     </>
 
   )

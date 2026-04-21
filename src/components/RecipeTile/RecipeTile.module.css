@@ -105,6 +105,61 @@
   color: var(--text-secondary);
 }
 
+.servingsControl {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+}
+
+.servingsBtn {
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.servingsBtn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.servingsBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.servingsCount {
+  font-weight: 600;
+  font-size: 1rem;
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.servingsResetBtn {
+  background: none;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.servingsResetBtn:hover:not(:disabled) {
+  background: var(--bg-secondary);
+}
+
+.servingsResetBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 /* ========================================
    PRINT STYLES — applied when user clicks Download / Print
    Hides the tile cards, removes the dark overlay + scroll constraints,
