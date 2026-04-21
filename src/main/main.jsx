@@ -15,6 +15,7 @@ import App from '../app/App.jsx'
 import './index.css'
 import { Auth0Provider } from "@auth0/auth0-react";
 import { logError } from '../helperFunctions/logError.js'
+import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary.jsx'
 
 window.onerror = (_message, _source, _lineno, _colno, error) => {
   logError(error?.message || String(_message), 'window.onerror')
@@ -34,10 +35,10 @@ createRoot(document.getElementById('root')).render(
             >
                 <ThemeProvider>
                   <RecipeProvider>
-
-                  <App />
-
-                </RecipeProvider>
+                    <ErrorBoundary>
+                      <App />
+                    </ErrorBoundary>
+                  </RecipeProvider>
                 </ThemeProvider>
           </Auth0Provider>
       </BrowserRouter>
