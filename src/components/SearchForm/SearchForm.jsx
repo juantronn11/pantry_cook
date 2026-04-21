@@ -163,7 +163,7 @@ function SearchButton({selectedIngredients}) {
   }
 
   return (
-    <button onClick={handleClick}>Search</button>
+    <button onClick={handleClick} className={styles.searchBtn}>Search</button>
   );
 }
 

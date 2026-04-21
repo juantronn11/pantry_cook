@@ -2,7 +2,7 @@ image: node:18
 
 pipelines:
   branches:
-    main:
+    dev3:
       - step:
           name: Deploy to Railway
           script:

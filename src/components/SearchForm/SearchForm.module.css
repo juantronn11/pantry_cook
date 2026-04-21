@@ -20,6 +20,21 @@
   position: relative;
 }
 
+.inputWrapper input {
+  color: var(--text-primary);
+  background: var(--bg-modal);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.inputWrapper input:focus {
+  outline: none;
+  border-color: var(--text-secondary);
+}
+
 .suggestions {
   position: absolute;
   top: 100%;
@@ -47,7 +62,7 @@
 }
 
 .suggestions li[data-hover="true"] {
-  background: #f0f0f0;
+  background: var(--bg-secondary);
 }
 
 .tag {
@@ -59,4 +74,20 @@
   border-radius: 4px;
   padding: 4px 8px;
   margin: 2px;
+}
+
+.searchBtn {
+  color: #ffffff;
+  background-color: var(--accent);
+  border: none;
+  font-size: 0.95rem;
+  font-family: inherit;
+  padding: 0.5rem 1.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.searchBtn:hover {
+  opacity: 0.85;
 }

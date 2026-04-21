@@ -51,7 +51,7 @@
 }
 
 .suggestions li[data-hover="true"] {
-  background: #f0f0f0;
+  background: var(--bg-secondary);
 }
 
 .input {
