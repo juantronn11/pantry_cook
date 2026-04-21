@@ -14,6 +14,15 @@ import { ThemeProvider } from '../context/ThemeContext.jsx'
 import App from '../app/App.jsx'
 import './index.css'
 import { Auth0Provider } from "@auth0/auth0-react";
+import { logError } from '../helperFunctions/logError.js'
+
+window.onerror = (_message, _source, _lineno, _colno, error) => {
+  logError(error?.message || String(_message), 'window.onerror')
+}
+
+window.onunhandledrejection = (event) => {
+  logError(event.reason?.message || String(event.reason), 'window.onunhandledrejection')
+}
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
