@@ -68,7 +68,7 @@ app.post('/user', checkJwt, async (req, res) => { //add user to db
         const result = await collections.insertOne(newUser);
         res.status(201).send({ _id: result.insertedId, ...newUser });
     } catch (e) {
-        console.error(e);
+        await errorLogs.insertOne({ timestamp: new Date(), message: e.message, component: 'POST /user' });
         res.status(500).send({ error: 'Internal server error' });
     }
 });
@@ -81,7 +81,7 @@ app.get('/user', checkJwt, async (req, res) => { //returns all user information 
         if (!result) return res.sendStatus(404);
         res.status(200).send(result);
     } catch (e) {
-        console.error(e);
+        await errorLogs.insertOne({ timestamp: new Date(), message: e.message, component: 'GET /user' });
         res.status(500).send({ error: 'Internal server error' });
     }
 });
@@ -98,7 +98,7 @@ app.put('/recipe', checkJwt, async (req, res) => { //add new recipe to saved rec
     if (result.modifiedCount === 0) return res.sendStatus(404);
     res.status(200).send(result);
   } catch (e) {
-    console.error(e);
+    await errorLogs.insertOne({ timestamp: new Date(), message: e.message, component: 'PUT /recipe' });
     res.status(500).send({ error: 'Internal server error' });
   }
 });
@@ -115,7 +115,7 @@ app.delete('/recipe', checkJwt, async (req, res) => {
         if (result.modifiedCount === 0) return res.sendStatus(404);
         res.status(200).send({ message: 'Recipe deleted successfully' });
     } catch (e) {
-        console.error(e);
+        await errorLogs.insertOne({ timestamp: new Date(), message: e.message, component: 'DELETE /recipe' });
         res.status(500).send({ error: 'Internal server error' });
     }
 });
@@ -135,7 +135,7 @@ app.post('/errors', async (req, res) => {
 
         res.status(201).send({ logged: true });
     } catch (e) {
-        console.error('Failed to log error:', e);
+        console.error('Failed to log error to MongoDB:', e);
         res.status(500).send({ error: 'Internal server error' });
     }
 });

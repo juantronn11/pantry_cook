@@ -2,6 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import styles from './AccessButton.module.css';
 import { useApi } from "../../helperFunctions/helper";
 import { useEffect } from "react";
+import { logError } from "../../helperFunctions/logError";
 
 function AccessButton({ variant = 'navbar' }) {
   const {
@@ -17,7 +18,7 @@ function AccessButton({ variant = 'navbar' }) {
 
   useEffect(() => {
     if (isAuthenticated) {
-      createUser().catch(console.error);
+      createUser().catch(e => logError(e.message, 'AccessButton:createUser'));
     }
   }, [isAuthenticated]);
 

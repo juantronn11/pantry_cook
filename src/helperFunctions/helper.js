@@ -1,4 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
+import { logError } from './logError'
 
 const url = "/";
 
@@ -35,7 +36,7 @@ export function useApi() {
       if (response.status === 409) return null; // user already exists, that's fine
       return await handleResponse(response);
     } catch (e) {
-      console.error('Failed to create user:', e);
+      logError(e.message, 'helper:createUser')
       throw e;
     }
   }
@@ -49,7 +50,7 @@ export function useApi() {
       const data = await handleResponse(response);
       return data?.recipes ?? [];
     } catch (e) {
-      console.error('Failed to get saved recipes:', e);
+      logError(e.message, 'helper:getSavedRecipes')
       throw e;
     }
   }
@@ -63,7 +64,7 @@ export function useApi() {
       });
       return await handleResponse(response);
     } catch (e) {
-      console.error('Failed to update recipes:', e);
+      logError(e.message, 'helper:updateRecipes')
       throw e;
     }
   }
@@ -77,7 +78,7 @@ export function useApi() {
       });
       return await handleResponse(response);
     } catch (e) {
-      console.error('Failed to delete recipe:', e);
+      logError(e.message, 'helper:deleteRecipe')
       throw e;
     }
   }
