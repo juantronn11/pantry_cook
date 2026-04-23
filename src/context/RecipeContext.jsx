@@ -80,7 +80,7 @@ export function RecipeProvider({ children }) {
     if (!isAuthenticated) return;
     getSavedRecipes()
       .then(recipes => setSavedRecipes(recipes))
-      .catch(console.error);
+      .catch(e => logError(e.message, 'RecipeContext:getSavedRecipes'));
   }, [isAuthenticated]);
 
   // SCRUM-107: Duplicate prevention — if the recipe is already in the
@@ -97,7 +97,7 @@ export function RecipeProvider({ children }) {
       await updateRecipes(recipe);
     } catch (e) {
       setSavedRecipes(savedRecipes); // rollback if API fails
-      console.error('Failed to save recipe:', e);
+      logError(e.message, 'RecipeContext:saveRecipe')
       throw e;
     }
   }
@@ -109,7 +109,7 @@ export function RecipeProvider({ children }) {
       await deleteRecipe(recipeId);
     } catch (e) {
       setSavedRecipes(savedRecipes); // rollback if API fails
-      console.error('Failed to remove recipe:', e);
+      logError(e.message, 'RecipeContext:removeSavedRecipe')
       throw e;
     }
   }
@@ -286,6 +286,7 @@ export function RecipeProvider({ children }) {
 
     if (spoonacularResult.status === 'rejected') {
       setError('Some results may be missing — one or more APIs failed.')
+      logError(spoonacularResult.reason?.message || 'Spoonacular API failed', 'RecipeContext:fetchRecipes')
     }
 
     const spoonacularRecipes = spoonacularResult.status === 'fulfilled' ? spoonacularResult.value : []
