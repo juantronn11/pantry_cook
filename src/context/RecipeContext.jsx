@@ -23,6 +23,7 @@ import { stripHtml } from '../utils/stripHtml'
 import { mergeIngredients } from '../utils/mergeIngredients'
 import {useApi} from '../helperFunctions/helper'
 import { useAuth0 } from "@auth0/auth0-react";
+import { logError } from '../helperFunctions/logError'
 
 const RecipeContext = createContext(null)
 
@@ -133,8 +134,13 @@ export function RecipeProvider({ children }) {
   // The function form of useState() runs only once (on mount), not on
   // every re-render, so the JSON.parse cost is paid just once.
   const [historyRecipes, setHistoryRecipes] = useState(() => {
-    const saved = localStorage.getItem('pantry-cook-history')
-    return saved ? JSON.parse(saved) : []
+    try {
+      const saved = localStorage.getItem('pantry-cook-history')
+      return saved ? JSON.parse(saved) : []
+    } catch (e) {
+      logError(e.message, 'RecipeContext:localStorage:pantry-cook-history')
+      return []
+    }
   })
 
   // SCRUM-49: Sync history to localStorage whenever it changes.
@@ -150,8 +156,13 @@ export function RecipeProvider({ children }) {
   //   { id: string, name: string, amount: number, unit: string, checked: boolean }
   // Persisted to localStorage so the list survives page refreshes.
   const [shoppingList, setShoppingList] = useState(() => {
-    const saved = localStorage.getItem('pantry-cook-shopping-list')
-    return saved ? JSON.parse(saved) : []
+    try {
+      const saved = localStorage.getItem('pantry-cook-shopping-list')
+      return saved ? JSON.parse(saved) : []
+    } catch (e) {
+      logError(e.message, 'RecipeContext:localStorage:pantry-cook-shopping-list')
+      return []
+    }
   })
 
   useEffect(() => {
