@@ -59,12 +59,15 @@ export async function ingredientAutocomplete(query) {
 // Makes one API call for a single ingredient
 // SCRUM-108: excludedIngredients passed as &excludeIngredients so Spoonacular
 // filters server-side — excluded recipes never come back in the response.
-async function searchByIngredient(ingredient, excludedIngredients = []) {
+async function searchByIngredient(ingredient, excludedIngredients = [], intolerances = []) {
   const excludeParam = excludedIngredients.length > 0
     ? `&excludeIngredients=${encodeURIComponent(excludedIngredients.join(','))}`
     : ''
+  const intoleranceParam = intolerances.length > 0
+    ? `&intolerances=${encodeURIComponent(intolerances.join(','))}`
+    : ''
   const res = await fetch(
-    `${BASE_URL}/recipes/findByIngredients?ingredients=${encodeURIComponent(ingredient)}&number=10&ranking=1&ignorePantry=true${excludeParam}&apiKey=${API_KEY}`
+    `${BASE_URL}/recipes/findByIngredients?ingredients=${encodeURIComponent(ingredient)}&number=10&ranking=1&ignorePantry=true${excludeParam}${intoleranceParam}&apiKey=${API_KEY}`
   )
   if (!res.ok) throw new Error(`Spoonacular search failed for "${ingredient}": ${res.status}`)
   return res.json()
@@ -106,13 +109,13 @@ async function batchGetDetails(recipes, batchSize = 3, delayMs = 500) {
 // to each result so RecipeContext can sort by relevance.
 // SCRUM-108: Accept excludedIngredients and append to each search call so
 // Spoonacular filters server-side before returning any results.
-export async function fetchSpoonacularRecipes(ingredients, excludedIngredients = []) {
+export async function fetchSpoonacularRecipes(ingredients, excludedIngredients = [], intolerances = []) {
   // All ingredient searches fire at the same time
 
   let unfilteredResults = getCachedResults(ingredients);
   if(!unfilteredResults){
     const searchResults = await Promise.allSettled(
-      ingredients.map((ingredient) => searchByIngredient(ingredient))
+      ingredients.map((ingredient) => searchByIngredient(ingredient, [], intolerances))
     )
     // Keep only successful searches1
     const allRecipes = []
