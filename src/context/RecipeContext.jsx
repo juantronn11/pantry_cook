@@ -41,6 +41,20 @@ export function RecipeProvider({ children }) {
   // Passed to Spoonacular via &excludeIngredients in SCRUM-108.
   const [excludedIngredients, setExcludedIngredients] = useState([])
 
+  // SCRUM-149: Category-based exclusions using Spoonacular's &intolerances= param.
+  // Each entry is a recognized intolerance term (e.g. 'dairy', 'gluten').
+  const [intolerances, setIntolerances] = useState([])
+
+  function addIntolerance(term) {
+    const trimmed = term.trim().toLowerCase()
+    if (!trimmed) return
+    setIntolerances(prev => prev.includes(trimmed) ? prev : [...prev, trimmed])
+  }
+
+  function removeIntolerance(term) {
+    setIntolerances(prev => prev.filter(i => i !== term))
+  }
+
   // SCRUM-119: Track the last API fetch so we can skip re-fetching when
   // the user only adds exclusions without changing their ingredients.
   // allRecipes holds the full validated results from the last API call.
@@ -270,7 +284,7 @@ export function RecipeProvider({ children }) {
     // results from the other API still come through.
     const API_TIMEOUT = 30000
     const [spoonacularResult] = await Promise.allSettled([
-      withTimeout(fetchSpoonacularRecipes(ingredients, excludedIngredients), API_TIMEOUT),
+      withTimeout(fetchSpoonacularRecipes(ingredients, excludedIngredients, intolerances), API_TIMEOUT),
     ])
 
     if (spoonacularResult.status === 'rejected') {
@@ -376,6 +390,7 @@ export function RecipeProvider({ children }) {
   function resetSearch() {
     setIngredients([])
     setExcludedIngredients([])
+    setIntolerances([])
     setRecipes([])
     setAllRecipes([])
     setLastSearchedIngredients([])
@@ -405,6 +420,9 @@ export function RecipeProvider({ children }) {
     excludedIngredients,
     addExclusion,
     removeExclusion,
+    intolerances,
+    addIntolerance,
+    removeIntolerance,
     resetSearch,
     shoppingList,
     addToShoppingList,
