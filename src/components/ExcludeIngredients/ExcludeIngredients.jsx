@@ -6,7 +6,7 @@
 import { useState } from 'react'
 import { useRecipeContext } from '../../context/RecipeContext'
 import { ingredientAutocomplete } from '../../utils/ingredientTrie'
-import { isIntolerance } from '../../utils/intolerances'
+import { isIntolerance, INTOLERANCE_TERMS } from '../../utils/intolerances'
 import styles from './ExcludeIngredients.module.css'
 
 function ExcludeIngredients() {
@@ -21,7 +21,14 @@ function ExcludeIngredients() {
   function handleInput(e) {
     const value = e.target.value
     setInputValue(value)
-    setSuggestions(value.trim() ? ingredientAutocomplete(value) : [])
+    if (!value.trim()) {
+      setSuggestions([])
+      return
+    }
+    const lower = value.trim().toLowerCase()
+    const matchingIntolerances = INTOLERANCE_TERMS.filter(t => t.startsWith(lower))
+    const ingredientSuggestions = ingredientAutocomplete(value)
+    setSuggestions([...matchingIntolerances, ...ingredientSuggestions])
   }
 
   function handleSelect(ingredient) {
