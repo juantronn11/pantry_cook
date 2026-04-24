@@ -6,13 +6,17 @@
 import { useState } from 'react'
 import { useRecipeContext } from '../../context/RecipeContext'
 import { ingredientAutocomplete } from '../../utils/ingredientTrie'
+import { isIntolerance } from '../../utils/intolerances'
 import styles from './ExcludeIngredients.module.css'
 
 function ExcludeIngredients() {
   const [inputValue, setInputValue] = useState('')
   const [suggestions, setSuggestions] = useState([])
   const [activeIndex, setActiveIndex] = useState(-1)
-  const { excludedIngredients, addExclusion, removeExclusion } = useRecipeContext()
+  const {
+    excludedIngredients, addExclusion, removeExclusion,
+    intolerances, addIntolerance, removeIntolerance,
+  } = useRecipeContext()
 
   function handleInput(e) {
     const value = e.target.value
@@ -50,7 +54,11 @@ function ExcludeIngredients() {
   function handleAdd() {
     const trimmed = inputValue.trim().toLowerCase()
     if (!trimmed) return
-    addExclusion(trimmed)
+    if (isIntolerance(trimmed)) {
+      addIntolerance(trimmed)
+    } else {
+      addExclusion(trimmed)
+    }
     setInputValue('')
     setSuggestions([])
   }
@@ -92,8 +100,14 @@ function ExcludeIngredients() {
         <button className={styles.addButton} onClick={handleAdd}>+ Add</button>
       </div>
 
-      {excludedIngredients.length > 0 && (
+      {(intolerances.length > 0 || excludedIngredients.length > 0) && (
         <div className={styles.chipList}>
+          {intolerances.map(item => (
+            <span key={item} className={`${styles.chip} ${styles.chipCategory}`}>
+              {item}
+              <button className={styles.removeButton} onClick={() => removeIntolerance(item)}>✕</button>
+            </span>
+          ))}
           {excludedIngredients.map(item => (
             <span key={item} className={styles.chip}>
               {item}
