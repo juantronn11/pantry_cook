@@ -63,6 +63,7 @@ export function RecipeProvider({ children }) {
   const [allRecipes, setAllRecipes] = useState([])
   const [lastSearchedIngredients, setLastSearchedIngredients] = useState([])
   const [lastFetchedExclusions, setLastFetchedExclusions] = useState([])
+  const [lastFetchedIntolerances, setLastFetchedIntolerances] = useState([])
 
   function addExclusion(ingredient) {
     const trimmed = ingredient.trim().toLowerCase()
@@ -261,11 +262,16 @@ export function RecipeProvider({ children }) {
     const exclusionRemoved = lastFetchedExclusions.some(
       e => !excludedIngredients.includes(e)
     )
+
+    const intoleranceChanged =
+      intolerances.length !== lastFetchedIntolerances.length ||
+      intolerances.some(i => !lastFetchedIntolerances.includes(i)) ||
+      lastFetchedIntolerances.some(i => !intolerances.includes(i))
 // User Story 24 | SCRUM-153: Change substring matching to exact matching in exclusion filter
 // Current: `i.name.toLowerCase().includes(excl)` — "rice" matches "licorice"
 // Fix: `i.name.toLowerCase() === excl` — "rice" only matches "rice"
 // Check: (better fix?) ^ and exclude (' ' + excl) and (excl + ' ')
-    if (sameIngredients && !exclusionRemoved && allRecipes.length > 0) {
+    if (sameIngredients && !exclusionRemoved && !intoleranceChanged && allRecipes.length > 0) {
       const filtered = allRecipes.filter(recipe =>
         !excludedIngredients.some(excl =>
           recipe.raw?.extendedIngredients?.some(i =>
@@ -357,6 +363,7 @@ export function RecipeProvider({ children }) {
     setAllRecipes(validated)
     setLastSearchedIngredients(ingredients)
     setLastFetchedExclusions([...excludedIngredients])
+    setLastFetchedIntolerances([...intolerances])
 
     // SCRUM-43 + SCRUM-45: Sort the deduplicated list using the active sortOrder.
     // Default is 'best-match' (matchScore descending). User can change this via the
@@ -395,6 +402,7 @@ export function RecipeProvider({ children }) {
     setAllRecipes([])
     setLastSearchedIngredients([])
     setLastFetchedExclusions([])
+    setLastFetchedIntolerances([])
     setError(null)
     setSortOrder('best-match')
   }

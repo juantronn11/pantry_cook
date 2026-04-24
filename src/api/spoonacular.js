@@ -12,18 +12,22 @@
 // Endpoints used:
 //   GET /food/ingredients/autocomplete — returns a list of ingredients given a string query
 
+import { INTOLERANCE_RECIPE_FIELD, INTOLERANCE_KEYWORDS } from '../utils/intolerances'
+
 const BASE_URL = 'https://api.spoonacular.com'
 const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY
 const CACHE_TTL_MS = 30 * 60 * 1000
 
 const recipeCache = new Map();
 
-function getCacheKey(ingredients){
-  return [...ingredients].map((i) => i.trim().toLowerCase()).sort().join(',')
+function getCacheKey(ingredients, intolerances = []){
+  const ingKey = [...ingredients].map((i) => i.trim().toLowerCase()).sort().join(',')
+  const intKey = [...intolerances].sort().join(',')
+  return intKey ? `${ingKey}|${intKey}` : ingKey
 }
 
-function getCachedResults(ingredients){
-  const key = getCacheKey(ingredients);
+function getCachedResults(ingredients, intolerances = []){
+  const key = getCacheKey(ingredients, intolerances);
   const entry = recipeCache.get(key);
   if(!entry) return null;
 
@@ -36,8 +40,8 @@ function getCachedResults(ingredients){
 
 }
 
-function setCachedResults(ingredients, results){
-  recipeCache.set(getCacheKey(ingredients),{results, timestamp: Date.now()})
+function setCachedResults(ingredients, results, intolerances = []){
+  recipeCache.set(getCacheKey(ingredients, intolerances),{results, timestamp: Date.now()})
 }
 
 // SCRUM-116: Counter tracks how many autocomplete API calls are made.
@@ -59,15 +63,12 @@ export async function ingredientAutocomplete(query) {
 // Makes one API call for a single ingredient
 // SCRUM-108: excludedIngredients passed as &excludeIngredients so Spoonacular
 // filters server-side — excluded recipes never come back in the response.
-async function searchByIngredient(ingredient, excludedIngredients = [], intolerances = []) {
+async function searchByIngredient(ingredient, excludedIngredients = []) {
   const excludeParam = excludedIngredients.length > 0
     ? `&excludeIngredients=${encodeURIComponent(excludedIngredients.join(','))}`
     : ''
-  const intoleranceParam = intolerances.length > 0
-    ? `&intolerances=${encodeURIComponent(intolerances.join(','))}`
-    : ''
   const res = await fetch(
-    `${BASE_URL}/recipes/findByIngredients?ingredients=${encodeURIComponent(ingredient)}&number=10&ranking=1&ignorePantry=true${excludeParam}${intoleranceParam}&apiKey=${API_KEY}`
+    `${BASE_URL}/recipes/findByIngredients?ingredients=${encodeURIComponent(ingredient)}&number=10&ranking=1&ignorePantry=true${excludeParam}&apiKey=${API_KEY}`
   )
   if (!res.ok) throw new Error(`Spoonacular search failed for "${ingredient}": ${res.status}`)
   return res.json()
@@ -112,10 +113,10 @@ async function batchGetDetails(recipes, batchSize = 3, delayMs = 500) {
 export async function fetchSpoonacularRecipes(ingredients, excludedIngredients = [], intolerances = []) {
   // All ingredient searches fire at the same time
 
-  let unfilteredResults = getCachedResults(ingredients);
+  let unfilteredResults = getCachedResults(ingredients, intolerances);
   if(!unfilteredResults){
     const searchResults = await Promise.allSettled(
-      ingredients.map((ingredient) => searchByIngredient(ingredient, [], intolerances))
+      ingredients.map((ingredient) => searchByIngredient(ingredient, []))
     )
     // Keep only successful searches1
     const allRecipes = []
@@ -150,14 +151,30 @@ export async function fetchSpoonacularRecipes(ingredients, excludedIngredients =
         matchScore: matchScoreById.get(r.value.id) ?? 0,
       }))
       
-      setCachedResults(ingredients, unfilteredResults);
+      setCachedResults(ingredients, unfilteredResults, intolerances);
 
   }
 
-  // we handle filtering ingredients now
-  if (excludedIngredients.length === 0) return unfilteredResults
+  // Apply intolerance filtering using recipe boolean flags and ingredient keywords
+  let filtered = unfilteredResults
+  if (intolerances.length > 0) {
+    filtered = filtered.filter(recipe => {
+      return intolerances.every(intol => {
+        const field = INTOLERANCE_RECIPE_FIELD[intol]
+        if (field) return recipe[field] === true
+
+        const keywords = INTOLERANCE_KEYWORDS[intol] || []
+        return !recipe.extendedIngredients?.some(ing =>
+          keywords.some(kw => ing.name?.toLowerCase().includes(kw))
+        )
+      })
+    })
+  }
+
+  // Apply specific ingredient exclusions
+  if (excludedIngredients.length === 0) return filtered
   const excluded = excludedIngredients.map((e) => e.trim().toLowerCase())
-  return unfilteredResults.filter((recipe) =>
+  return filtered.filter((recipe) =>
     !recipe.extendedIngredients?.some((ing) =>
       excluded.some((ex) => ing.name?.toLowerCase().includes(ex))
     )
