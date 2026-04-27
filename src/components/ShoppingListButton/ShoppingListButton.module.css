@@ -1,0 +1,39 @@
+/* ShoppingListButton styles — Owner: Tina Carter */
+@import '../../assets/print.css';
+.listButton {
+  background-color: rgb(173, 216, 230);
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font: Times New Roman, serif;
+  border-radius: 2px;
+  cursor: pointer;
+  position: fixed; /* Stays in place while scrolling */
+  bottom: 100px;    /* Distance from bottom */
+  right: 20px;     /* Distance from right */
+  z-index: 1000;   /* Ensures it sits on top of other elements */
+  padding: 10px 20px;
+  width: 210px;
+}
+
+.listButton:hover {
+  background-color: darkblue;
+  color: white;
+}
+
+
+@media print {
+  /* Hide the button itself in the printed output */
+  .listButton {
+    display: none !important;
+  }
+
+  @page {
+    size: letter;
+    margin: 1in;
+  }
+}

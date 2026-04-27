@@ -1,7 +1,7 @@
 /* DownloadButton styles — Owner: Tina Carter */
 @import '../../assets/print.css';
 .downloadButton {
-  background-color: lightblue;
+  background-color: rgb(173, 216, 230);
   border: none;
   color: black;
   padding: 15px 32px;
@@ -17,6 +17,7 @@
   right: 20px;     /* Distance from right */
   z-index: 1000;   /* Ensures it sits on top of other elements */
   padding: 10px 20px;
+  width: 210px;
 }
 
 .downloadButton:hover {

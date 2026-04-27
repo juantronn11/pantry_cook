@@ -14,7 +14,7 @@
   align-items: center;
   height: 50vh;
   font-size: 1.2rem;
-  color: #888;
+  color: var(--text-muted);
 }
 
 .modalOverlay {
@@ -28,7 +28,8 @@
 }
 
 .modal {
-  background: white;
+  background: var(--bg-modal);
+  color: var(--text-primary);
   border-radius: 12px;
   padding: 2rem;
   display: flex;

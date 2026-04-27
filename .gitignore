@@ -19,6 +19,9 @@ dist-ssr
 
 # Personal / local-only files
 juan-personal-notes.md
+railway-bitbucket-guide.md
+railway-pipelines-guide.md
+bitbucket-github-mirror-guide.md
 
 # Editor directories and files
 .vscode/*
@@ -36,3 +39,6 @@ patrick_logs.md
 conflict_analysis.md
 sprint2_planning_notes.md
 sprint2_scrums.pdf
+railway-bitbucket-guide.md
+railway-pipelines-guide.md
+bitbucket-github-mirror-guide.md

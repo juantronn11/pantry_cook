@@ -20,8 +20,10 @@ import { normalizeSpoonacularRecipe } from '../utils/normalizeRecipe'
 import { parseIngredients } from '../utils/parseIngredients'
 import { withTimeout } from '../utils/withTimeout'
 import { stripHtml } from '../utils/stripHtml'
+import { mergeIngredients } from '../utils/mergeIngredients'
 import {useApi} from '../helperFunctions/helper'
 import { useAuth0 } from "@auth0/auth0-react";
+import { logError } from '../helperFunctions/logError'
 
 const RecipeContext = createContext(null)
 
@@ -32,13 +34,30 @@ export function RecipeProvider({ children }) {
   const [error, setError] = useState(null)
   const { getSavedRecipes, 
           updateRecipes, 
-          deleteRecipe } = useApi();
+          deleteRecipe,
+          // getShoppingList,
+          // saveShoppingList 
+        } = useApi();
 
   // SCRUM-106: Ingredients the user wants excluded from recipe results.
   // Each entry is a lowercase trimmed string (e.g. 'peanuts', 'shellfish').
   // addExclusion() prevents duplicates. removeExclusion() removes by value.
   // Passed to Spoonacular via &excludeIngredients in SCRUM-108.
   const [excludedIngredients, setExcludedIngredients] = useState([])
+
+  // SCRUM-149: Category-based exclusions using Spoonacular's &intolerances= param.
+  // Each entry is a recognized intolerance term (e.g. 'dairy', 'gluten').
+  const [intolerances, setIntolerances] = useState([])
+
+  function addIntolerance(term) {
+    const trimmed = term.trim().toLowerCase()
+    if (!trimmed) return
+    setIntolerances(prev => prev.includes(trimmed) ? prev : [...prev, trimmed])
+  }
+
+  function removeIntolerance(term) {
+    setIntolerances(prev => prev.filter(i => i !== term))
+  }
 
   // SCRUM-119: Track the last API fetch so we can skip re-fetching when
   // the user only adds exclusions without changing their ingredients.
@@ -48,6 +67,8 @@ export function RecipeProvider({ children }) {
   const [allRecipes, setAllRecipes] = useState([])
   const [lastSearchedIngredients, setLastSearchedIngredients] = useState([])
   const [lastFetchedExclusions, setLastFetchedExclusions] = useState([])
+  const [lastFetchedIntolerances, setLastFetchedIntolerances] = useState([])
+  // const [shoppingList, setShoppingList] = useState([])
 
   function addExclusion(ingredient) {
     const trimmed = ingredient.trim().toLowerCase()
@@ -67,6 +88,17 @@ export function RecipeProvider({ children }) {
   // 'fewest-missing'  — by missedIngredientCount ascending (fewest extra ingredients needed first)
   const [sortOrder, setSortOrder] = useState('best-match')
 
+  // SCRUM-160: Filter recipes by cook time.
+  // 'any'             — no filtering (default)
+  // 'less-than-30'    — only recipes with cook time under 30 minutes
+  // '30-to-60'        — only recipes with cook time between 30 and 60 minutes
+  // 'more-than-60'    — only recipes with cook time over 60 minutes
+  const [cookTimeFilter, setCookTimeFilter] = useState('any')
+
+  // SCRUM-160: Save a backup of the full results list before filtering by cook time so we can
+  // re-apply the filter client-side when cookTimeFilter changes without re-fetching.
+  const [recipesBackup, setRecipesBackup] = useState([])
+
   // SCRUM-51: Saved recipes library — stores recipes the user explicitly saves.
   // Each entry is a normalized recipe object ({ id, name, source, raw }).
   // Persisted to localStorage so saves survive page refreshes.
@@ -78,7 +110,7 @@ export function RecipeProvider({ children }) {
     if (!isAuthenticated) return;
     getSavedRecipes()
       .then(recipes => setSavedRecipes(recipes))
-      .catch(console.error);
+      .catch(e => logError(e.message, 'RecipeContext:getSavedRecipes'));
   }, [isAuthenticated]);
 
   // SCRUM-107: Duplicate prevention — if the recipe is already in the
@@ -95,7 +127,8 @@ export function RecipeProvider({ children }) {
       await updateRecipes(recipe);
     } catch (e) {
       setSavedRecipes(savedRecipes); // rollback if API fails
-      console.error('Failed to save recipe:', e);
+      logError(e.message, 'RecipeContext:saveRecipe')
+      throw e;
     }
   }
 
@@ -106,7 +139,8 @@ export function RecipeProvider({ children }) {
       await deleteRecipe(recipeId);
     } catch (e) {
       setSavedRecipes(savedRecipes); // rollback if API fails
-      console.error('Failed to remove recipe:', e);
+      logError(e.message, 'RecipeContext:removeSavedRecipe')
+      throw e;
     }
   }
 
@@ -130,8 +164,13 @@ export function RecipeProvider({ children }) {
   // The function form of useState() runs only once (on mount), not on
   // every re-render, so the JSON.parse cost is paid just once.
   const [historyRecipes, setHistoryRecipes] = useState(() => {
-    const saved = localStorage.getItem('pantry-cook-history')
-    return saved ? JSON.parse(saved) : []
+    try {
+      const saved = localStorage.getItem('pantry-cook-history')
+      return saved ? JSON.parse(saved) : []
+    } catch (e) {
+      logError(e.message, 'RecipeContext:localStorage:pantry-cook-history')
+      return []
+    }
   })
 
   // SCRUM-49: Sync history to localStorage whenever it changes.
@@ -141,6 +180,67 @@ export function RecipeProvider({ children }) {
   useEffect(() => {
     localStorage.setItem('pantry-cook-history', JSON.stringify(historyRecipes))
   }, [historyRecipes])
+
+//   // SCRUM-131: Shopping list state — stores ingredients the user wants to buy.
+//   // Each entry has shape:
+//   //   { id: string, name: string, amount: number, unit: string, checked: boolean }
+//   // Persisted to localStorage so the list survives page refreshes.
+//   // const [shoppingList, setShoppingList] = useState(() => {
+//   //   const saved = localStorage.getItem('pantry-cook-shopping-list')
+//   //   return saved ? JSON.parse(saved) : []
+//   // })
+
+//   // useEffect(() => {
+//   //   localStorage.setItem('pantry-cook-shopping-list', JSON.stringify(shoppingList))
+//   // }, [shoppingList])
+//   // commented out above SCRUM since we're only allowing logged in users to save shoppingLists
+//   useEffect(() => {
+//     if (!isAuthenticated) return;
+//       getShoppingList().then(setShoppingList).catch(console.error)
+//     }, [isAuthenticated])  // eslint-disable-line react-hooks/exhaustive-deps
+
+
+//   useEffect(() => {
+//       if (!isAuthenticated) return;
+//       saveShoppingList(shoppingList).catch(console.error)
+//     }, [shoppingList, isAuthenticated])  // eslint-disable-line react-hooks/exhaustive-deps
+
+//   // SCRUM-131: Add all ingredients from a recipe to the shopping list.
+//   // Merges duplicates: if an ingredient with the same name and unit already
+//   // exists, the amounts are combined. Otherwise a new entry is added.
+//   function addToShoppingList(recipe) {
+//     const newIngredients = recipe.raw?.extendedIngredients || []
+//     if (newIngredients.length === 0) return
+
+//     setShoppingList(prev => mergeIngredients(prev, newIngredients))
+//   }
+
+//   function removeFromShoppingList(itemId) {
+//     setShoppingList(prev => prev.filter(item => item.id !== itemId))
+//   }
+
+//   function toggleShoppingListItem(itemId) {
+//     setShoppingList(prev =>
+//       prev.map(item =>
+//         item.id === itemId ? { ...item, checked: !item.checked } : item
+//       )
+//     )
+//   }
+
+//   function addCustomItem(name) {
+//     const newItem = {
+//         id: Date.now(),
+//         name: name.trim(),
+//         amount: 0,
+//         unit: '',
+//         checked: false,
+//     }
+//     setShoppingList(prev => [...prev, newItem])
+// }
+
+//   function clearShoppingList() {
+//     setShoppingList([])
+//   }
 
   // SCRUM-45: Sorts a list of normalized recipe objects based on the active sortOrder.
   // Called both after a fresh fetch and whenever the user changes the sort dropdown.
@@ -171,6 +271,33 @@ export function RecipeProvider({ children }) {
     setRecipes(prev => sortRecipes(prev, sortOrder))
   }, [sortOrder])
 
+  // SCRUM-160: Filter recipes by cook time based on the active cookTimeFilter.
+  //Called both after a fresh fetch and whenever the user changes the filter dropdown.
+  //  'any'             — no filtering (default)
+  //  'less-than-30'    — only recipes with cook time under 30 minutes
+  //  '30-to-60'       — only recipes with cook time between 30 and 60 minutes
+  //  'more-than-60'   — only recipes with cook time over 60 minutes
+  function filterByCookTime(list, filter){
+    let filtered = [...list]
+    //filter only if 'filter' has a value other than 'any'
+    if(filter === 'less-than-30') {
+      filtered = filtered.filter(recipe => recipe.raw?.readyInMinutes < 30)
+    } else if(filter === '30-to-60') {
+      filtered = filtered.filter(recipe => recipe.raw?.readyInMinutes >= 30 && recipe.raw?.readyInMinutes <= 60)
+    } else if(filter === 'more-than-60') {
+      filtered = filtered.filter(recipe => recipe.raw?.readyInMinutes > 60)
+    }
+
+    return filtered;
+  }
+
+  // SCRUM-160: Re-filter the existing results whenever the user changes cookTimeFilter.
+  // This avoids a full re-fetch — the data is already there, we just apply the filter.
+  useEffect(() => {
+    if (recipesBackup.length === 0) return
+    setRecipes(sortRecipes(filterByCookTime(recipesBackup, cookTimeFilter), sortOrder))
+  }, [cookTimeFilter])
+
   // SCRUM-18: fetchRecipes fires both API calls concurrently via Promise.allSettled().
   // If one API fails, the error flag is set but results from the other still come through.
   // SCRUM-19: results from both APIs are normalized to a common shape and deduplicated by name.
@@ -195,11 +322,19 @@ export function RecipeProvider({ children }) {
       e => !excludedIngredients.includes(e)
     )
 
-    if (sameIngredients && !exclusionRemoved && allRecipes.length > 0) {
+    const intoleranceChanged =
+      intolerances.length !== lastFetchedIntolerances.length ||
+      intolerances.some(i => !lastFetchedIntolerances.includes(i)) ||
+      lastFetchedIntolerances.some(i => !intolerances.includes(i))
+// User Story 24 | SCRUM-153: Change substring matching to exact matching in exclusion filter
+// Current: `i.name.toLowerCase().includes(excl)` — "rice" matches "licorice"
+// Fix: `i.name.toLowerCase() === excl` — "rice" only matches "rice"
+// Check: (better fix?) ^ and exclude (' ' + excl) and (excl + ' ')
+    if (sameIngredients && !exclusionRemoved && !intoleranceChanged && allRecipes.length > 0) {
       const filtered = allRecipes.filter(recipe =>
         !excludedIngredients.some(excl =>
           recipe.raw?.extendedIngredients?.some(i =>
-            i.name.toLowerCase().includes(excl)
+            i.name.toLowerCase() === excl || i.name.toLowerCase().includes(' '+excl) || i.name.toLowerCase().includes(excl+' ')
           )
         )
       )
@@ -214,11 +349,12 @@ export function RecipeProvider({ children }) {
     // results from the other API still come through.
     const API_TIMEOUT = 30000
     const [spoonacularResult] = await Promise.allSettled([
-      withTimeout(fetchSpoonacularRecipes(ingredients, excludedIngredients), API_TIMEOUT),
+      withTimeout(fetchSpoonacularRecipes(ingredients, excludedIngredients, intolerances), API_TIMEOUT),
     ])
 
     if (spoonacularResult.status === 'rejected') {
       setError('Some results may be missing — one or more APIs failed.')
+      logError(spoonacularResult.reason?.message || 'Spoonacular API failed', 'RecipeContext:fetchRecipes')
     }
 
     const spoonacularRecipes = spoonacularResult.status === 'fulfilled' ? spoonacularResult.value : []
@@ -287,6 +423,7 @@ export function RecipeProvider({ children }) {
     setAllRecipes(validated)
     setLastSearchedIngredients(ingredients)
     setLastFetchedExclusions([...excludedIngredients])
+    setLastFetchedIntolerances([...intolerances])
 
     // SCRUM-43 + SCRUM-45: Sort the deduplicated list using the active sortOrder.
     // Default is 'best-match' (matchScore descending). User can change this via the
@@ -312,7 +449,25 @@ export function RecipeProvider({ children }) {
       return [historyEntry, ...fresh].slice(0, 100)
     })
 
+    await setRecipesBackup(validated) // SCRUM-160: Save a backup of the full results list before applying cook time filter
     setLoading(false)
+  }
+
+  // SCRUM-141: Resets all search-related state so the user gets a completely
+  // clean search page. Called by the "New Search" button in Navbar.
+  function resetSearch() {
+    setIngredients([])
+    setExcludedIngredients([])
+    setIntolerances([])
+    setRecipes([])
+    setAllRecipes([])
+    setLastSearchedIngredients([])
+    setLastFetchedExclusions([])
+    setLastFetchedIntolerances([])
+    setError(null)
+    setSortOrder('best-match')
+    setCookTimeFilter('any')
+    setRecipesBackup([])
   }
 
   const value = {
@@ -333,9 +488,22 @@ export function RecipeProvider({ children }) {
     isRecipeSaved,
     sortOrder,
     setSortOrder,
+    cookTimeFilter,
+    setCookTimeFilter,
+    recipesBackup,
     excludedIngredients,
     addExclusion,
     removeExclusion,
+    intolerances,
+    addIntolerance,
+    removeIntolerance,
+    resetSearch,
+    // shoppingList,
+    // addToShoppingList,
+    // removeFromShoppingList,
+    // toggleShoppingListItem,
+    // clearShoppingList,
+    // addCustomItem,
   }
 
   return (

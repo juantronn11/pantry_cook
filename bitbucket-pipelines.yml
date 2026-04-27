@@ -1,0 +1,15 @@
+image: node:18
+
+pipelines:
+  branches:
+    main:
+      - step:
+          name: Mirror to GitHub
+          script:
+            - git remote add github https://$GITHUB_TOKEN@github.com/juantronn11/pantry_cook.git
+            - git push github HEAD:dev3
+      - step:
+          name: Deploy to Railway
+          script:
+            - npm i -g @railway/cli
+            - railway up --service=$RAILWAY_SERVICE

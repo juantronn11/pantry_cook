@@ -18,10 +18,10 @@ function RecipeGrid({ recipes: recipesProp }) {
   const gridRef = useRef(null);
 
   useEffect(() => {
-    if (!loading && gridRef.current) {
+    if (!loading && gridRef.current && !recipesProp) {
       gridRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [loading]);
+  }, [loading, recipesProp]);
 
   if (recipes.length === 0 && !loading && ingredients.length > 0) {
     const message = excludedIngredients.length > 0

@@ -10,9 +10,21 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { RecipeProvider } from '../context/RecipeContext.jsx'
+import { ThemeProvider } from '../context/ThemeContext.jsx'
 import App from '../app/App.jsx'
 import './index.css'
 import { Auth0Provider } from "@auth0/auth0-react";
+import { ShoppingListProvider } from '../context/ShoppingListContext.jsx'
+import { logError } from '../helperFunctions/logError.js'
+import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary.jsx'
+
+window.onerror = (_message, _source, _lineno, _colno, error) => {
+  logError(error?.message || String(_message), 'window.onerror')
+}
+
+window.onunhandledrejection = (event) => {
+  logError(event.reason?.message || String(event.reason), 'window.onunhandledrejection')
+}
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -22,11 +34,20 @@ createRoot(document.getElementById('root')).render(
             clientId={import.meta.env.VITE_CLIENT_ID}
             authorizationParams={{ redirect_uri: window.location.origin }}
             >
-                <RecipeProvider>
+              <ErrorBoundary>
+                <ThemeProvider>
+                  <RecipeProvider>
+                    <ShoppingListProvider>
+                    <ErrorBoundary>
 
-                <App />
 
-            </RecipeProvider>
+                      <App />
+
+                    </ErrorBoundary>
+                    </ShoppingListProvider>
+                  </RecipeProvider>
+                </ThemeProvider>
+                    </ErrorBoundary>
           </Auth0Provider>
       </BrowserRouter>
 

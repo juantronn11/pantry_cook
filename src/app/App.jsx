@@ -13,6 +13,7 @@ import Navbar from '../components/Navbar/Navbar'
 import SearchPage from '../pages/SearchPage'
 import HistoryPage from '../pages/HistoryPage'
 import SavedPage from '../pages/SavedPage'
+import ShoppingListPage from '../pages/ShoppingListPage'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/" element={<SearchPage/>} />
         <Route path="/history" element={<HistoryPage/>} />
         <Route path="/saved" element={<SavedPage/>} />
+        <Route path="/shopping-list" element={<ShoppingListPage/>} />
       </Routes>
     </>
   )

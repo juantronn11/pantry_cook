@@ -131,6 +131,22 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 * Search history of the last 30 days (ELEPHANT) or 100 searches (ELEPHANT) displays in history tab. It is locally saved for non-logged in users, and associated with specific login when the user is logged in (is this true ELEPHANT).
 * API calling was minimized by implementing local cache of recipes that have been recently search. (ELEPHANT)
 
+**Specific features for Deployment 3:**
+* Shopping List page: a dedicated Shopping List page accessible from the navbar. Users can add a recipe's ingredients to the list from the recipe tile, manually add custom items (e.g. "paper towels"), check items off, remove individual items, or clear the whole list. Duplicate ingredients across recipes are merged with combined amounts. Persisted to MongoDB for logged-in users so the list survives across sessions and devices.
+* Dark mode toggle: a theme toggle in the navbar switches the entire app between light and dark color schemes. Implemented with CSS custom properties so all pages and components stay consistent. The user's selection persists across page refreshes.
+* Recipe servings scaler: the recipe modal now has +/- buttons to adjust serving size, and all ingredient amounts scale proportionally. A Reset button restores the original servings. Scaled amounts carry through when the recipe is added to the Shopping List.
+* Cook-time filter: a dropdown on the results page filters recipes by cook time (<30 min, 30–60 min, >60 min, or any). Filtering runs client-side against a backup of the full results so changing the filter doesn't trigger a new API call.
+* Category-based ingredient exclusion: typing a category like "dairy" or "gluten" into the Exclude Ingredients box now routes to Spoonacular's intolerances API, excluding all matching ingredients in one go instead of requiring the user to type each one.
+* Arrow-key autocomplete navigation: both the ingredient input and the exclude-ingredient input support Up/Down arrow keys to walk through autocomplete suggestions, Enter to select, with the active suggestion auto-scrolling to stay visible. Mouse clicking still works, and arrow key and mouse navigation are integrated (i.e. hover with mouse + arrow down -> 'hover' over the ingredient below where mouse hover and Enter while hovering with mouse selects).
+* Exact-match exclusion: ingredient exclusions now match exact names instead of substrings — excluding "rice" no longer also excludes recipes containing "licorice". Exact matching expands to include all strings containing the exact string pre- or post-ceded by a space, to ensure different types of the same ingredient are group excluded (i.e. "rice" excludes "jasmine rice").
+* History management: the History page now has a Clear All History button (with a confirmation prompt) and a per-entry remove button so users can delete individual searches without wiping everything.
+* API result caching with TTL: search results are cached locally so adding/removing exclusions on the same ingredient set doesn't trigger another API call. A time-to-live invalidates stale results.
+* "New Search" reset: the New Search button in the navbar now fully clears ingredients, exclusions, intolerances, search results, sort order, and cook-time filter, returning the user to a clean search page.
+* Logged-in user display: when a user is logged in, their email is shown in the navbar next to the logout button. Hidden cleanly when logged out.
+* History page scroll fix: the History page now loads at the top showing the most recent search instead of auto-scrolling to the bottom.
+* User-facing error handling: save failures and other recoverable errors now surface a user-readable message with actionable suggestions, instead of failing silently.
+* Public hosting: the app is deployed to a publicly accessible URL with automatic redeploys when the base code changes, so users no longer need to run it locally.
+
 **Potential future features/improvements:**
 - Operation Make it Better: 
     `Implemented in Dep2` text entry of ingredients; recepies are returned based on compliance with 'only use ingredients listed by user'
@@ -505,22 +521,36 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 #### <span style="font-size: 20px;">Patrick Rucker:</span>
 ## <span style="font-size: 18px;">User Story 17: Shopping List Generator</span>
 ### Tasks: 
-- [ ] Create a ShoppingList component that displays ingredients needed for a selected recipe
-- [ ] Allow users to check off ingredients they already have, removing them from the list
-- [ ] Support combining ingredients from multiple saved recipes into one consolidated shopping list (e.g., two recipes both need "flour" → show "flour" once with combined amounts)
+- [ ] user story 17 - Create a ShoppingList component that displays ingredients needed for a selected recipe
+- [ ] user story 17 - Allow users to check off ingredients they already have, removing them from the list
+- [ ] user story 17 - Support combining ingredients from multiple saved recipes into one consolidated shopping list (e.g., two recipes both need "flour" → show "flour" once with combined amounts)
 ### Acceptance Critera:
 1. User can click "Add to Shopping List" on any recipe and its ingredients appear on the Shopping List page
 2. Duplicate ingredients from multiple recipes are merged with combined quantities (e.g., 1 cup flour + 2 cups flour = 3 cups flour)
 3. User can check off items they already have, and checked items are visually distinguished (strikethrough or dimmed)
 ## <span style="font-size: 18px;">User Story 20: Page Bug Fixes</span>
 ### Tasks:
-- [ ] Fix "New Search" button so it actually clears the user's search (ingredients, results, and exclusions)
-- [ ] Fix History page so it no longer auto-scrolls to the bottom on load
-- [ ] When logged in, display "Logged in as [email/username]" in the navbar next to the logout button
+- [ ] user story 20 - Fix "New Search" button so it actually clears the user's search (ingredients, results, and exclusions)
+- [ ] user story 20 - Fix History page so it no longer auto-scrolls to the bottom on load
+- [ ] user story 20 - When logged in, display "Logged in as [email/username]" in the navbar next to the logout button
 ### Acceptance Criteria:
 1. Pressing the 'New Search' button returns user to search page with all fields cleared.
 2. Hsitory page automatically loads to display most recent search. All old searches must be scrolled down to (page down).
 3. When logged in, user information is displayed in navbar. No empty fields or placeholder display when user is not logged in. Information persists reguardless of what page the user is on.
+## <span style="font-size: 18px;">User Story 27: Dark Mode</span>
+### Tasks:
+- [ ] SCRUM-162 - Dark Mode Toggle
+- [ ] SCRUM-163 - Dark Mode CSS
+### Acceptance Criteria:
+1. A toggle is available in the navbar (or similar accessible location) to switch between light and dark modes.
+2. Dark mode applies a consistent color scheme across all pages and components.
+3. User's selected mode persists across page refreshes.
+## <span style="font-size: 18px;">User Story 28: Scale Recipes</span>
+### Tasks:
+- [ ] SCRUM-164 - Scale Recipe Servings and Adjust Ingredient Amounts
+### Acceptance Criteria:
+1. User can adjust the serving size of a recipe and see ingredient amounts scale proportionally.
+2. Scaled amounts carry through to the shopping list when added.
 
 #### <span style="font-size: 20px;">Group:</span>
 ## <span style="font-size: 18px;">User Story 18: SOLID Principles Refactor</span>

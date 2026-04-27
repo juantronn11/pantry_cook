@@ -2,12 +2,14 @@ import { useAuth0 } from "@auth0/auth0-react";
 import styles from './AccessButton.module.css';
 import { useApi } from "../../helperFunctions/helper";
 import { useEffect } from "react";
+import { logError } from "../../helperFunctions/logError";
 
 function AccessButton({ variant = 'navbar' }) {
   const {
     isLoading,
     isAuthenticated,
     error,
+    user,
     loginWithRedirect: login,
     logout: auth0Logout,
   } = useAuth0();
@@ -16,7 +18,7 @@ function AccessButton({ variant = 'navbar' }) {
 
   useEffect(() => {
     if (isAuthenticated) {
-      createUser().catch(console.error);
+      createUser().catch(e => logError(e.message, 'AccessButton:createUser'));
     }
   }, [isAuthenticated]);
 
@@ -30,6 +32,7 @@ function AccessButton({ variant = 'navbar' }) {
 
   return isAuthenticated ? (
     <div className={`${styles.btnGroup} ${variant === 'page' ? styles.btnGroupPage : ''}`}>
+      <span className={styles.userLabel}>Logged in as {user?.email || user?.name}</span>
       <button onClick={logout} className={styles.btn}>Logout</button>
     </div>
   ) : (

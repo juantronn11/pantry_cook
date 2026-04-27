@@ -14,8 +14,12 @@ import express from 'express'
 import { MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
 import { auth } from 'express-oauth2-jwt-bearer';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 dotenv.config({ path: './.env' });
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 
@@ -25,6 +29,7 @@ if (!cs) throw new Error("MONGODB_URL is not defined");
 const client = new MongoClient(cs);
 const database = client.db('pantrycook');
 const collections = database.collection("users");
+const errorLogs = database.collection("errorLogs");
 
 const checkJwt = auth({
     audience: process.env.AUTH0_AUDIENCE,
@@ -46,7 +51,7 @@ app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 
-app.post('/user', checkJwt, async (req, res) => { //add user to db
+app.post('/api/user', checkJwt, async (req, res) => { //add user to db
 
     try {
         const email = req.auth.payload.email;
@@ -63,12 +68,12 @@ app.post('/user', checkJwt, async (req, res) => { //add user to db
         const result = await collections.insertOne(newUser);
         res.status(201).send({ _id: result.insertedId, ...newUser });
     } catch (e) {
-        console.error(e);
+        await errorLogs.insertOne({ timestamp: new Date(), message: e.message, component: 'POST /user' });
         res.status(500).send({ error: 'Internal server error' });
     }
 });
 
-app.get('/user', checkJwt, async (req, res) => { //returns all user information including saved recipes
+app.get('/api/user', checkJwt, async (req, res) => { //returns all user information including saved recipes
 
     try {
         const email = req.auth.payload.email;
@@ -76,12 +81,12 @@ app.get('/user', checkJwt, async (req, res) => { //returns all user information 
         if (!result) return res.sendStatus(404);
         res.status(200).send(result);
     } catch (e) {
-        console.error(e);
+        await errorLogs.insertOne({ timestamp: new Date(), message: e.message, component: 'GET /user' });
         res.status(500).send({ error: 'Internal server error' });
     }
 });
 
-app.put('/recipe', checkJwt, async (req, res) => { //add new recipe to saved recipes
+app.put('/api/recipe', checkJwt, async (req, res) => { //add new recipe to saved recipes
     try {
     const email = req.auth.payload.email;
     if (!req.body.recipe) return res.status(400).send({ error: 'Recipe is required' });
@@ -93,12 +98,12 @@ app.put('/recipe', checkJwt, async (req, res) => { //add new recipe to saved rec
     if (result.modifiedCount === 0) return res.sendStatus(404);
     res.status(200).send(result);
   } catch (e) {
-    console.error(e);
+    await errorLogs.insertOne({ timestamp: new Date(), message: e.message, component: 'PUT /recipe' });
     res.status(500).send({ error: 'Internal server error' });
   }
 });
 
-app.delete('/recipe', checkJwt, async (req, res) => {
+app.delete('/api/recipe', checkJwt, async (req, res) => {
     try {
         const email = req.auth.payload.email;
         if (!req.body.recipeId) return res.status(400).send({ error: 'recipeId is required' });
@@ -110,17 +115,82 @@ app.delete('/recipe', checkJwt, async (req, res) => {
         if (result.modifiedCount === 0) return res.sendStatus(404);
         res.status(200).send({ message: 'Recipe deleted successfully' });
     } catch (e) {
+        await errorLogs.insertOne({ timestamp: new Date(), message: e.message, component: 'DELETE /recipe' });
+        res.status(500).send({ error: 'Internal server error' });
+    }
+});
+
+app.put('/api/shopping-list', checkJwt, async (req, res) => {
+    try {
+        const email = req.auth.payload.email;
+        if (!req.body.shoppingList) return res.status(400).send({ error: 'shoppingList is required' });
+
+        const result = await collections.updateOne(
+            { email },
+            { $set: { shoppingList: req.body.shoppingList } }
+        );
+        if (result.matchedCount === 0) return res.sendStatus(404);
+        res.status(200).send(result);
+    } catch (e) {
+        console.error(e);
+        res.status(500).send({ error: 'Internal server error' });
+    }
+});
+
+app.get('/api/shopping-list', checkJwt, async (req, res) => {
+    try {
+        const email = req.auth.payload.email;
+        const result = await collections.findOne({ email });
+        if (!result) return res.sendStatus(404);
+        res.status(200).send(result.shoppingList ?? []);
+    } catch (e) {
         console.error(e);
         res.status(500).send({ error: 'Internal server error' });
     }
 });
 
 
+app.post('/errors', async (req, res) => {
+    try {
+        const { message, component, userId } = req.body;
+        if (!message) return res.status(400).send({ error: 'message is required' });
+
+        await errorLogs.insertOne({
+            timestamp: new Date(),
+            message,
+            component: component || 'unknown',
+            userId: userId || null,
+        });
+
+        res.status(201).send({ logged: true });
+    } catch (e) {
+        console.error('Failed to log error to MongoDB:', e);
+        res.status(500).send({ error: 'Internal server error' });
+    }
+});
+
+// Serve the built Vite frontend as static files
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Catch-all for React Router — must be last so /history, /saved, etc. work
+app.get('/{*splat}', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
+app.use((err, req, res, next) => {
+    if (err.status === 401 || err.statusCode === 401) {
+        return res.status(200).send([]);
+    }
+    console.error(err);
+    res.status(500).send({ error: 'Internal server error' });
+});
+
 async function startServer() {
     await client.connect();
     console.log('Connected to MongoDB');
-    app.listen(3000, () => {
-        console.log(`Server running on port ${3000}`);
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
     });
 }
 
