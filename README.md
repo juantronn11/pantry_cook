@@ -55,25 +55,24 @@ This exposes a **Network URL** (e.g. `http://192.168.x.x:5173/`) that you can op
 Stop the server with `Ctrl + C`.
 
 ### Running Unit Tests
+#### Prerequisites
+- Vitetest (npm install -D vitest)
+
 Run the full test suite:
 ```bash
 npm test
 ```
-This runs all 38 unit tests using [Vitest](https://vitest.dev/). Tests cover the API services, RecipeContext, and all React components. All fetch calls are mocked — no API keys or internet connection needed.
-
-Tests are not avaiable on the main branch. To access tests, see dev or dev2, or any further out development, feature, or bug fix branch.
-
-To run tests for a specific file or folder:
-```bash
-npx vitest run src/api/__tests__/         # API service tests only
-npx vitest run src/context/__tests__/     # RecipeContext tests only
-npx vitest run src/components/            # All component tests
-```
+This runs all unit tests using [Vitest](https://vitest.dev/). Tests cover the API services, RecipeContext, and all React components. All fetch calls are mocked — no API keys or internet connection needed.
 
 To run tests in watch mode (re-runs on file changes):
 ```bash
 npm test -- --watch
 ```
+To run specific tests: 'patrick' can be replaced with 'miguel', 'tina', 'juan', or 'christian'
+```bash
+npm test:patrick
+```
+Specific details of what each person's tests run, see documentation/tests/&#60;any folder> and read the file with name in the form: "Name_Assignment-14-test-plan.md"
 
 ### Building for Production
 To deploy or present the app, run:
@@ -90,8 +89,20 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 ## Contribution guidelines
 
 * Writing tests
+    - Tests are written using vitest formatting
+    - ELEPHANT details?
 * Code review
-* Other guidelines
+    - All PRs must be approved by two team members before it can be merged (with the logic that the requester and two other group members means '3 aprovals' which is more than half of the group (5 people))
+* Development
+    - All development is to be done off (and back into) a development branch (name guide 'dev#') off of main. All development features should be completed before dev-branch is comitted to main-branch.
+    - Commits to a branch ('mergeing') should be done by:
+    1. `Rebasing` feature/bugfix branch onto development
+    2. `Testing` new version of feature/bugfix branch
+    3. `Rebasing` development branch onto feature/bugfix branch
+    4. `Testing` new version of devlopment branch
+    5. `Squashing` all commits on **devlopment** from the feature/bugfix branch and `Labeling` that squash commit in the format: _SQUASH-&#60;number of commits squashed>-SCRUM-&#60;number>-descriptive-title-of-scrum_
+    - Commits from development-branch to main should be done in the same manner, only _after_ all features and bugfixes for a specific development period have been completed and committed to the development branch
+
 
 ## Technologies Used
 - **Vite** — Build tool and development server
@@ -128,8 +139,8 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 * Search function/recipes in tile grid displays only after 'search' button is clicked. IE not every time a key in pressed or ingredient is selected.
 * Log in feature has been added.
 * Recipes can be saved in association with specific user login. Save button does not dispay if user is not logged in.
-* Search history of the last 30 days (ELEPHANT) or 100 searches (ELEPHANT) displays in history tab. It is locally saved for non-logged in users, and associated with specific login when the user is logged in (is this true ELEPHANT).
-* API calling was minimized by implementing local cache of recipes that have been recently search. (ELEPHANT)
+* Search history of the last 30 days or 100 searches displays in history tab. It is locally saved for both logged in and non-logged in users.
+* API calling minimized by implementing local cache of recipes that have been recently search.
 
 **Specific features for Deployment 3:**
 * Shopping List page: a dedicated Shopping List page accessible from the navbar. Users can add a recipe's ingredients to the list from the recipe tile, manually add custom items (e.g. "paper towels"), check items off, remove individual items, or clear the whole list. Duplicate ingredients across recipes are merged with combined amounts. Persisted to MongoDB for logged-in users so the list survives across sessions and devices.
@@ -149,19 +160,19 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 
 **Potential future features/improvements:**
 - Operation Make it Better: 
-    `Implemented in Dep2` text entry of ingredients; recepies are returned based on compliance with 'only use ingredients listed by user'
+    `Implemented in Dev2` text entry of ingredients; recepies are returned based on compliance with 'only use ingredients listed by user'
 - Operation Make it Better-er:
-    search for recepies based on compliance with 'ingredients not listed by user are...' CHEAP to find, EASY to find, etc
+    `Not Implemented` search for recepies based on compliance with 'ingredients not listed by user are...' CHEAP to find, EASY to find, etc
 - Dificult Side Quest:
-    user input images of ingredients, rather than text entry of ingredients. Ingredients are accurately catagorized in such a way that MVP (and potential future) search functions work as normal with image ingredient entry.
+    `Not Implemented` user input images of ingredients, rather than text entry of ingredients. Ingredients are accurately catagorized in such a way that MVP (and potential future) search functions work as normal with image ingredient entry.
 - (Hopefully) Easy Side Quest:
-    filter recepies by TYPE of food (i.e. cusine)
+    `Not Implemented` filter recepies by TYPE of food (i.e. cusine)
 - Operation Independance Day:
-     host our own database, so as API is used to query recepies, database is built, so in future API becomes less relevant for accessing recipes from existing database of recipies
+     `Implemented in Dev3` host our own database, so as API is used to query recepies, database is built, so in future API becomes less relevant for accessing recipes from existing database of recipies
 - Side Quest Search and Destroy:
-    `Implemented in Dep2` searching can be modified to exclude specific ingredients using the text entry format that included ingredients use, in a different text field
+    `Implemented in Dev2` searching can be modified to exclude specific ingredients using the text entry format that included ingredients use, in a different text field
 - Side Quest Save Me: 
-    `Impelemented in Dep2` recipes can be saved on the webapp in association with a specific user
+    `Impelemented in Dev2` recipes can be saved on the webapp in association with a specific user
 
 **User Stories for Features**
 - Details for each user story and acceptance criteria can be found in Jira.
@@ -226,44 +237,44 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 >
 >   As a user, I would like recipe images to load correctly and display a fallback when they don't so that the app looks polished and I'm never shown broken images. 
 
-> `SPRINT 3` User Story 16: Hosted Web Application
+> `COMPLETE` User Story 16: Hosted Web Application
 >
 >   As a user, I would like to access the app from a public URL rather than running it locally so that I can use it from any device without needing to set up the project myself. 
 ><br/>   As a developer, I want the webapp and server to be globally accessible, so that users can access the app from any device without running it locally.
 
-> `SPRINT 3` User Story 17: Shopping List Generator
+> `COMPLETE` User Story 17: Shopping List Generator
 >
 > As a user, I want to generate a shopping list from a recipe, so that I know exactly what ingredients I need to buy without manually writing them down.
 
-> `SPRINT 3` User Story 18: SOLID Principles Refactor
+> `FUTURE` User Story 18: SOLID Principles Refactor
 >
 > As a team manager, I want my team's code to follow SOLID principles, so that the codebase is maintainable, testable, and extensible for future sprints.
 
-> `SPRINT 3` User Story 19: API Caching Optimization
+> `COMPLETE` User Story 19: API Caching Optimization
 >
 > As a user, I want my search results to be cached, so that adding or removing ingredient exclusions doesn't waste API calls or slow down my experience.
 
 
-> `SPRINT 3` User Story 20: Page Bug Fixes
+> `COMPLETE` User Story 20: Page Bug Fixes
 >
 > As a user, I want the app pages to work correctly, so that I can navigate and use the app without unexpected behavior.
 
-> `SPRINT 3` User Story 21: History Management
+> `COMPLETE` User Story 21: History Management
 >
 > As a user, I want to be able to edit and clear my search history, so that I can remove old or unwanted searches and keep my history clean.
 
-> `SPRINT 3` User Story 22: Improved Search & Error Handling
+> `COMPLETE` User Story 22: Improved Search & Error Handling
 >
 > As a user, I want better error messages, smarter exclusions, and keyboard-friendly autocomplete, so that I can troubleshoot issues, exclude ingredient categories easily, and navigate the app efficiently.
 
 
-> `SPRINT 3` User Story 23: Recipe Tile Verification
+> `COMPLETE` User Story 23: Recipe Tile Verification
 >
 > As a user, I want recipe tiles to only display working links and verified content, so that I don't encounter broken links or invalid recipe data.
 
 
-> `SPRINT 3` User Story 24: Exclusion Filter Bug Fix
-> > **Note:** This belongs under **USER STORY 19 (API Caching)** or **USER STORY 20 (Bug Fixes)** — it's a bug in the exclusion filtering logic, not a standalone story.
+> `COMPLETE` User Story 24: Exclusion Filter Bug Fix
+> > **Note:** This is associated with **USER STORY 19 (API Caching)** and/or **USER STORY 20 (Bug Fixes)** — it's a bug in the exclusion filtering logic, not a standalone story.
 >
 > As a user, I want ingredient exclusion to match exact ingredient names, so that excluding "rice" doesn't also remove recipes containing "licorice."
 
@@ -271,7 +282,7 @@ This compiles and bundles all the project files (JSX, CSS Modules, etc.) into a 
 ## Images
   #### Example Query: ####
 Find recipe with: ☑ chicken | ☑ parmesan | ☑ cream
-![Example query](./media/chicken_alfredo.jpg)
+![Example query](./media/chicken_alfredo.jpg) <br/> &nbsp;&nbsp;&nbsp;&nbsp; _**Chicken Alfredo**_
 
 
 ## Usage
@@ -286,6 +297,7 @@ Find recipe with: ☑ chicken | ☑ parmesan | ☑ cream
 ## Project Status
 MVP deployed: _functional_ on 02/27/2026 (Feb.)
 <br/>Dep2 deployed: _functional_ on 03/30/2026 (Mar.)
+<br/>Dev3 deployed: _functional_ on 04/24/2026 (Apr.)
 
 Project is: _in progress_ as of 03/31/2026 (Mar.)
 
@@ -440,122 +452,104 @@ SCRUM Sprint 2 consisted of 43 work items totaling ~79.5 story points. By sprint
 **Note:** SCRUM-96 (load webpage on global server/url) remained In Progress at sprint end (1.5 story points). This task required substantial server research and setup; the research phase (SCRUM-117) was completed and merged. The actual hosting deployment will be completed in Sprint 3.
 
 
-### Next Steps (Sprint 3)
+### Sprint 3 Contributions
 
-#### <span style="font-size: 20px;">Miguel Alvarez:</span>
-## <span style="font-size: 18px;">User Story 17: Shopping List Generator</span>
-### Tasks: 
-- [ ] Persist the shopping list to MongoDB so it survives across sessions (new endpoint or extend user document)
-- [ ] Add a dedicated Shopping List page accessible from the navbar
-- [ ] Allow users to manually add custom items to the list (e.g., "paper towels")
-- [ ] Add a "Clear List" button to reset the shopping list
-### Acceptance Critera:
-4. Shopping list persists across sessions — refreshing the browser or logging in from another device shows the same list
-5. User can clear the entire list or remove individual items
-## <span style="font-size: 18px;">User Story 19: API Caching Optimization</span>
-### Tasks:
-- [ ] Cache unfiltered results to avoid re-fetches on exclusion removal (TTL to be determined)
-- [ ] Implement time-to-live (TTL) for cache invalidation so stale results don't persist indefinitely
-### Acceptance Criteria:
-1. API calls are minimized.... idk ELEPHANT
+**Sprint Duration:** April 6, 2026 – April 24, 2026
 
-#### <span style="font-size: 20px;">Tina Carter:</span>
-## <span style="font-size: 18px;">User Story 22: Improved Search & Error Handling</span>
-### Tasks:
-- [ ] Implement arrow key navigation for autocomplete suggestions in both the ingredient input and exclusion input (instead of requiring mouse click)
-### Acceptance Criteria: 
-4. Autocomplete suggestions for ingredients (include and exclude) can be toggled through with arrow keys and selected with 'enter' as well as keeping mouse clickability functionality.
-## <span style="font-size: 18px;">User Story 17: Shopping List Generator</span>
-### Tasks: 
-- [ ] Add a "Generate Shopping List" button to the recipe modal (next to Save/Download)
-### Acceptance Critera:
-1. User can click "Add to Shopping List" on any recipe and its ingredients appear on the Shopping List page
-## <span style="font-size: 18px;">User Story 23: Recipe Tile Verification</span>
-### Tasks:
-- [ ] Remove or flag broken links in recipe tiles (reference: [linkcheckermd](https://github.com/Microsoft/linkcheckermd), [linkcheckerhtml](https://github.com/BillDietrich/linkcheckerhtml) — note: React libraries for this typically only handle embedded links like images)
-- [ ] Review and address any remaining recipe verification issues (team to discuss)
-### Acceptance Criteria:
-1. No recipe tile displays any broken link (whether it is a rotten or incorrect link) to user.
-2. All links that do dispay in recipe tiles lead to valid web pages.
-3. ELEPHANT ??? Incorrect links (i.e. missing 'http://' or other link-markers) are considered broken links.
-## <span style="font-size: 18px;">User Story 24: Exclusion Filter Bug Fix</span>
-> **Note:** This belongs under **USER STORY 18 (API Caching)** or **USER STORY 19 (Bug Fixes)** — it's a bug in the exclusion filtering logic, not a standalone story.
-### Tasks:
-- [ ] Change substring matching to exact matching in exclusion filter (see: RecipeContext.jsx lines 200-202)
-  - Current: `i.name.toLowerCase().includes(excl)` — "rice" matches "licorice"
-  - Fix: `i.name.toLowerCase() === excl` — "rice" only matches "rice"
-### Acceptance Criteria:
-1. No unrelated ingredients are filtered out for any valid input to exclude ingredient function (i.e. "rice" will not exclude "licourice").
-2. All forms of valid ingredient entries to exclude are excluded (i.e. "rice" will excluder "jasmine rice").
+**Sprint Goal:** Production deployment of the WebApp (global hosting + CI/CD), Operation Shopping List, dark mode, recipe scaling/filtering, autocomplete polish, persistent error handling, and team-wide unit testing.
 
+**Sprint Summary:**
+SCRUM Sprint 3 consisted of ~46 work items totaling ~162 story points. By sprint end, ~159 story points were completed with one task (SCRUM-172 — Tina's unit test creation) remaining In Progress. The sprint focused on six major feature areas:
+- **User Story 17/18:** Global Hosting & Continuous Deployment (SCRUM-96, 98, 100, 105)
+- **User Story 19:** Shopping List (SCRUM-131, 132, 134, 135, 136, 137, 138, 166)
+- **User Story 20:** History Management Improvements (SCRUM-142, 143, 144, 145, 154)
+- **User Story 21:** Caching & Performance (SCRUM-139, 140)
+- **User Story 22:** UI/UX Polish — Dark Mode, Autocomplete, Recipe Scaling, Cook Time, Filters (SCRUM-150, 153, 159, 160, 162, 164, 165, 167, 178, 179)
+- **User Story 23:** Persistent Error Handling, Generalized Exclusions, and Team Unit Testing (SCRUM-146, 147, 148, 149, 168–177, 180)
 
-#### <span style="font-size: 20px;">Juan Estrada</span>
-## <span style="font-size: 18px;">User Story 16: Global Access Setup (Continued)</span>
-### Tasks:
-- [ ] Finish implementing global access of webapp/server creation
-### Acceptance Critera:
-1. Webapp functionality is the same when accessed through localhost or internet-accessable URL
-2. Webapp does not face loading issues when accessed from a network other than server's network
+#### Patrick Rucker
 
-## <span style="font-size: 18px;">User Story 22: Improved Search & Error Handling</span>
-### Tasks:
-- [ ] Add user-facing error handler when a recipe fails to save, with actionable suggestions (e.g., "Clear your cookies" or "Check your network connection")
-- [ ] Improve error handling to include persistent error logging (see: try/catch in RecipeTile.jsx lines 63-67 — may exist in other locations as well)
-  - [ ] Create a database/collection to store logged errors rather than relying on console.log
-- [ ] Allow generalized ingredient exclusion by category (e.g., type "dairy" to exclude all dairy products instead of individually typing "milk", "cream", "heavy cream", etc.)
-### Acceptance Criteria: 
-1. All errors that occur are uniquely logged in error loggin databse.
-2. Error are either hiden from the user (i.e. hide broken images and links) or create alert() with relevant (to the user) error information.
-3. Exlude ingredients can pass 'categories' of ingredients and either appropriately filter out that categoy (i.e. dairy, gluten, meat, other common dietary restrictions) or informs user that that is an invalid search-exclusion term.
+| Jira Task | Title | Bitbucket PR |
+|-----------|-------|--------------|
+| [SCRUM-131](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-131) | Create a ShoppingList component that displays ingredients needed for a selected recipe | [PR #85](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/85) — Commits: [ecce8ae](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/ecce8ae), [12e1b8a](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/12e1b8a), [9b380d1](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/9b380d1), [d09bd93](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/d09bd93), [4ec1e23](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/4ec1e23), [3e57f75](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/3e57f75), [3ddac1d](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/3ddac1d), [c64e726](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c64e726), [bffb6b3](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/bffb6b3), [db10d79](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/db10d79), [2830e64](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/2830e64) |
+| [SCRUM-134](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-134) | Support combining ingredients from multiple saved recipes into one consolidated shopping list | Bundled in [PR #85](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/85) (SCRUM-131 ShoppingList component) — exception per assignment rules |
+| [SCRUM-141](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-141) | Fix "New Search" button so it actually clears the user's search (ingredients, results, and exclusions) | [PR #79](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/79) — Commits: [587d5d2](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/587d5d2), [bcc3ca9](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/bcc3ca9) |
+| [SCRUM-142](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-142) | Fix History page so it no longer auto-scrolls to the bottom on load | [PR #82](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/82) — Commits: [9003f5a](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/9003f5a) |
+| [SCRUM-143](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-143) | When logged in, display "Logged in as [email/username]" in the navbar next to the logout button | [PR #83](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/83) — Commits: [f48d59e](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/f48d59e) |
+| [SCRUM-162](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-162) | Dark Mode Toggle with CSS | [PR #95](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/95) — Commits: [608029e](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/608029e), [1bde8f8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/1bde8f8), [5195aa5](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/5195aa5), [5ae5010](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/5ae5010), [a2034f3](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/a2034f3), [e3fcceb](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/e3fcceb), [7b747d2](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/7b747d2), [6fb59e5](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/6fb59e5), [6f20aab](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/6f20aab), [96bbc63](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/96bbc63), [8bd8e1b](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/8bd8e1b), [3f77b4b](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/3f77b4b) |
+| [SCRUM-164](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-164) | Scale Recipe Servings and Adjust Ingredient Amounts | [PR #97](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/97) — Commits: [f919714](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/f919714), [2437d1f](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/2437d1f), [912bd5c](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/912bd5c), [18c23d9](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/18c23d9), [4b36fd1](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/4b36fd1), [d8a32d9](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/d8a32d9), [c18357e](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c18357e) |
+| [SCRUM-167](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-167) | Fix darkmode for input box and autocomplete highlight (currently not adjusting to darkmode/light mode correctly) | [PR #98](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/98) — Commits: [f51d9d9](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/f51d9d9), [2c312ed](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/2c312ed), [0c11ff4](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/0c11ff4) |
+| [SCRUM-168](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-168) | Unit Testing Planning | [PR #103](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/103) — Commits: [db0eedd](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/db0eedd) |
+| [SCRUM-170](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-170) | Create unit tests; generate results document — added 22 unit tests for ThemeContext, spoonacular, withTimeout | [PR #105](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/105) — Commits: [bc881a1](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/bc881a1) |
+| [SCRUM-178](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-178) | Fix bug with user input text box not matching the exclude ingredients text box | [PR #116](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/116) — Commits: [edb8895](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/edb8895) |
+| [SCRUM-179](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-179) | Fix new search button functionality (restore missing lastFetchedIntolerances state in RecipeContext) | [PR #117](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/117) — Commits: [255c32a](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/255c32a) |
+| [SCRUM-180](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-180) | Update README with newly implemented features | [PR #118](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/118) — Commits: [c1c5fbb](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c1c5fbb) |
 
-#### <span style="font-size: 20px;">Christian Johnson:</span>
-## <span style="font-size: 18px;">User Story 21: History Management</span>
-### Tasks:
-- [ ] Implement a "Clear All History" button on the History page
-- [ ] Allow removal of individual search entries from history (per-entry delete button)
-### Acceptance Criteria:
-1. History page displays 'Clear All History' (or similar button)
-2. Upon user pressing button, all history is removed from user view and local webpage history. (Maybe include 'are you sure' confirmation?)
-3. Individual Searchs can be removed from history without breaking history page formatting through use of a clear to understand 'remove' or simmilar button.
+---
 
-#### <span style="font-size: 20px;">Patrick Rucker:</span>
-## <span style="font-size: 18px;">User Story 17: Shopping List Generator</span>
-### Tasks: 
-- [ ] user story 17 - Create a ShoppingList component that displays ingredients needed for a selected recipe
-- [ ] user story 17 - Allow users to check off ingredients they already have, removing them from the list
-- [ ] user story 17 - Support combining ingredients from multiple saved recipes into one consolidated shopping list (e.g., two recipes both need "flour" → show "flour" once with combined amounts)
-### Acceptance Critera:
-1. User can click "Add to Shopping List" on any recipe and its ingredients appear on the Shopping List page
-2. Duplicate ingredients from multiple recipes are merged with combined quantities (e.g., 1 cup flour + 2 cups flour = 3 cups flour)
-3. User can check off items they already have, and checked items are visually distinguished (strikethrough or dimmed)
-## <span style="font-size: 18px;">User Story 20: Page Bug Fixes</span>
-### Tasks:
-- [ ] user story 20 - Fix "New Search" button so it actually clears the user's search (ingredients, results, and exclusions)
-- [ ] user story 20 - Fix History page so it no longer auto-scrolls to the bottom on load
-- [ ] user story 20 - When logged in, display "Logged in as [email/username]" in the navbar next to the logout button
-### Acceptance Criteria:
-1. Pressing the 'New Search' button returns user to search page with all fields cleared.
-2. Hsitory page automatically loads to display most recent search. All old searches must be scrolled down to (page down).
-3. When logged in, user information is displayed in navbar. No empty fields or placeholder display when user is not logged in. Information persists reguardless of what page the user is on.
-## <span style="font-size: 18px;">User Story 27: Dark Mode</span>
-### Tasks:
-- [ ] SCRUM-162 - Dark Mode Toggle
-- [ ] SCRUM-163 - Dark Mode CSS
-### Acceptance Criteria:
-1. A toggle is available in the navbar (or similar accessible location) to switch between light and dark modes.
-2. Dark mode applies a consistent color scheme across all pages and components.
-3. User's selected mode persists across page refreshes.
-## <span style="font-size: 18px;">User Story 28: Scale Recipes</span>
-### Tasks:
-- [ ] SCRUM-164 - Scale Recipe Servings and Adjust Ingredient Amounts
-### Acceptance Criteria:
-1. User can adjust the serving size of a recipe and see ingredient amounts scale proportionally.
-2. Scaled amounts carry through to the shopping list when added.
+#### Christian Johnson
 
-#### <span style="font-size: 20px;">Group:</span>
-## <span style="font-size: 18px;">User Story 18: SOLID Principles Refactor</span>
-### Tasks:
-- [ ] Make codebase more SOLID — specific actions to be discussed (see: SOLID-ANALYSIS.md in Slack)
+| Jira Task | Title | Bitbucket PR |
+|-----------|-------|--------------|
+| [SCRUM-144](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-144) | Implement a "Clear All History" button on the History page | [PR #78](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/78) — Commits: [5bca072](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/5bca072), [1454fca](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/1454fca), [8495c5f](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/8495c5f), [5846309](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/5846309) |
+| [SCRUM-145](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-145) | Allow removal of individual search entries from history (per-entry delete button) | [PR #81](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/81) — Commits: [d29d805](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/d29d805), [ebdcb88](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/ebdcb88), [fb52b2a](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/fb52b2a) |
+| [SCRUM-154](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-154) | Implement user confirmation for the ClearHistoryButton | [PR #87](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/87) — Commits: [f39a943](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/f39a943) |
+| [SCRUM-159](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-159) | Show Cook Time / Prep Time on Recipe Tiles | [PR #93](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/93) — Commits: [eee09a3](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/eee09a3) |
+| [SCRUM-160](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-160) | Filter Recipes by Cook Time | [PR #110](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/110) — Commits: [2177cb0](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/2177cb0), [b162cad](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/b162cad), [5f45c86](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/5f45c86), [4359cda](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/4359cda), [2d24485](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/2d24485), [4a9fb6b](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/4a9fb6b), [9a8e605](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/9a8e605), [a8b8fd6](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/a8b8fd6), [875ccfb](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/875ccfb), [a70902c](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/a70902c), [3f5d76a](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/3f5d76a), [e118692](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/e118692), [99b7830](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/99b7830) |
+| [SCRUM-173](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-173) | Unit Test Planning/Documentation — Christian | [PR #108](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/108) — Commits: [5a81c9c](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/5a81c9c), [20d86a8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/20d86a8) |
+| [SCRUM-174](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-174) | Unit Test Creation — Christian | [PR #109](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/109) — Commits: [6fffbf5](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/6fffbf5), [6078a7d](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/6078a7d), [3fc1e0e](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/3fc1e0e), [c8fd866](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c8fd866) |
+
+---
+
+#### Juan Estrada
+
+| Jira Task | Title | Bitbucket PR |
+|-----------|-------|--------------|
+| [SCRUM-96](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-96) | Load webpage on global server/url (non-local host) | [PR #86](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/86) — Commits: [954d167](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/954d167), [a3bc8d7](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/a3bc8d7), [d39c038](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/d39c038), [ff9d09e](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/ff9d09e), [895a3e3](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/895a3e3), [7134b52](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/7134b52), [0f7487f](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/0f7487f), [003e6ad](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/003e6ad), [3850ef4](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/3850ef4), [93b5283](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/93b5283), [90b026c](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/90b026c) |
+| [SCRUM-98](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-98) | The hosted app connects to the Spoonacular API successfully from the production environment | [PR #89](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/89) — Commits: [e922cd2](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/e922cd2) |
+| [SCRUM-100](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-100) | Loading of webpage is in a reasonable time and error page | [PR #90](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/90) — Commits: [1d8e8d4](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/1d8e8d4) |
+| [SCRUM-105](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-105) | Automatically update website after changes to base code (CI/CD) | [PR #91](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/91) — Commits: [fd9dcff](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/fd9dcff), [53f33d4](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/53f33d4), [243b70f](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/243b70f) |
+| [SCRUM-146](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-146) | Add user-facing error handler when a recipe fails to save, with actionable suggestions | [PR #96](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/96) — Commits: [ee9809d](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/ee9809d), [732e6b6](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/732e6b6), [2516195](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/2516195), [0017cd4](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/0017cd4) |
+| [SCRUM-147](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-147) | Improve error handling to include persistent error logging | [PR #100](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/100) — Commits: [d6ea80c](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/d6ea80c), [2a86186](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/2a86186), [c50db44](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c50db44), [296df81](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/296df81), [c7bc5c8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c7bc5c8), [cbfde79](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/cbfde79) |
+| [SCRUM-148](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-148) | Create a database/collection to store logged errors rather than relying on console.log | [PR #99](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/99) — Commits: [f4859eb](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/f4859eb), [8404ab5](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/8404ab5), [a84d8f4](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/a84d8f4), [620841f](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/620841f) |
+| [SCRUM-149](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-149) | Allow generalized ingredient exclusion by category (e.g., "dairy" excludes milk, cream, etc.) | [PR #101](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/101) — Commits: [484e057](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/484e057), [2ddaba9](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/2ddaba9), [106868e](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/106868e), [bed8154](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/bed8154), [ed54120](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/ed54120), [fe6c239](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/fe6c239), [4fff910](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/4fff910), [523fa90](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/523fa90) |
+| [SCRUM-169](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-169) | Unit Testing Plan | [PR #112](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/112) — Commits: [ad1f7af](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/ad1f7af), [db4ad96](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/db4ad96) |
+| [SCRUM-175](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-175) | Unit Test Creation — Juan | [PR #113](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/113) — Commits: [51756c3](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/51756c3), [b8eefbb](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/b8eefbb), [eff6d2b](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/eff6d2b) |
+
+---
+
+#### Miguel Alvarez
+
+| Jira Task | Title | Bitbucket PR |
+|-----------|-------|--------------|
+| [SCRUM-135](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-135) | Persist the shopping list to MongoDB so it survives across sessions (new endpoint or extend user document) | [PR #102](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/102) — Commits: [b3f8e1c](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/b3f8e1c), [2ef5ddf](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/2ef5ddf), [0869593](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/0869593), [de8e630](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/de8e630) + [PR #106](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/106) — Commits: [03a63c8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/03a63c8), [5fed8f0](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/5fed8f0), [5e477e1](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/5e477e1), [0eefbe3](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/0eefbe3) |
+| [SCRUM-136](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-136) | Add a dedicated Shopping List page accessible from the navbar | [PR #77](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/77) & [PR #85](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/85) (Shopping List feature stack)|
+| [SCRUM-137](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-137) | Allow users to manually add custom items to the list (e.g., "paper towels") | [PR #94](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/94) — Commits: [0aba605](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/0aba605), [25f40a0](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/25f40a0) |
+| [SCRUM-138](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-138) | Add a "Clear List" button to reset the shopping list | [PR #94](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/94) (SCRUM-137) — Commits: [23489f6](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/23489f6126c8fce5df7d40ea5509888d3e6b5ded)|
+| [SCRUM-139](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-139) | Cache unfiltered results to avoid re-fetches on exclusion removal — added local caching | [PR #80](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/80) — Commits: [ac10b17](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/ac10b17) |
+| [SCRUM-140](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-140) | Implement time-to-live (TTL) for cache invalidation so stale results don't persist indefinitely | [PR #84](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/84) — Commits: [31a2fbb](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/31a2fbb) |
+| [SCRUM-176](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-176) | Unit Test Planning — Miguel Alvarez | [PR #114](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/114) — Commits: [3f936dc](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/3f936dc) |
+| [SCRUM-177](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-177) | Unit Test Creation — Miguel Alvarez | [PR #115](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/115) — Commits: [ca8d922](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/ca8d922) |
+
+---
+
+#### Tina Carter
+
+| Jira Task | Title | Bitbucket PR |
+|-----------|-------|--------------|
+| [SCRUM-132](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-132) | Add a "Generate Shopping List" button to the recipe modal (next to Save/Download) | [PR #77](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/77) — Commits: [e609c70](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/e609c70), [0d1ca53](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/0d1ca53), [cbf8aa5](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/cbf8aa5), [227d812](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/227d812) |
+| [SCRUM-150](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-150) | Arrow keys for autocomplete (toggle for include and exclude ingredient selection) | [PR #88](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/88) — Commits: [fb1658d](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/fb1658d) |
+| [SCRUM-153](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-153) | Change substring matching to exact matching in exclusion filter | Squashed into the dev3 → main release merge [PR #119](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/119) (commit [93912c6](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/93912c6)); draft branch [PR #92](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/92) merge was not documented correctly|
+| [SCRUM-165](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-165) | Arrow keys for autocomplete scroll display of suggestions | [PR #107](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/107) — Commits: [77b4e60](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/77b4e60) |
+| [SCRUM-166](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-166) | "Add to Shopping List" button visibly informs user it worked (or didn't) — UI feedback | [PR #104](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/104) — Commits: [9df38ab](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/9df38ab), [df69cc7](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/df69cc7), [124d571](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/124d571), [31eff86](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/31eff86), [67f2d70](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/67f2d70), [19ca92d](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/19ca92d), [a7f8ae2](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/a7f8ae2), [23ef868](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/23ef868), [118367f](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/118367f), [29562ad](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/29562ad), [72347b8](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/72347b8), [c0eb094](https://bitbucket.org/cs3398-hutts-s26/hutts-project/commits/c0eb094) |
+| [SCRUM-171](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-171) | Unit Test Planning/Documentation — Tina | [PR #120](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/120) (SCRUM-172) |
+| [SCRUM-172](https://cs3398-hutts-s26.atlassian.net/browse/SCRUM-172) | Unit Test Creation — Tina | [PR #120](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/120) |
+| Sprint Merge | Development branch 3 → main (Sprint 3 release merge) | [PR #119](https://bitbucket.org/cs3398-hutts-s26/hutts-project/pull-requests/119) |
+
+---
+
+Note: Tasks are grouped by their Jira assignee (not by PR author). A few tasks did not have a dedicated merged PR and are listed with associated SCRUM PRs: SCRUM-134 and SCRUM-136 were folded into the Shopping List feature PRs (#77, #85); SCRUM-138 was bundled with Miguel's SCRUM-137 PR (#94); SCRUM-153 work was squashed into the final dev3 → main release merge (#119); SCRUM-171 was merged along with SCRUM-172 (#120). SCRUM-172 was _In Progress_ at sprint end, and was completed on 27/04/2026 with PR #120. SCRUM-161 (Show Dietary Tags on Recipe Tiles) was added to Sprint 3 but was not completed and is not included above.
+
 
 ## Room for Improvement
 Include areas you believe need improvement / could be improved. Also add TODOs for future development.
