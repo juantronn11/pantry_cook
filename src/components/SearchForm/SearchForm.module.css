@@ -65,6 +65,10 @@
   background: var(--bg-secondary);
 }
 
+.suggestions li[data-hover="true"] {
+  background: #f0f0f0;
+}
+
 .tag {
   display: inline-flex;
   align-items: center;

@@ -11,31 +11,20 @@
 
 ---
 
-### How to run (localized to this folder)
-From the project root:
-```bash
-# Watch mode for Patrick's tests only
-npx vitest --config documentation/tests/patrick_tests_and_results/vitest.config.js
-
-# One-shot run + regenerate HTML report
-npx vitest --config documentation/tests/patrick_tests_and_results/vitest.config.js --run
+### How to run
 ```
-
-Or from within the `patrick_tests_and_results/` folder:
-```bash
-npx vitest --config ./vitest.config.js
-npx vitest --config ./vitest.config.js --run
+npm run test:patrick    ← run Patrick's tests only, generates HTML report
 ```
 
 ### How to view the HTML report
 The Vitest HTML report fetches its data at runtime, so opening `index.html` directly in a browser (via `file://`) renders a blank page. Serve it over HTTP instead:
 
-```bash
-npx vite preview --outDir documentation/tests/patrick_tests_and_results/results
+```
+npx vite preview --outDir documentation/tests/patrick_tests/results
 ```
 
 Then open the printed `http://localhost:4173/` URL in a browser — the report loads automatically (no extra path needed). Alternatively, right-click `index.html` in VS Code and choose **Open with Live Server** (requires the Live Server extension).
-
+<!--  -->
 ### Repo layout (this folder)
 ```
 documentation/tests/patrick_tests/

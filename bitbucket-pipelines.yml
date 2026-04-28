@@ -7,7 +7,7 @@ pipelines:
           name: Mirror to GitHub
           script:
             - git remote add github https://$GITHUB_TOKEN@github.com/juantronn11/pantry_cook.git
-            - git push github HEAD:dev3
+            - git push github HEAD:dev3 --force
       - step:
           name: Deploy to Railway
           script:
